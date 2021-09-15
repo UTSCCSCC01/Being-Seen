@@ -7,6 +7,5 @@
 |Kyle Lewis|lewisky2|1006113215|kyle.lewis@mail.utoronto.ca|Email|Mallow#3725|
 |||||||
 |||||||
-|||||||
 
 **Discord Chat/Server Invite :** https://discord.gg/SHA6DtR4
