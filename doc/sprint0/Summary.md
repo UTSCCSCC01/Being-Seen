@@ -11,5 +11,5 @@ The objective of this app is to provide homeless youth with an app that will hel
 3. Geoff is in a tough spot, he has been staying at a friend's house for the past few days but has politely asked to leave.  Although he understands, he doesn't have another place to go so he turns to the app in hopes that it could provide him with some suggestions relating to local shelters.</br>
 
 ## Key Principles
-- Accesibility: information should be as accesibile as possible ot the youth so that they can make informed decisions and never miss information that might be vital to their lives.
+- Accesibility: We want to make information for various nearby social services accessible to our homeless youth from their mobile devices. This is so that they can make informed decisions and never miss information that might be vital to their lives.
 - Design: The design of the app should be welcoming and intutitive in order to encourage as much use as possible instead of scaring users away.
