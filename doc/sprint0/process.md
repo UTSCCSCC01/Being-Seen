@@ -1,3 +1,4 @@
+# The Process 🏀
 
 As a team, Brute Force Solutions worked well together, both having good chemistry and being able to focus on the talents of our individual members.  The team is very loosely organized however, we use that to our advantage as members can be moved to tasks that need the most help as we see fit. However, we do have a hierarchy in terms of experience, where members with more experience with mobile development are relied on to lead the team in that regard.
 </br> </br>
