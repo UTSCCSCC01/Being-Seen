@@ -22,3 +22,4 @@
 - [ ] As a youth, I should have an efficient way of navigating between different parts of the app to make use easier. </br> cos: have a navigation bar that takes you to certain parts of the app based on what icon was clicked
 - [ ] As a user, I should be able to log out in order to better secure my privacy </br> cos: be able to hit a logout button and be forced back into the log in page
 - [ ] As a user, I should be able to log in to ensure that my information is my own and to better maintain my privacy </br> cos: have an active sign in page that takes user to account when entering proper information
+- [ ] As a user, I should be able to provide feedback to being-seen so that they can improve the app
