@@ -19,7 +19,7 @@ This software is distributed under the [GLWT License](https://github.com/me-shao
 
 ### How to Build and Run the App
 
-1. Fork this repo and clone it to your local machine.
+1. Fork this repo and clone it to your local machine. Make sure you are in the correct branch, as explained below in **Contribution**.
 2. Install all required dependencies for the frontend and backend. Starting from the repo root,
 
 ```powershell
