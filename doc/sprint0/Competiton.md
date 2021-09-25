@@ -1,3 +1,5 @@
+# Competition
+
 Below is a list of similar products to Being Seen; apps centered around the idea of tackling homelessness.  Along with how Being seen differs.
 Chalmers 
 https://www.thestar.com/news/gta/2019/07/21/non-profit-tech-company-designs-app-to-help-torontos-homeless.html
