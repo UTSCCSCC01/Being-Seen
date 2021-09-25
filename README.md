@@ -30,7 +30,7 @@ cd ../backend
 npm install
 ```
 
-1. Run the listener for inbound HTTP requests on your local machine. Starting from the repo root,
+3. Run the listener for inbound HTTP requests on your local machine. Starting from the repo root,
 
 ```powershell
 cd backend
