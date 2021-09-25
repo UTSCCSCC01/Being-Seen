@@ -1,5 +1,5 @@
-- [ ] As a youth, I can create or edit my story through the profile page to encourage donations for myself. </br> COS: able to edit story and see changes take place.
-- [ ] As a youth, I should have access to a list of soup kitchens so that I can easily find a hot meal nearby. </br> COS: will be able to go to some tab/search for soup kitchens and then be presented with a list to search through
+- [ ] As a youth, I can create or edit my story through the profile page to encourage donations for myself. </br> COS: able to edit story and see changes take place. </br> Priority: Highest
+- [ ] As a youth, I should have access to a list of social services so that I can gain access to various services I may need
 - [ ] As a youth, I should be able to filter for social services based on criteria so that I can more easily find social services that I may need. </br> cos: will know its implemented when presented with a list of social services after setting criteria in a search bar
 - [ ] As a youth, I should be able to contact shelters through the app so I better understand the services available to me. </br> cos: will know wits implemented when can click on icon and be connected to a shelter through the app
 - [ ] As a youth, I should be able to see my current account balance so i’m aware of my current financial situation </br> cos: will know this feature is complete when able to navigate to a page and see current account balance within the app
