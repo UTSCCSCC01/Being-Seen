@@ -77,4 +77,4 @@ We use Jira.
 
 ### Do you use pull requests?
 
-Yes, when we want to merge a `feature-xxx` branch into `develop`, or `develop` into `main`, there should always be a pull request. 
+Yes, when we want to merge a `feature-xxx` branch into the upstream `develop`, or `develop` into `main`, there should always be a pull request.
