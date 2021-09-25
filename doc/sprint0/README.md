@@ -14,6 +14,7 @@ This software is distributed under the [GLWT License](https://github.com/me-shao
 - [iOS Emulator](https://reactnative.dev/docs/environment-setup) (Requires Xcode which is only available on Mac)
 - [Node.js](https://nodejs.org/en/) (app is tested to work for at least `v16.8.0`)
 - Code editor or IDE that has support for JavaScript, TypeScript (e.g. [VS Code](https://code.visualstudio.com/))
+- Expo Go app on your mobile device to test the app on your device
 - `.env` file, contact [LegoCityMan7063](https://github.com/LegoCityMan7063) for access
 - MongoDB Cloud, contact [LegoCityMan7063](https://github.com/LegoCityMan7063) for access
 
@@ -41,14 +42,21 @@ npm run start:dev
 
 ```powershell
 cd frontend
-npm run android
+expo start --android
 ```
 
 **or (only for Mac users)**
 
 ```powershell
 cd frontend
-npm run ios
+expo start --ios
+```
+
+**or to run the app on your mobile device using the Expo Go app**
+
+```powershell
+cd frontend
+expo start
 ```
 
 ## Contribution
