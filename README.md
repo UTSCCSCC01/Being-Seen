@@ -22,45 +22,45 @@ This software is distributed under the [GLWT License](https://github.com/me-shao
 ### How to Build and Run the App
 
 1. Fork this repo and clone it to your local machine. Create a branch from the `develop` branch called `feature-xxx` where `xxx` is the name of the feature or issue you are
- working on. Switch to the branch you created.
+    working on. Switch to the branch you created.
 2. Install all required dependencies for the frontend and backend. Starting from the repo root,
 
-```powershell
-cd frontend
-npm install
-cd ../backend
-npm install
-```
+    ```powershell
+    cd frontend
+    npm install
+    cd ../backend
+    npm install
+    ```
 
 3. Run the listener for inbound HTTP requests on your local machine. Starting from the repo root,
 
-```powershell
-cd backend
-npm run start:dev
-```
+    ```powershell
+    cd backend
+    npm run start:dev
+    ```
 
 4. Run the front-end on your local machine. Starting from the repo root,
 
-```powershell
-cd frontend
-expo start
-```
+    ```powershell
+    cd frontend
+    expo start
+    ```
 
-A browser window for the Expo server should open. Follow the instructions there to open the app on the Expo Go app or an emulator.
+    A browser window for the Expo server should open. Follow the instructions there to open the app on the Expo Go app or an emulator.
 
-**To automatically open the Android emulator for Step 4**
+    **To automatically open the Android emulator for Step 4**
 
-```powershell
-cd frontend
-expo start --android
-```
+    ```powershell
+    cd frontend
+    expo start --android
+    ```
 
-**To automatically open the iOS emulator for Step 4(only for Mac users)**
+    **To automatically open the iOS emulator for Step 4(only for Mac users)**
 
-```powershell
-cd frontend
-expo start --ios
-```
+    ```powershell
+    cd frontend
+    expo start --ios
+    ```
 
 ## Contribution
 
