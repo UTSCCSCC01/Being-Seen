@@ -1,5 +1,11 @@
 import { Youth } from "./Youth";
-export class Review {
+export type Review= {
+    id: String,
+    reviewer: Youth,
+    review:String,
+    rating: Number,
+    date: Date
+    /*
     private _id: string;
     private _reviewer : Youth;
     private _review : string;
@@ -44,6 +50,6 @@ export class Review {
         return "\"" + this.review + "\" " + this.rating.toString() + "\5" + " Written on " + this.date.toString();
     }
     
-    
+    */
     
 }

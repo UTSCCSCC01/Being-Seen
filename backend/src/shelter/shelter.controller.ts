@@ -1,23 +1,29 @@
-import { Controller, Get, Param, Patch, Put } from '@nestjs/common';
-import { Shelter } from "../objects/Shelter"
+import { Body, Controller, Get, Param, Patch, Put } from '@nestjs/common';
+import { ShelterService } from './shelter.service';
 
 @Controller('shelter')
 export class ShelterController {
+    constructor(private readonly shelterService: ShelterService){}
     @Get()
-    getShelters(){
-        //TODO: implement returning all shelters (or a set amt of shelters)
-        return "all shelters from get"
+    async getShelters(){
+        const shelters = await this.shelterService.getAllShelters()
+        console.log(shelters)
+        return shelters
     }
 
     @Get("/:shelterId")
-    getShelterById(){
+    async getShelterById(@Param("shelterId") shelterId: string){
         //TODO: implement returning a shelter with a given id
-        return "shelter with specific id from get"
+        const shelter = await this.shelterService.getShelterById(shelterId);
+        console.log(shelter)
+        return shelter
     }
 
     @Put('/:shelterId')
-    updateShelter(@Param() newShelter: Shelter){
+    updateShelter(@Param("shelterId") shelterId : string, @Body() body){
         //TODO: Implement updating a given shelter
-        return "put to shelter with given id"
+        //Gets shelterId, locates a shelter with that same ID in db
+        //then updates it with given info
+        return JSON.stringify(body)
     }
 }

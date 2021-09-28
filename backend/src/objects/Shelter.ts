@@ -1,4 +1,4 @@
-import { stringify } from "querystring";
+/*
 import { Review } from "./Review"
 import { Tag } from "./Tag"
 
@@ -95,5 +95,6 @@ export class Shelter {
         return toReturn;
         
     }
-    
+
 }
+*/
