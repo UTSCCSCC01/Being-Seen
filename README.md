@@ -43,21 +43,23 @@ npm run start:dev
 
 ```powershell
 cd frontend
+expo start
+```
+
+A browser window for the Expo server should open. Follow the instructions there to open the app on the Expo Go app or an emulator.
+
+**To automatically open the Android emulator for Step 4**
+
+```powershell
+cd frontend
 expo start --android
 ```
 
-**or (only for Mac users)**
+**To automatically open the iOS emulator for Step 4(only for Mac users)**
 
 ```powershell
 cd frontend
 expo start --ios
-```
-
-**or to run the app on your mobile device using the Expo Go app**
-
-```powershell
-cd frontend
-expo start
 ```
 
 ## Contribution
