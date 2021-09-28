@@ -53,5 +53,7 @@ As a user, I should be able to log in/out in order to better secure my privacy (
 
 ## Team Capacity
 
+**96 hours**
+
 ## Participants
-Lianting, Mark, ALi, Glenn, Yiyang, Kyle
+Lianting, Mark, Ali, Glenn, Yiyang, Kyle
