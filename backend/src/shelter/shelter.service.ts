@@ -1,13 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConsoleLogger, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { subscriptionLogsToBeFn } from 'rxjs/internal/testing/TestScheduler';
 import { Review } from 'src/objects/Review';
-import { Shelter } from './shelter.model';
+import { Shelter, ShelterDocument } from '../Schemas/shelter.schema';
 
 @Injectable()
 export class ShelterService {
 
-    constructor(@InjectModel("Shelter") private readonly shelterModel: Model<Shelter>){}
+    constructor(@InjectModel("Shelter") private readonly shelterModel: Model<ShelterDocument>){}
 
     async getAllShelters(){
         const shelters = await this.shelterModel.find().exec();
@@ -15,9 +16,24 @@ export class ShelterService {
     }
 
     async getShelterById(shelterId: string){
-        const shelter = await this.findShelter(shelterId)
+        let shelter = await this.findShelter(shelterId)
         return shelter
     }
+
+    async insertShelter(name:string, address:string, postalCode:string, phoneNumber:string, email:string,
+        description: string, hours: string){
+       const newShelter = new this.shelterModel({
+           name,
+           address,
+           postalCode,
+           phoneNumber,
+           email,
+           description,
+           hours
+       })
+       const result = await newShelter.save()
+       return result.id
+   }
 
     private async findShelter(shelterid: string): Promise<Shelter>{
         var shelter;
@@ -34,4 +50,6 @@ export class ShelterService {
         }
         return shelter as Shelter
     }
+
+    
 }

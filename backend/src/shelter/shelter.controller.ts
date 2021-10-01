@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Put } from '@nestjs/common';
 import { ShelterService } from './shelter.service';
 
 @Controller('shelter')
@@ -25,5 +25,22 @@ export class ShelterController {
         //Gets shelterId, locates a shelter with that same ID in db
         //then updates it with given info
         return JSON.stringify(body)
+    }
+
+    @Post()
+    async addShelter(
+        @Body("name") name:string,
+        @Body("address") address:string,
+        @Body("postalCode") postalCode:string,
+        @Body("phoneNumber") phoneNumber:string,
+        @Body("email") email:string,
+        @Body("description") description:string,
+        @Body("hours") hours:string
+    ){
+        const newId = await this.shelterService.insertShelter(name,address,postalCode,
+            phoneNumber, email, description, hours)
+
+        return {id: newId}
+
     }
 }
