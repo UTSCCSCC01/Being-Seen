@@ -1,33 +1,6 @@
 import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose";
-import * as mongoose from "mongoose"
 import { Review } from "../Schemas/review.schema";
-import {Tag, TagSchema} from "../Schemas/tag.schema"
-/*
-export const ShelterSchema = new mongoose.Schema({
-    name: {type: String, required: true},
-    address: {type: String, required: true},
-    postalCode: String,
-    phoneNumber: String,
-    email: String,
-    desc: {type: String, required: true},
-    hours: {type: String, required: true},
-    rating: {type: Number, required: true},
-    reviews: [{reviewer: mongoose.Types.ObjectId, review: String, rating: Number, date: Date}],
-    tags: [{tagId: mongoose.Types.ObjectId, tagName: String}]
-});
-/*
-export interface Shelter{
-    id:string,
-    name:string,
-    address:string,
-    postalCode:string,
-    email:string,
-    desc:string,
-    hours:string,
-    rating:number,
-    //reviews: [{_id:mongoose.Types.ObjectId, review: string, rating: number, date: Date}],
-    //tags:[{_id:mongoose.ObjectId, tagName: string}]
-}*/
+import {Tag} from "../Schemas/tag.schema"
 
 export type ShelterDocument = Shelter & Document
 
@@ -35,25 +8,25 @@ export type ShelterDocument = Shelter & Document
 export class Shelter{
     @Prop()
     id:string;
-    @Prop()
+    @Prop({required:true})
     name:string;
-    @Prop()
+    @Prop({required:true})
     address:string;
-    @Prop()
+    @Prop({default:""})
     postalCode:string;
-    @Prop()
+    @Prop({required:true})
     phoneNumber:string;
-    @Prop()
+    @Prop({default:""})
     email:string;
-    @Prop()
-    descrpition:string;
-    @Prop()
+    @Prop({required:true})
+    description:string;
+    @Prop({default:""})
     hours:string;
-    @Prop()
+    @Prop({default:0})
     rating:number;
-    @Prop()
+    @Prop({default :[]})
     reviews: Review[]
-    @Prop()
+    @Prop({default: []})
     tags: Tag[]
 }
 export const ShelterSchema = SchemaFactory.createForClass(Shelter); 

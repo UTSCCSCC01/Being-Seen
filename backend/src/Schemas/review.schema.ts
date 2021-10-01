@@ -1,6 +1,6 @@
 import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose";
 import * as mongoose from "mongoose"
-import { Youth } from "src/objects/Youth";
+
 
 @Schema()
 export class Review extends mongoose.Document{
@@ -8,7 +8,7 @@ export class Review extends mongoose.Document{
     reviewer: mongoose.Schema.Types.ObjectId
     @Prop()
     content:string
-    @Prop()
+    @Prop({required:true})
     rating:number
     @Prop()
     date:Date
