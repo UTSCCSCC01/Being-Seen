@@ -9,7 +9,7 @@
 **Class name : Shelter**
 |Parent Classes (if any)| Subclasses(if any)| Responsibilities| Collaborators |
 |-----------------------|-------------------|-----------------|---------------|
-|None|  None| Responsible for keeping track of a given shelter's information including address, reviews, etc.| Review|
+|None|  None| Responsible for keeping track of a given shelter's information including address, reviews, etc.| Review, Tag|
 
 
 
@@ -17,3 +17,13 @@
 |Parent Classes (if any)| Subclasses(if any)| Responsibilities| Collaborators |
 |-----------------------|-------------------|-----------------|---------------|
 |None|None|Responsible for encapsulating all data about a given review such as reviewer, date, rating, etc.| Youth|
+
+**Class name: Tag**
+|Parent Classes (if any)| Subclasses(if any)| Responsibilities| Collaborators |
+|-----------------------|-------------------|-----------------|---------------|
+|None|None|Responsible for encauspulating all data about a given tag so as to make finding information easy| None|
+
+**Class name: Youth**
+|Parent Classes (if any)| Subclasses(if any)| Responsibilities| Collaborators |
+|-----------------------|-------------------|-----------------|---------------|
+|None|None|Encapsulating data about a given user ie their balance, story, etc|None|
