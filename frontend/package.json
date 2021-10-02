@@ -13,10 +13,13 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
-    "react-native-web": "~0.13.12"
+    "react-native-web": "~0.13.12",
+    "tailwind-rn": "^3.0.1",
+    "tailwindcss": "^2.2.16"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0"
+    "@babel/core": "^7.9.0",
+    "babel-plugin-module-resolver": "^4.1.0"
   },
   "private": true
 }
