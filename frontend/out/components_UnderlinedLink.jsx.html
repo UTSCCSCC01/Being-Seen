@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: App</title>
+    <title>JSDoc: Source: components/UnderlinedLink.jsx</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,132 +17,44 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: App</h1>
+    <h1 class="page-title">Source: components/UnderlinedLink.jsx</h1>
 
     
 
 
 
-
-<section>
-
-<header>
     
-        
-            
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">Main component of the app, container for all other components</div>
-        
-
-        
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="App.jsx.html">App.jsx</a>, <a href="App.jsx.html#line5">line 5</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from 'react';
+import PropTypes from 'prop-types';
+import { Text, StyleSheet } from 'react-native';
+import { tailwind } from 'tailwind';
+
+/**
+ * @function UnderlinedLink
+ * @module UnderlinedLink
+ * @description An underlined text link
+ * @prop {string} text - The text to display
+ */
+const UnderlinedLink = ({ text }) => (
+  &lt;Text style={styles.text}>{text}&lt;/Text>
+);
+
+UnderlinedLink.propTypes = {
+  text: PropTypes.string.isRequired,
+};
+
+const styles = StyleSheet.create({
+  text: {
+    ...tailwind('text-base text-primaryPurple text-opacity-75 underline'),
+  },
+});
+
+export default UnderlinedLink;
+</code></pre>
+        </article>
+    </section>
 
 
 
