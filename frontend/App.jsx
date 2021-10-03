@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 /**
  * @function App
+ * @module App
  * @description Main component of the app, container for all other components
  */
 export default function App() {
