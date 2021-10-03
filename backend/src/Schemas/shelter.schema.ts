@@ -28,5 +28,7 @@ export class Shelter{
     reviews: Review[]
     @Prop({default: []})
     tags: Tag[]
+    @Prop()
+    picture:string;
 }
 export const ShelterSchema = SchemaFactory.createForClass(Shelter); 
