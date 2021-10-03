@@ -28,7 +28,7 @@ export class Shelter{
     reviews: Review[]
     @Prop({default: []})
     tags: Tag[]
-    @Prop()
+    @Prop({default: "https://reactnative.dev/img/tiny_logo.png"})
     picture:string;
 }
 export const ShelterSchema = SchemaFactory.createForClass(Shelter); 

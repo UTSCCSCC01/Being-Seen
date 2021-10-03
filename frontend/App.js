@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect} from 'react';
 import { render } from 'react-dom';
-import { Platform, StyleSheet, Text, View, SafeAreaView, ScrollView } from 'react-native';
+import { Platform, StyleSheet, Text, View, SafeAreaView, ScrollView, Image, FlatList, TouchableHighlight } from 'react-native';
 
 //export default function App() {
 export default function Shelter(){
@@ -37,9 +37,14 @@ export default function Shelter(){
   };
 
     return (
-      <ScrollView contentContainerStyle={styles.background}>
+      <View >
+        <ShelterList shelters={shelters}/>
+      </View>
+    )
+      {/*
+      <ScrollView contentContainerStyle={styles.scrollBackground}>
+        <ShelterList shelters={shelters}/>
         <Text>{shelters[0].name} </Text>
-        {/*
         <View style={styles.box}>
           <Text> Testing </Text>
           </View>
@@ -55,49 +60,108 @@ export default function Shelter(){
           <View style={styles.box}>
           <Text> Testing testing Testing Testing</Text>
           </View>
-          */}
-      </ScrollView>)
+          
+      </ScrollView>)*/}
 }
 
-const shelterList = (props) => {
-  const listShelters = props.map((shelter) =>
-  <li>{shelter.name}</li>
+
+const ShelterList = (props) => {
+  const shelters = props.shelters
+  try{
+  return(
+    <FlatList data={shelters}
+    renderItem={({ item, index, separators }) => (
+      <TouchableHighlight
+        listkey={item.id}>
+          <View style={styles.box}>
+            <Image style={styles.icon} source={{uri:item.picture}}/>
+            <Text style={styles.text} numberOfLines={1}>Name: {item.name}</Text>
+            <Text style={styles.text} numberOfLines={1}>Address: {item.address}</Text>
+            <Text style={styles.text} numberOfLines={1}>Phone: {item.phoneNumber}</Text>
+            <Text style={styles.text} numberOfLines={2}>Description: {item.description}</Text>
+          </View>
+      </TouchableHighlight>
+    )} style={styles.scrollBackground}/>)
+  }catch(error){
+    console.error(error)
+    return(
+      <Text>An Error has occured</Text>
+    )
+  }
+  /*const listItems = shelters.map((shelter) =>
+    <View style = {styles.box} key={shelter.id}>
+      <Image source={{uri:shelter.picture}} style={styles.icon}/>
+      <View style= {styles.boxText}>
+        <Text>Name:{shelter.name}</Text>
+        <Text>address: {shelter.address}</Text>
+        <Text style = {{flexWrap: "wrap"}} numberOfLines={2} >Description: {shelter.description}</Text>
+    </View>
+    
+
+    </View>
   );
   return(
-    <div>{listShelters}</div>
-  )
-
+    /*
+    <View style = {styles.box}>
+    <Image source={{uri: props.shelter.picture}} style={styles.icon}/>
+    <Text>name:{props.shelter.name} {"\n"}address: {props.shelter.address}</Text>
+    </View>
+    
+    <View style={styles.background}>{listItems}</View>\
+    
+  );*/
   /*
-  const shelters = props.numbers;
-  const listItems = numbers.map((number) =>
-    <li>{number}</li>
+  const listShelters = props.map((shelter) =>
+  <View style={styles.box}>
+    <Text>{shelter.name}</Text>
+  </View>
   );
-  return (
-    <ul>{listItems}</ul>
-  );
-  */
+  return(
+    <View>{listShelters}</View>
+  )
+    */
 }
 const styles = StyleSheet.create({
-  padding:{
-    backgroundColor: "rebeccapurple",
-  },
   background: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'flex-start',
     justifyContent: 'center',
+    alignItems: 'flex-start',
     flexDirection: 'column',
-    paddingTop: '10%',
-    paddingBottom: '15%'
+  },
+  scrollBackground:{
+   // flex: 1,
+    //backgroundColor: '#fff',
+   // alignItems: 'center',
+    //justifyContent: 'center',
+    //flexDirection: 'row',
+    //alignItems: 'flex-start',
+   // justifyContent:'center',
+    backgroundColor: 'grey',
+    paddingTop: '15%',
+    paddingBottom: '15%',
+    flex:1
   },
   box: {
     flex: 1,
-    width: "100%",
-    height: "15%",
+    //width: "120%",
+    //height: "15%",
     backgroundColor: "white",
     borderColor: "rebeccapurple",
     borderStyle: "solid",
+    justifyContent: 'flex-start',
+    flexDirection:'column',
+    flexWrap: 'wrap',
     borderWidth: 1,
     margin:1
+  },
+  icon: {
+    width: '25%', 
+    height:'99%'
+  },
+  text:{
+    flex: 1, 
+    flexWrap: 'wrap'
   }
 });
