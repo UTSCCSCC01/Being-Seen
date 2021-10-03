@@ -4,7 +4,7 @@ import { render } from 'react-dom';
 import { Platform, StyleSheet, Text, View, SafeAreaView, ScrollView, Image, FlatList, TouchableHighlight } from 'react-native';
 
 //export default function App() {
-export default function Shelter(){
+function Shelter(){
   const[shelters, setShelters] = useState([{name:"Error shelters not loaded"}])
 
 
@@ -37,31 +37,10 @@ export default function Shelter(){
   };
 
     return (
-      <View >
+      <View style={{flex:1}}>
         <ShelterList shelters={shelters}/>
       </View>
     )
-      {/*
-      <ScrollView contentContainerStyle={styles.scrollBackground}>
-        <ShelterList shelters={shelters}/>
-        <Text>{shelters[0].name} </Text>
-        <View style={styles.box}>
-          <Text> Testing </Text>
-          </View>
-          <View style={styles.box}>
-          <Text> Testing </Text>
-          </View>
-          <View style={styles.box}>
-          <Text> Testing </Text>
-          </View>
-          <View style={styles.box}>
-          <Text> Testing </Text>
-          </View>
-          <View style={styles.box}>
-          <Text> Testing testing Testing Testing</Text>
-          </View>
-          
-      </ScrollView>)*/}
 }
 
 
@@ -88,38 +67,6 @@ const ShelterList = (props) => {
       <Text>An Error has occured</Text>
     )
   }
-  /*const listItems = shelters.map((shelter) =>
-    <View style = {styles.box} key={shelter.id}>
-      <Image source={{uri:shelter.picture}} style={styles.icon}/>
-      <View style= {styles.boxText}>
-        <Text>Name:{shelter.name}</Text>
-        <Text>address: {shelter.address}</Text>
-        <Text style = {{flexWrap: "wrap"}} numberOfLines={2} >Description: {shelter.description}</Text>
-    </View>
-    
-
-    </View>
-  );
-  return(
-    /*
-    <View style = {styles.box}>
-    <Image source={{uri: props.shelter.picture}} style={styles.icon}/>
-    <Text>name:{props.shelter.name} {"\n"}address: {props.shelter.address}</Text>
-    </View>
-    
-    <View style={styles.background}>{listItems}</View>\
-    
-  );*/
-  /*
-  const listShelters = props.map((shelter) =>
-  <View style={styles.box}>
-    <Text>{shelter.name}</Text>
-  </View>
-  );
-  return(
-    <View>{listShelters}</View>
-  )
-    */
 }
 const styles = StyleSheet.create({
   background: {
@@ -139,8 +86,6 @@ const styles = StyleSheet.create({
     //alignItems: 'flex-start',
    // justifyContent:'center',
     backgroundColor: 'grey',
-    paddingTop: '15%',
-    paddingBottom: '15%',
     flex:1
   },
   box: {
@@ -165,3 +110,5 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap'
   }
 });
+
+export default Shelter
