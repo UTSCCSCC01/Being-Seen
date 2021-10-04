@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect} from 'react';
 import { render } from 'react-dom';
-import { Platform, StyleSheet, Text, View, SafeAreaView, ScrollView, Image, FlatList, TouchableHighlight, Dimensions } from 'react-native';
+import { Platform, StyleSheet, Text, View, SafeAreaView, ScrollView, Image, FlatList, TouchableHighlight, Dimensions, Button } from 'react-native';
 
 //export default function App() {
 function Shelter(){
@@ -54,7 +54,7 @@ const ShelterList = (props) => {
   }
 
   try{  
-    if(overlay){
+    if(!overlay){
       return(
         <FlatList data={shelters}
         renderItem={({ item, index, separators }) => (
@@ -76,7 +76,7 @@ const ShelterList = (props) => {
       return(
       <View>
         <TouchableHighlight onPress={() => {toggleOverlay()}}>
-          <Text>goBack {currShelter._id}</Text>
+          <Text>goBack</Text>
         </TouchableHighlight>
         <DisplayShelter shelter={currShelter}/>
       </View>
@@ -95,7 +95,7 @@ const ShelterList = (props) => {
 const DisplayShelter = (props)=>{
     const shelter = props.shelter
     return(
-      <View>
+      <ScrollView>
         <Image style={styles.largePic} source={{uri:shelter.picture}}/>
         <Text style={styles.expandedText}>Name: {shelter.name}</Text>
         <Text style={styles.expandedText}>Address: {shelter.address}{shelter.postalCode}</Text>
@@ -104,17 +104,36 @@ const DisplayShelter = (props)=>{
         <Text style={styles.expandedText}>Description: {shelter.description}</Text>
         <Text style={styles.expandedText}>Hours: {shelter.hours}</Text>
         <Text style={styles.expandedText}>Rating: {shelter.rating}/5</Text>
-      </View>
+        <DisplayTags tags={shelter.tags}/>
+        <DisplayReviews reviews={shelter.reviews}/>
+      </ScrollView>
     )
 }
 
-const displayTags = (tags) => {
-  let toReturn = ""
-  for(let i = 0; i < tags.length; i++){
-    toReturn += tags[i] +" "
-  }
-  return toReturn
+export const DisplayReviews = (props) => {
+  const reviews = props.reviews
+  return(
+   <FlatList  data={reviews} renderItem={({ item, index, separators }) => (
+     <View style={styles.reviewBox}>
+       <View>
+          <Text style={styles.reviewText}>"{item.content}"</Text>
+          <Text style={styles.reviewText}>Rating: {item.rating}/5</Text>
+          <Text style={styles.reviewText}>Written on: {item.date}</Text>
+        </View>
+      </View>
+   )}/>
+  )
 }
+
+export const DisplayTags = (props) => {
+   const tags = props.tags
+   return(
+    <FlatList horizontal={true} data={tags} renderItem={({ item, index, separators }) => (
+      <View style={styles.tagBox}><Text >{item}</Text></View>
+    )}/>
+   )
+}
+
 const styles = StyleSheet.create({
   background: {
     flex: 1,
@@ -163,11 +182,39 @@ const styles = StyleSheet.create({
     flex: 1, 
     flexWrap: 'wrap'
   },
+  tagBox:{
+    margin: 2,
+    flex:0.1,
+    borderRadius:5,
+    backgroundColor:'gainsboro',
+    borderColor:"#662997"
+  },
+  tagText:{
+    fontSize:12,
+    color:"#662997"
+  },
   expandedText:{
     //flex: 1,
     //flexWrap:'wrap',
+    margin:2,
     fontSize: 16,
     color: "#662997"
+  },
+  reviewText:{
+    //flex: 1,
+    //flexWrap:'wrap',
+    margin:2,
+    fontSize: 16,
+    color: "#662997",
+    flexWrap:'wrap'
+  },
+  reviewBox:{
+    //flex:1,
+    flex:1,
+    flexWrap:'wrap',
+    backgroundColor:'white',
+    borderColor: "#662997",
+    borderWidth:1
   }
 });
 
