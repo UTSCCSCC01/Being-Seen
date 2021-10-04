@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Param, Patch, Post, Put } from '@nestjs/common';
+import * as mongoose from 'mongoose';
 import { ShelterService } from './shelter.service';
 
 @Controller('shelter')
@@ -27,6 +28,20 @@ export class ShelterController {
         //get our shelter given its id
         await this.shelterService.addShelterReview(shelterId,reviewer,content,rating)
         return
+    }
+
+    @Post()
+    async createShelter(@Body('name') name:string,
+    @Body('address') address:string,
+    @Body('postalCode') postalCode:string,
+    @Body('phoneNumber') phoneNumber:string,
+    @Body('email') email:string,
+    @Body('description') description:string,
+    @Body('hours') hours:string,
+    @Body('tags') tags:string,
+    @Body('picture') picture:string){
+        const newId = await this.shelterService.createShelter(name,address,postalCode,phoneNumber,email,description,hours,tags,picture)
+        return newId
     }
 
     

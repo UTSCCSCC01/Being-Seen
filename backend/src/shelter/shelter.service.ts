@@ -1,6 +1,6 @@
 import { ConsoleLogger, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Mongoose, Schema, Types } from 'mongoose';
+import { Model, Mongoose, ObjectId, Schema, Types } from 'mongoose';
 import { Review } from 'src/Schemas/review.schema';
 import { Shelter, ShelterDocument } from '../Schemas/shelter.schema';
 
@@ -52,6 +52,25 @@ export class ShelterService {
         this.updateShelterScore(shelter)
         
         return
+    }
+
+    async createShelter(name:string, address:string, postalCode:string, phoneNumber:string, email:string,
+    description:string, hours:string, tags:string, picture:string){
+        let review = []
+        let rating = []
+        const newShelter = new this.shelterModel({
+            name:name,
+            address:address,
+            postalCode:postalCode,
+            phoneNumber:phoneNumber,
+            email:email,
+            description:description,
+            hours:hours,
+            tags: this.convertOidArr(tags),
+            picture:picture
+        })
+        newShelter.save()
+        return newShelter.id
     }
 
 
@@ -107,6 +126,13 @@ export class ShelterService {
             throw new NotFoundException("Could not find shelter with that id");
         }
         return shelter
+    }
+
+    private convertOidArr(arr){
+        for(let i = 0; i < arr.length; i++){
+            arr[i] = Types.ObjectId(arr[i])
+        }
+        return arr
     }
 
 }

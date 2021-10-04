@@ -1,4 +1,5 @@
 import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose";
+import { Types } from "mongoose";
 import { Review } from "../Schemas/review.schema";
 import {Tag} from "../Schemas/tag.schema"
 
@@ -27,7 +28,7 @@ export class Shelter{
     @Prop({default :[]})
     reviews: Review[]
     @Prop({default: []})
-    tags: Tag[]
+    tags: Types.ObjectId[]
     @Prop({default: "https://reactnative.dev/img/tiny_logo.png"})
     picture:string;
 }
