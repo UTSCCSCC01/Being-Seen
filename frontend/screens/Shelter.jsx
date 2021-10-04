@@ -1,10 +1,22 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect} from 'react';
 import { render } from 'react-dom';
-import { Platform, StyleSheet, Text, View, SafeAreaView, ScrollView, Image, FlatList, TouchableHighlight, Dimensions, Button } from 'react-native';
+import { Platform, StyleSheet, Text, View, SafeAreaView, ScrollView, Image, FlatList, TouchableHighlight, Dimensions, Button, ImageBackground } from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
 
 //export default function App() {
+const Stack = createNativeStackNavigator();
 function Shelter(){
+    return (
+      <Stack.Navigator initialRouteName='ShelterList' >
+          <Stack.Screen name='ShelterList' component={ShelterList} options={{headerShown:false}}/>
+          <Stack.Screen name='ShelterDetails' component={DisplayShelter} options={{headerShown:false}}/>
+        </Stack.Navigator>
+    )
+}
+
+function ShelterList({navigation}){
   const[shelters, setShelters] = useState([{name:"Error shelters not loaded"}])
 
   const onScreenLoad = () => {
@@ -18,8 +30,7 @@ function Shelter(){
   useEffect(() => {
       onScreenLoad();
   }, [])
-  
-  //do fetch request to api to get all shelters
+
   async function getSheltersFromApi() {
     try {
       const response = await fetch(
@@ -34,16 +45,25 @@ function Shelter(){
       console.error(error);
     }
   };
-
-    return (
-      <View style={{flex:1}}>
-        <ShelterList shelters={shelters}/>
-      </View>
-    )
+  return(
+    <FlatList data={shelters}
+        renderItem={({ item, index, separators }) => (
+          <TouchableHighlight
+            listkey={item._id} onPress={()=> {navigation.navigate('ShelterDetails', item)}}>
+              <View style={styles.box}>
+              <Image style={styles.icon} source={{uri:item.picture}}/>
+                <View style={{flex:1}}>
+                <Text style={styles.text} numberOfLines={1}>Name: {item.name}</Text>
+                <Text style={styles.text} numberOfLines={1}>Address: {item.address}</Text>
+                <Text style={styles.text} numberOfLines={1}>Phone: {item.phoneNumber}</Text>
+                <Text style={styles.text} numberOfLines={1}>Tags: {item.tags}</Text>
+                </View>
+              </View>
+          </TouchableHighlight>
+        )} style={styles.scrollBackground}/>
+  )
 }
-
-
-
+/*
 const ShelterList = (props) => {
   const [overlay, setOverlay]=useState(false)
   const [currShelter, setCurrShelter] =useState({id:"", name:"error has occured"})
@@ -74,9 +94,9 @@ const ShelterList = (props) => {
     }
     else{
       return(
-      <View>
+      <View style={styles.displayBackground}>
         <TouchableHighlight onPress={() => {toggleOverlay()}}>
-          <Text>goBack</Text>
+          <Text>Back</Text>
         </TouchableHighlight>
         <DisplayShelter shelter={currShelter}/>
       </View>
@@ -90,23 +110,25 @@ const ShelterList = (props) => {
       </View>
     )
   }
-}
+}*/
 
-const DisplayShelter = (props)=>{
-    const shelter = props.shelter
+const DisplayShelter = ({route, navigation})=>{
+    const shelter = route.params
     return(
-      <ScrollView>
-        <Image style={styles.largePic} source={{uri:shelter.picture}}/>
-        <Text style={styles.expandedText}>Name: {shelter.name}</Text>
-        <Text style={styles.expandedText}>Address: {shelter.address}{shelter.postalCode}</Text>
-        <Text style={styles.expandedText}>phoneNumber: {shelter.phoneNumber}</Text>
-        <Text style={styles.expandedText}>Email: {shelter.email}</Text>
-        <Text style={styles.expandedText}>Description: {shelter.description}</Text>
-        <Text style={styles.expandedText}>Hours: {shelter.hours}</Text>
-        <Text style={styles.expandedText}>Rating: {shelter.rating}/5</Text>
-        <DisplayTags tags={shelter.tags}/>
-        <DisplayReviews reviews={shelter.reviews}/>
-      </ScrollView>
+        <ScrollView contentContainerStyle={styles.displayBackground}>
+          <ImageBackground style={styles.largePic} source={{uri:shelter.picture}}>
+            <Button color= "#66299780" title="Go back" onPress={() => navigation.goBack()} />
+          </ImageBackground>
+          <Text style={styles.expandedText}>Name: {shelter.name}</Text>
+          <Text style={styles.expandedText}>Address: {shelter.address}{shelter.postalCode}</Text>
+          <Text style={styles.expandedText}>phoneNumber: {shelter.phoneNumber}</Text>
+          <Text style={styles.expandedText}>Email: {shelter.email}</Text>
+          <Text style={styles.expandedText}>Description: {shelter.description}</Text>
+          <Text style={styles.expandedText}>Hours: {shelter.hours}</Text>
+          <Text style={styles.expandedText}>Rating: {shelter.rating}/5</Text>
+          <DisplayTags tags={shelter.tags}/>
+          <DisplayReviews reviews={shelter.reviews}/>
+        </ScrollView>
     )
 }
 
@@ -115,11 +137,9 @@ export const DisplayReviews = (props) => {
   return(
    <FlatList  data={reviews} renderItem={({ item, index, separators }) => (
      <View style={styles.reviewBox}>
-       <View>
           <Text style={styles.reviewText}>"{item.content}"</Text>
           <Text style={styles.reviewText}>Rating: {item.rating}/5</Text>
           <Text style={styles.reviewText}>Written on: {item.date}</Text>
-        </View>
       </View>
    )}/>
   )
@@ -138,6 +158,14 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     backgroundColor: '#fff',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    flexDirection: 'column',
+  },
+  displayBackground: {
+    flex: 1,
+    backgroundColor: '#fffefc',
     alignItems: 'flex-start',
     justifyContent: 'center',
     alignItems: 'flex-start',
@@ -184,10 +212,9 @@ const styles = StyleSheet.create({
   },
   tagBox:{
     margin: 2,
-    flex:0.1,
     borderRadius:5,
     backgroundColor:'gainsboro',
-    borderColor:"#662997"
+    borderColor:"#662997",
   },
   tagText:{
     fontSize:12,
@@ -210,7 +237,6 @@ const styles = StyleSheet.create({
   },
   reviewBox:{
     //flex:1,
-    flex:1,
     flexWrap:'wrap',
     backgroundColor:'white',
     borderColor: "#662997",

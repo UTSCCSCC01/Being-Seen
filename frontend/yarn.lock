@@ -1540,6 +1540,14 @@
   "resolved" "https://registry.npmjs.org/@react-navigation/elements/-/elements-1.1.2.tgz"
   "version" "1.1.2"
 
+"@react-navigation/native-stack@^6.2.2":
+  "integrity" "sha512-OhWW1R0ZgAnWAvuhPZaBiEuMF13j7+BaNB8KmxQTTjG41EdzUi5yvz5MbHvzLjhF3yJ3qHxr6HjxFRMbugWvjw=="
+  "resolved" "https://registry.npmjs.org/@react-navigation/native-stack/-/native-stack-6.2.2.tgz"
+  "version" "6.2.2"
+  dependencies:
+    "@react-navigation/elements" "^1.1.2"
+    "warn-once" "^0.1.0"
+
 "@react-navigation/native@^6.0.0", "@react-navigation/native@^6.0.4":
   "integrity" "sha512-497dGGDIZ8hDCPGj6GXZvLGHk6NvZk5k4r1cjwgqcXwutK5fS7sgD0dZP52NTQC3GvLe8PZNv6AEdMIqFrZK6A=="
   "resolved" "https://registry.npmjs.org/@react-navigation/native/-/native-6.0.4.tgz"
