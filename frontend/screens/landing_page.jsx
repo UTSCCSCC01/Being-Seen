@@ -17,7 +17,7 @@ function Header() {
         paddingTop: 25,
         paddingBottom: 10,
         height: 75,
-        backgroundColor: "#e65",
+        backgroundColor: "#62299c",
         flexDirection: "row",
         justifyContent: "flex-end",
       }}
