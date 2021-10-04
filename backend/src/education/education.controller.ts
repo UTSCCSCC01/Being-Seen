@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { ObjectId } from 'mongoose';
 import { EducationService } from './education.service';
 
 @Controller('education')
@@ -11,15 +12,28 @@ export class EducationController {
         return educationResources
     }
 
-    @Get(":/educationId")
+    @Get("/:educationId")
     async getEducationResourceById(@Param("educationId") educationId:string){
-        
+        const resource = this.educationService.getEducationResourceById(educationId)
+        return resource
     }
 
-    @Post()
-    async createEducationrResouce(@Body("name") name:string,
-    @Body("description") description:string){
-        const newId = await this.educationService.createEducationResource(name,description)
+
+
+    @Put()
+    async createEducationResource(@Body("name") name:string,
+    @Body("description") description:string,
+    @Body('website') website:string,
+    @Body('email') email:string,
+    @Body('phoneNumber') phoneNumber:string,
+    @Body('tags') tags:string[]){
+        const newId = await this.educationService.createEducationResource(name,description,website,email,phoneNumber,tags)
         return newId
+    }
+
+    @Delete("/:educationId")
+    async deleteResourceById(@Param('educationId') educationId:string){
+        await this.educationService.deleteProduct(educationId)
+        return
     }
 }

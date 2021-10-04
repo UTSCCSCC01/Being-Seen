@@ -5,7 +5,7 @@ import { Tag } from "./tag.schema";
 export class Service{
     @Prop()
     id:string
-    @Prop()
+    @Prop({required:true})
     name:string
     @Prop({required:true})
     description:string
