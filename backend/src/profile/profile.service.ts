@@ -17,8 +17,19 @@ export class ProfileService {
     return await this.profileModel.find().exec();
   }
 
-  async putProfile(name: string) {
-    return await new this.profileModel({ name: name }).save();
+  async postProfile(name: string, story: string, balance: number) {
+    const newProfile = new this.profileModel({
+      name,
+      story, 
+      balance
+    });
+    return await this.profileModel.create(newProfile);
+  }
+
+  async putStory(id: string, story: string) {
+    var profile = await this.profileModel.findById(id);
+    profile.story = story;
+    return profile.save()
   }
   
 }
