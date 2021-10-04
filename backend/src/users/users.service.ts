@@ -1,33 +1,21 @@
+import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { User, UserDocument } from './users.schema';
 import * as crypto from 'crypto';
-
-export type User = any;
 
 @Injectable()
 export class UsersService {
-  private readonly users: User[];
 
-  constructor() {
-    this.users = [
-      {
-        userId: 1,
-        username: 'john',
-        password: 'changeme',
-      },
-      {
-        userId: 2,
-        username: 'chris',
-        password: 'secret',
-      },
-      {
-        userId: 3,
-        username: 'maria',
-        password: 'guess',
-      },
-    ];
+  constructor(
+    @InjectModel(User.name) private readonly UserModel: Model<UserDocument>
+  ) {}
+
+  async findOne(username: string) {
+    return this.UserModel.find({username: 'test'}).exec();
   }
 
-  async findOne(username: string): Promise<User | undefined> {
-    return this.users.find(user => user.username === username);
+  async UsersInfo() {
+    // return await this.Users.find( {username: 'test'} ).exec();
   }
 }
