@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: components/UnderlinedLink.jsx</title>
+    <title>JSDoc: Source: screens/Login.jsx</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: components/UnderlinedLink.jsx</h1>
+    <h1 class="page-title">Source: screens/Login.jsx</h1>
 
     
 
@@ -27,31 +27,57 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import React from 'react';
-import PropTypes from 'prop-types';
-import { Text, StyleSheet } from 'react-native';
+import { StyleSheet, ScrollView, SafeAreaView, View } from 'react-native';
 import { tailwind } from 'tailwind';
+import { PrimaryHeader } from '../components/Headers';
+import TextField from '../components/TextField';
+import Button from '../components/Button';
+import UnderlinedLink from '../components/UnderlinedLink';
 
 /**
- * @function UnderlinedLink
- * @module UnderlinedLink
- * @description An underlined text link
- * @prop {string} text - The text to display
+ * @function Login
+ * @module Login
+ * @description Login screen
  */
-const UnderlinedLink = ({ text }) => (
-  &lt;Text style={styles.text}>{text}&lt;/Text>
-);
+const Login = () => {
+  const hey = "adasd";
 
-UnderlinedLink.propTypes = {
-  text: PropTypes.string.isRequired,
+  return (
+    &lt;ScrollView>
+      &lt;SafeAreaView style={styles.view}>
+        &lt;View style={styles.header}>
+          &lt;PrimaryHeader text="Login" />
+        &lt;/View>
+        &lt;TextField placeholder="Username" />
+        &lt;TextField placeholder="Password" secure />
+        &lt;View style={styles.loginButton}>
+          &lt;Button label="Enter" disabled={false} onClick={() => {}} />
+        &lt;/View>
+        &lt;View style={styles.underlinedLinks}>
+          &lt;UnderlinedLink text="Don't have an account?" />
+          &lt;UnderlinedLink text="Can't log in?" />
+        &lt;/View>
+      &lt;/SafeAreaView>
+    &lt;/ScrollView>
+  );
 };
 
 const styles = StyleSheet.create({
-  text: {
-    ...tailwind('text-base text-primaryPurple text-opacity-75 underline'),
+  view: {
+    ...tailwind('flex flex-col justify-center mx-5 my-10'),
+  },
+  header: {
+    ...tailwind('flex items-center my-10'),
+  },
+  loginButton: {
+    ...tailwind('my-5'),
+  },
+  underlinedLinks: {
+    ...tailwind('flex flex-col items-center'),
   },
 });
 
-export default UnderlinedLink;
+export default Login;
 </code></pre>
         </article>
     </section>
