@@ -78,7 +78,6 @@ function ShelterList({ navigation }) {
           onPress={() => {
             navigation.navigate("ShelterDetails", item);
           }}
-          key={item}
         >
           <View style={styles.box}>
             <Image style={styles.icon} source={{ uri: item.picture }} />
@@ -95,11 +94,12 @@ function ShelterList({ navigation }) {
               <Text style={styles.text} numberOfLines={1}>
                 Tags: {item.tags ? getTags(item.tags): "None"}
               </Text>
+              <Text>Id: {item._id}</Text>
             </View>
           </View>
         </TouchableHighlight>
       )}
-      keyExtractor={({ index }) => index}
+      keyExtractor={(item, index) => index.toString()}
       style={styles.scrollBackground}
     />
   );
@@ -112,16 +112,6 @@ const getTags = (tags) =>{
     if(i != tags.length - 1) toRet += ", "
   }
   return toRet
-  /*let toRet = ''
-  if(tags == undefined || tags == null){
-    return
-  }
-  for(let i = 0; i < tags.length; i++){
-    if(tags != null && tags.name != null){
-      toRet = toRet + tagName + ''
-    }
-  }
-  return toRet*/
 }
 
 const DisplayShelter = ({ route, navigation }) => {
@@ -161,26 +151,9 @@ const DisplayShelter = ({ route, navigation }) => {
             <Text style={styles.reviewText}>Written on: {item.date}</Text>
           </View>
         )}
-        keyExtractor={({ item, index }) => index}
+        keyExtractor={(item, index) => item.reviewer.toString()}
       />
     </>
-  );
-};
-
-export const DisplayReviews = (props) => {
-  const reviews = props.reviews;
-  return (
-    <FlatList
-      data={reviews}
-      renderItem={({ item, index, separators }) => (
-        <View style={styles.reviewBox} key={index}>
-          <Text style={styles.reviewText}>"{item.content}"</Text>
-          <Text style={styles.reviewText}>Rating: {item.rating}/5</Text>
-          <Text style={styles.reviewText}>Written on: {item.date}</Text>
-        </View>
-      )}
-      keyExtractor={({ index }) => index}
-    />
   );
 };
 
@@ -195,7 +168,7 @@ export const DisplayTags = (props) => {
           <Text>{item.tagName}</Text>
         </View>
       )}
-    />
+      keyExtractor={(item, index) => index.toString()}/>
   );
 };
 
