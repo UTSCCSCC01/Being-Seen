@@ -27,12 +27,12 @@ function Shelter() {
       <Stack.Screen
         name="ShelterList"
         component={ShelterList}
-        options={{ headerShown: false }}
+        options={{ headerShown: true, headerTintColor: "#662997", headerStyle:styles.header}}
       />
       <Stack.Screen
         name="ShelterDetails"
         component={DisplayShelter}
-        options={{ headerShown: true }}
+        options={{ headerShown: true, headerTintColor: "#662997", headerStyle:styles.header}}
       />
     </Stack.Navigator>
   );
@@ -116,11 +116,6 @@ const DisplayShelter = ({ route, navigation }) => {
               style={styles.largePic}
               source={{ uri: shelter.picture }}
             >
-              <Button
-                color="#66299780"
-                title="Go back"
-                onPress={() => navigation.goBack()}
-              />
             </ImageBackground>
             <Text style={styles.expandedText}>Name: {shelter.name}</Text>
             <Text style={styles.expandedText}>
@@ -270,7 +265,9 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderColor: "#662997",
     borderWidth: 1,
-  },
+  }, header:{
+    
+  }
 });
 
 export default Shelter;
