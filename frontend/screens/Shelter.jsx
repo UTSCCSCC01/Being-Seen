@@ -94,7 +94,6 @@ function ShelterList({ navigation }) {
               <Text style={styles.text} numberOfLines={1}>
                 Tags: {item.tags ? getTags(item.tags): "None"}
               </Text>
-              <Text>Id: {item._id}</Text>
             </View>
           </View>
         </TouchableHighlight>
