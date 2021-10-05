@@ -28,7 +28,7 @@ export class Shelter{
     @Prop({default :[]})
     reviews: Review[]
     @Prop({default: []})
-    tags: Types.ObjectId[]
+    tags: Tag[]
     @Prop({default: "https://reactnative.dev/img/tiny_logo.png"})
     picture:string;
 }

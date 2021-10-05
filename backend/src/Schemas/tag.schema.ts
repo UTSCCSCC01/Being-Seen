@@ -4,7 +4,9 @@ import * as mongoose from "mongoose"
 @Schema()
 export class Tag extends mongoose.Document{
     @Prop()
-    tagId:mongoose.Schema.Types.ObjectId
+    id:string
+    @Prop({required:true})
+    tagName:string
 }
 
 export const TagSchema = SchemaFactory.createForClass(Tag);

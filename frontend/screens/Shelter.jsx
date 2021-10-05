@@ -93,7 +93,7 @@ function ShelterList({ navigation }) {
                 Phone: {item.phoneNumber}
               </Text>
               <Text style={styles.text} numberOfLines={1}>
-                Tags: {item.tags}
+                Tags: {item.tags ? getTags(item.tags): "None"}
               </Text>
             </View>
           </View>
@@ -103,6 +103,25 @@ function ShelterList({ navigation }) {
       style={styles.scrollBackground}
     />
   );
+}
+
+const getTags = (tags) =>{
+  let toRet = ''
+  for(let i = 0; i < tags.length; i++){
+    toRet += tags[i].tagName
+    if(i != tags.length - 1) toRet += ", "
+  }
+  return toRet
+  /*let toRet = ''
+  if(tags == undefined || tags == null){
+    return
+  }
+  for(let i = 0; i < tags.length; i++){
+    if(tags != null && tags.name != null){
+      toRet = toRet + tagName + ''
+    }
+  }
+  return toRet*/
 }
 
 const DisplayShelter = ({ route, navigation }) => {
@@ -173,7 +192,7 @@ export const DisplayTags = (props) => {
       data={tags}
       renderItem={({ item, index, separators }) => (
         <View style={styles.tagBox}>
-          <Text>{item}</Text>
+          <Text>{item.tagName}</Text>
         </View>
       )}
     />
