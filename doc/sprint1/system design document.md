@@ -36,5 +36,5 @@
 **Class name: Education**
 |Parent Classes (if any)| Subclasses(if any)| Responsibilities| Collaborators |
 |-----------------------|-------------------|-----------------|---------------|
-|None|None|Encapsulating data about a educational service|None|
+|Service|None|Encapsulating data about a educational service|None|
 
