@@ -10,6 +10,11 @@ import {
   Dimensions,
 } from "react-native";
 
+/**
+ * @function LandingPage
+ * @module LandingPage
+ * @description The landing page (or "Home") of this App.
+ */
 function LandingPage({ navigation }) {
   function Header() {
     return (
