@@ -9,7 +9,7 @@
 **Class name : Shelter**
 |Parent Classes (if any)| Subclasses(if any)| Responsibilities| Collaborators |
 |-----------------------|-------------------|-----------------|---------------|
-|None|  None| Responsible for keeping track of a given shelter's information including address, reviews, etc.| Review, Tag|
+|Service|  None| Responsible for keeping track of a given shelter/social services's information including address, reviews, etc.| Review, Tag|
 
 
 
@@ -27,3 +27,14 @@
 |Parent Classes (if any)| Subclasses(if any)| Responsibilities| Collaborators |
 |-----------------------|-------------------|-----------------|---------------|
 |None|None|Encapsulating data about a given user ie their balance, story, etc|None|
+
+**Class name: Service**
+|Parent Classes (if any)| Subclasses(if any)| Responsibilities| Collaborators |
+|-----------------------|-------------------|-----------------|---------------|
+|None|None|Encapsulating basic data that a service's schema may require|None|
+
+**Class name: Education**
+|Parent Classes (if any)| Subclasses(if any)| Responsibilities| Collaborators |
+|-----------------------|-------------------|-----------------|---------------|
+|None|None|Encapsulating data about a educational service|None|
+
