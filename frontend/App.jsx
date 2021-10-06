@@ -7,6 +7,11 @@ import LandingPage from "./screens/landing_page";
 
 const Tab = createBottomTabNavigator();
 
+/**
+ * @function App
+ * @module App
+ * @description Main component of the app, container for all other components
+ */
 export default function App() {
   return (
     <NavigationContainer>
