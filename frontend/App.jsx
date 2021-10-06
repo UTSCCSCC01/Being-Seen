@@ -15,11 +15,11 @@ const Tab = createBottomTabNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
+      <Tab.Navigator screenOptions={{ headerShown: false }}>
         <Tab.Screen name="LandingPage" component={LandingPage} />
-        <Tab.Screen name="Profile" component={View} />
-        <Tab.Screen name="Shelters" component={View} />
+        <Tab.Screen name="Jobs" component={View} />
         <Tab.Screen name="Social Services" component={View} />
+        <Tab.Screen name="Profile" component={View} />
       </Tab.Navigator>
     </NavigationContainer>
   );
