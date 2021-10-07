@@ -1,8 +1,4 @@
-Once you complete the Release Planning Meeting, you should also do the
-Sprint 1 Planning Meeting documented in sprint1.md. This document must clearly indicate
-the sprint goal, all stories for this sprint clearly identified, team capacity recorded,
-participants are recorded, decisions about user stories to be completed this sprint are
-clear, tasks breakdown is done.
+# Sprint 1
 
 ## Sprint Goal
 Goal for this sprint is to establish the bare nessecities of the app; navigation to pages, customization of profiles, logging in/out, and potnetially the backend for the various
@@ -21,6 +17,7 @@ As Alex, I should have access to a list of social services so that I can gain ac
 
 As a user, I should be put on a landing page if i don’t have an account, so i know how to make one (5 points) - Yiyang
 - create front end of landing page (3 hours)
+    - **Spike: Learn the basics of React Native**
 - create button to redirect to lading page from login and vice versa (1 hour)
 
 
@@ -28,6 +25,7 @@ As Alex, I should be able to search up nearby shelters and view user reviews so 
 - create shelters within db that have description, space for reviews, location, etc. (6 hours)
 - have shelters display, see more detail about shelter when click (8 hours)
 - Set up API so that can put/get information relating to shelter to/from database (5 hours)
+  - **Spike: We plan on implementing this part of the app back end first, so we will start off by familiarizing ourselves with NestJS and MongoDB in order to complete this sub task and bring our knowledge gained here to other similar back end sub-tasks and user stories** 
 
 As Mark I should be able to find employment resources to better my situation.  (9 points)
 - create employment within db that have description, space for reviews, etc (6 hours)
@@ -45,11 +43,12 @@ As a youth, I should have access to some form of navigation bar to make traversi
 - create buttons/match themeing (2 hour)
 
 As a user, I should be able to log in/out in order to better secure my privacy (18 points) - Glenn & Lianting 
-- Set up profile details in db (8 hours)
+- Set up profile details in db (6 hours)
 - implement stay logged in (3 hours)
 - set up logout (2 hours)
-- research login/logout (copy paste from stackoverflow) (12 hours)
-- find a way to securly store credentials in db (5 hours)
+- **Spike: Research Login/Logout Process so we can do it in a secure and user-friendly manner. Then, implement required dependencies for developing login system. We also plan on using this time to install dependencies which can also be used for future features (e.g. documentation library, linting library) (7 hours)**
+- Create login front end (5 hours)
+- **Spike: Find a way to securly store credentials in db for log in (7 hours)**
 
 ## Team Capacity
 
