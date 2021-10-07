@@ -21,6 +21,12 @@ import { NavigationContainer } from "@react-navigation/native";
 //export default function App() {
 const Stack = createNativeStackNavigator();
 
+/**
+ * 
+ * @function Shelter
+ * @module Shelter
+ * @description full page of to display list of shelters and their details
+ */
 function Shelter() {
   return (
     <Stack.Navigator initialRouteName="ShelterList">
@@ -38,6 +44,13 @@ function Shelter() {
   );
 }
 
+/**
+ * @function ShelterList display list of shelters
+ * @module ShelterList ShelterList
+ * @description display list of shelters
+ * @param {*} navigation - screen navigator used to traverse between list of shelters and shelter details
+ * 
+ */
 function ShelterList({ navigation }) {
   const [shelters, setShelters] = useState([
     { name: "Error shelters not loaded" },
@@ -103,7 +116,13 @@ function ShelterList({ navigation }) {
     />
   );
 }
-
+/**
+ * @function getTags function responsible for extracting and formatting names of tags for a shelter
+ * @module getTags getTags
+ * @description function responsible for extracting and formatting names of tags for a shelter
+ * @param {Tag[]} tags array of tags for a shelter
+ * 
+ */
 const getTags = (tags) =>{
   let toRet = ''
   for(let i = 0; i < tags.length; i++){
@@ -113,6 +132,13 @@ const getTags = (tags) =>{
   return toRet
 }
 
+/**
+ * @function DisplayShelter displays expanded details of a shelter
+ * @module DisplayShelter DisplayShelter
+ * @description displays expanded details of a shelter
+ * @param {*} param0 recieves object containg route and navigation from react navigation
+ * 
+ */
 const DisplayShelter = ({ route, navigation }) => {
   const shelter = route.params;
   return (
@@ -156,6 +182,13 @@ const DisplayShelter = ({ route, navigation }) => {
   );
 };
 
+/**
+ * @function DisplayTags
+ * @module DisplayTags
+ * @description displays given tags within a flatlist of boxes
+ * @param {*} props propety object which contains tags
+ * 
+ */
 export const DisplayTags = (props) => {
   const tags = props.tags;
   return (
