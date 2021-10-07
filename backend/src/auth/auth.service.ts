@@ -11,7 +11,8 @@ export class AuthService {
 
   async validateUser(username: string, pass: string): Promise<any> {
     const user = await this.usersService.findOne(username);
-    if (user => user[1] === pass) {
+    const md5Pass = require('crypto').createHash('md5').update(pass).digest('hex');
+    if (user => user[1] === md5Pass) {
       const result = user;
       return result;
     }
