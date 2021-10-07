@@ -8,25 +8,45 @@ import { Shelter, ShelterDocument } from '../Schemas/shelter.schema';
 export class ShelterService {
 
     constructor(@InjectModel("Shelter") private readonly shelterModel: Model<ShelterDocument>){}
-    //returns all shelters
+    
+    /**
+     * retrieves all shelter schemas from db
+     * @returns list of shelters from API's shelter collection
+     */
     async getAllShelters(){
         const shelters = await this.shelterModel.find().exec();
         return shelters as Shelter[];
     }
 
-    //returns a shelter, given its id
+    /**
+     * retrieves schema of shleter with given id
+     * @param  shelterId - id of shelter to display
+     * @returns schema of shelter given by shelterId from the db
+     */
     async getShelterById(shelterId: string){
         let shelter = await this.findShelter(shelterId)
         return shelter
     }
     
+    /**
+     * add review for shelter given by shelterid
+     * @param shelterId - id of shelter to get a new review
+     * @param  reviewer - id of person leaving review
+     * @param  content - content of review
+     * @param  rating - rating of review
+     */
     async addShelterReview(shelterId: string, reviewer:string, content:string,
         rating:number){
         const shelter = await this.findShelterPrimitive(shelterId)
         shelter.reviews.push({reviewer:new Types.ObjectId(reviewer), content:content, rating: rating, date: new Date()})
         this.updateShelterScore(shelter)
     }
-
+    /**
+     * delete review posted by user reviewerId on shelter given by shelterId
+     * @param  shelterId - id of shelter to have review removed
+     * @param  reviewerId - id of person who left review
+     * @returns null
+     */
     async deleteShelterReview(shelterId: string, reviewerId: string){
         const shelter = await this.findShelterPrimitive(shelterId)
         const index = shelter.reviews.findIndex(review => review.reviewer == reviewerId)
@@ -36,8 +56,15 @@ export class ShelterService {
         this.updateShelterScore(shelter)
         return
     }
-
-    async editShelterReview(shelterId:string, reviewerId: string, content:string, rating:string){
+    /**
+     * edit review posted by user reviewerId on shelter given by shelterId
+     * @param  shelterId - id of shelter to have review edited
+     * @param reviewerId - id of person who left/is editing the review
+     * @param  content - new content for review
+     * @param  rating - new rating for review
+     * @returns  null
+     */
+    async editShelterReview(shelterId:string, reviewerId: string, content:string, rating:number){
         const shelter = await this.findShelterPrimitive(shelterId)
         const index = shelter.reviews.findIndex(review => review.reviewer == reviewerId)
         if(index > -1){
@@ -53,7 +80,19 @@ export class ShelterService {
         
         return
     }
-
+    /**
+     * Creates a shelter in db, using given params
+     * @param  name - name of shelter to be created within db
+     * @param  address - name of address of new shelter
+     * @param  postalCode - postal code of new shelter
+     * @param  phoneNumber - phone number of new shelter
+     * @param  email - email of new shelter
+     * @param description - description of new shelter
+     * @param hours - hours of new shelter
+     * @param  tags - tags used to describe new shelter (in format of string)
+     * @param  picture - http address of picture to be used for shelter
+     * @returns new shelter id
+     */
     async createShelter(name:string, address:string, postalCode:string, phoneNumber:string, email:string,
     description:string, hours:string, tags:string, picture:string){
         let review = []
