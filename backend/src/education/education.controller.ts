@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { ObjectId } from 'mongoose';
+import { Tag } from 'src/Schema/tag.schema';
 import { EducationService } from './education.service';
 
 @Controller('education')
@@ -43,7 +44,7 @@ export class EducationController {
     @Body('website') website:string,
     @Body('email') email:string,
     @Body('phoneNumber') phoneNumber:string,
-    @Body('tags') tags:string[]){
+    @Body('tags') tags:Tag[]){
         const newId = await this.educationService.createEducationResource(name,description,website,email,phoneNumber,tags)
         return newId
     }

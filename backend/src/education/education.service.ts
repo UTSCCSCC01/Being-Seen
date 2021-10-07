@@ -76,9 +76,13 @@ export class EducationService {
     }
 
     private convertOidArr(arr){
-        for(let i = 0; i < arr.length; i++){
-            arr[i] = Types.ObjectId(arr[i])
+        try{
+            for(let i = 0; i < arr.length; i++){
+                arr[i].id = Types.ObjectId(arr[i].id)
+            }
+            return arr
+        }catch(error){
+            return []
         }
-        return arr
     }
 }
