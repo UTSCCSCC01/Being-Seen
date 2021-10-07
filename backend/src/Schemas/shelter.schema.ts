@@ -2,15 +2,12 @@ import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose";
 import { Types } from "mongoose";
 import { Review } from "../Schemas/review.schema";
 import {Tag} from "../Schemas/tag.schema"
+import { Service } from "./service.schema";
 
 export type ShelterDocument = Shelter & Document
 
 @Schema()
-export class Shelter{
-    @Prop()
-    id:string;
-    @Prop({required:true})
-    name:string;
+export class Shelter extends Service{
     @Prop({required:true})
     address:string;
     @Prop({default:""})
@@ -19,16 +16,12 @@ export class Shelter{
     phoneNumber:string;
     @Prop({default:""})
     email:string;
-    @Prop({required:true})
-    description:string;
     @Prop({default:""})
     hours:string;
     @Prop({default:0})
     rating:number;
     @Prop({default :[]})
     reviews: Review[]
-    @Prop({default: []})
-    tags: Tag[]
     @Prop({default: "https://reactnative.dev/img/tiny_logo.png"})
     picture:string;
 }

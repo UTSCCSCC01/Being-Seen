@@ -1,7 +1,9 @@
 import { ConsoleLogger, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Mongoose, ObjectId, Schema, Types } from 'mongoose';
+import { execPath } from 'process';
 import { Review } from 'src/Schemas/review.schema';
+import { Tag } from 'src/Schemas/tag.schema';
 import { Shelter, ShelterDocument } from '../Schemas/shelter.schema';
 
 @Injectable()
@@ -94,7 +96,7 @@ export class ShelterService {
      * @returns new shelter id
      */
     async createShelter(name:string, address:string, postalCode:string, phoneNumber:string, email:string,
-    description:string, hours:string, tags:string, picture:string){
+    description:string, hours:string, tags:Tag[], picture:string){
         let review = []
         let rating = []
         const newShelter = new this.shelterModel({
@@ -168,10 +170,14 @@ export class ShelterService {
     }
 
     private convertOidArr(arr){
-        for(let i = 0; i < arr.length; i++){
-            arr[i] = Types.ObjectId(arr[i])
+        try{
+            for(let i = 0; i < arr.length; i++){
+                arr[i].id = Types.ObjectId(arr[i].id)
+            }
+            return arr
+        } catch(error){
+            return []
         }
-        return arr
     }
 
 }
