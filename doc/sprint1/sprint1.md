@@ -48,7 +48,7 @@ As a user, I should be able to log in/out in order to better secure my privacy (
 - set up logout (2 hours)
 - **Spike: Research Login/Logout Process so we can do it in a secure and user-friendly manner. Then, implement required dependencies for developing login system. We also plan on using this time to install dependencies which can also be used for future features (e.g. documentation library, linting library) (7 hours)**
 - Create login front end (5 hours)
-- **Spike: Find a way to securly store credentials in db for log in (7 hours)**
+- **Spike: Find a way to securely store credentials in db for log in (7 hours)**
 
 ## Team Capacity
 
