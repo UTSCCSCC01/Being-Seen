@@ -9,6 +9,9 @@ import {
   ScrollView,
   Dimensions,
 } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Login from "./Login";
 
 /**
  * @function LandingPage
@@ -35,7 +38,7 @@ function LandingPage({ navigation }) {
             justifyContent: "center",
             // backgroundColor: "purple",
           }}
-          onPress={() => navigation.navigate("Profile")}
+          onPress={() => navigation.navigate("Login")}
         >
           <Image
             source={require("../assets/user.png")}
@@ -132,9 +135,6 @@ function LandingPage({ navigation }) {
     return (
       <ScrollView>
         <Banner />
-        <Banner />
-        <Banner />
-        <Banner />
         <View
           style={{ backgroundColor: "#abc", borderRadius: 10, padding: 20 }}
         >
@@ -164,12 +164,23 @@ function LandingPage({ navigation }) {
     );
   }
 
+  const Stack = createNativeStackNavigator();
+
+  function LandingPage() {
+    return (
+      <View style={styles.container}>
+        <Header />
+        <Body />
+        <View style={{ flex: 50 }}></View>
+      </View>
+    );
+  }
+
   return (
-    <View style={styles.container}>
-      <Header />
-      <Body />
-      <View style={{ flex: 50 }}></View>
-    </View>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Page" component={LandingPage} />
+      <Stack.Screen name="Login" component={Login} />
+    </Stack.Navigator>
   );
 }
 
