@@ -3,7 +3,8 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import LandingPage from "./screens/landing_page";
+import Shelter from "./screens/Shelter";
+import Login from "./screens/Login";
 
 const Tab = createBottomTabNavigator();
 
@@ -22,5 +23,6 @@ export default function App() {
         <Tab.Screen name="Profile" component={View} />
       </Tab.Navigator>
     </NavigationContainer>
+    // <Login />
   );
 }
