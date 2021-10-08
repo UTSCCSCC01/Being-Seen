@@ -11,8 +11,13 @@ export class UsersService {
     @InjectModel(User.name) private readonly UserModel: Model<UserDocument>
   ) {}
 
+  /**
+   * Find user by username
+   * @param username Username query
+   * @returns User object if found, null otherwise
+   */
   async findOne(username: string) {
-    return this.UserModel.find({username: 'test'}).exec();
+    return this.UserModel.find({username: username}).exec();
   }
 
   async UsersInfo() {
