@@ -3,7 +3,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Shelter from "./screens/Shelter";
+import ListFromAPI from "./screens/ListFromAPI";
 
 const Tab = createBottomTabNavigator();
 
@@ -12,7 +12,12 @@ export default function App() {
     <NavigationContainer>
       <Tab.Navigator screenOptions={{ headerShown: false }}>
         <Tab.Screen name="Profile" component={View} />
-        <Tab.Screen name="Social Services" component={Shelter} />
+        <Tab.Screen name="Shelter" >
+          {() => <ListFromAPI query="shelter" />}
+        </Tab.Screen>
+        <Tab.Screen name="Education" >
+          {() => <ListFromAPI query="education" />}
+        </Tab.Screen>
       </Tab.Navigator>
     </NavigationContainer>
   );
