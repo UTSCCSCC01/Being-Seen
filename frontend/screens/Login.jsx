@@ -29,6 +29,8 @@ const Login = () => {
       });
       const data = await response.json();
       console.log(data);
+      setUsername('');
+      setPassword('');
     } catch (error) {
       console.error(error);
     }
