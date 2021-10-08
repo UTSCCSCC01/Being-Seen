@@ -5,6 +5,10 @@ import { ProfileService } from './profile.service'
 export class ProfileController {
     constructor(private readonly profilesService: ProfileService) {}
 
+    /**
+     * Get a list of all profiles in the database
+     * @returns Promise 
+     */
     @Get()
     async getAllProfiles(){
         const profiles = await this.profilesService.getAllProfiles();
@@ -12,6 +16,11 @@ export class ProfileController {
         return profiles;
     }
 
+    /**
+     * Return a profile with a matching id
+     * @param id 
+     * @returns 
+     */
     @Get('/:id')
     async getProfile( @Param('id') id: string ) {
         const profile = await this.profilesService.getProfile(id);
@@ -19,6 +28,13 @@ export class ProfileController {
         return profile
     }
 
+    /**
+     * Create a new profile entry in database with given information
+     * @param name 
+     * @param story 
+     * @param balance 
+     * @returns 
+     */
     @Post()
     async postProfile( 
         @Body('name') name: string, 
@@ -29,6 +45,12 @@ export class ProfileController {
         return profile;
     }
     
+    /**
+     * Update profile with matching id with a new story as user provided
+     * @param id 
+     * @param story 
+     * @returns 
+     */
     @Put('/:id')
     async putStory( 
         @Param('id') id: string, 
