@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, ScrollView, SafeAreaView, View } from 'react-native';
+import * as SecureStore from 'expo-secure-store';
+import {useNavigation} from '@react-navigation/native';
 import { tailwind } from 'tailwind';
 import { PrimaryHeader } from '../components/Headers';
 import TextField from '../components/TextField';
@@ -15,6 +17,16 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const navigation = useNavigation();
+
+  const saveToken = async (value) => {
+    await SecureStore.setItemAsync('token', value);
+  };
+
+  const deleteToken = async (key) => {
+    await SecureStore.deleteItemAsync(key);
+  };
+
   const submitLogin = async () => {
     try {
       const response = await fetch('http://10.0.2.2:3000/auth/login', {
@@ -29,12 +41,20 @@ const Login = () => {
       });
       const data = await response.json();
       console.log(data);
-      setUsername('');
-      setPassword('');
+      console.log(username);
+      console.log(password);
+      if (data.access_token) {
+        saveToken(data.access_token);
+        navigation.navigate('Home');
+      }
     } catch (error) {
       console.error(error);
     }
-  }
+  };
+
+  useEffect(() => {
+    deleteToken('token');
+  }, []);
 
   return (
     <ScrollView keyboardShouldPersistTaps="handled">
@@ -42,8 +62,8 @@ const Login = () => {
         <View style={styles.header}>
           <PrimaryHeader text="Login" />
         </View>
-        <TextField placeholder="Username" onChangeText={(username) => setUsername(username)} />
-        <TextField placeholder="Password" secure onChangeText={(password) => setPassword(password)} />
+        <TextField placeholder="Username" onChangeText={(text) => setUsername(text)} />
+        <TextField placeholder="Password" secure onChangeText={(text) => setPassword(text)} />
         <View style={styles.loginButton}>
           <Button label="Enter" disabled={false} onClick={submitLogin} />
         </View>
