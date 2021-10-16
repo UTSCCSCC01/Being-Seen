@@ -15,6 +15,17 @@ export class ReviewController {
         return reviews
     }
     /**
+     * 
+     * @param shelterId id of shelter for which the review is written
+     * @param reviewer id of user who wrote the review
+     * @returns reviewe that corresponds with shelter and reviewer, if it exists
+     */
+    @Get('/:reviewerId')
+    async getReviewById(@Param('shelterId') shelterId: string, @Param('reviewerId') reviewer: string){
+        const review = await this.shelterService.getShelterReviewById(shelterId, reviewer);
+        return review
+    }
+    /**
      * Addes a review to a given shelter
      * @param shelterId - id of shelter to write the review for
      * @param reviewer - author of review
