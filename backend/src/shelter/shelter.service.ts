@@ -29,6 +29,11 @@ export class ShelterService {
         let shelter = await this.findShelter(shelterId)
         return shelter
     }
+
+    async getShelterReviewById(shelterId: string, reviewer:string){
+        let shelter = await this.findShelter(shelterId);
+        return shelter.reviews.find(review => review.reviewer.toString() == reviewer);
+    }
     
     /**
      * add review for shelter given by shelterid
@@ -151,6 +156,7 @@ export class ShelterService {
         }
         return shelter
     }
+    
 
     //helper function used to find a shelter, given its id while keeping some of its
     //properties from the model
