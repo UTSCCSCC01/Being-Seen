@@ -16,6 +16,7 @@ import {
   Button,
   ImageBackground,
   TextInput,
+  Alert
 } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
@@ -305,6 +306,39 @@ function WriteReview({route, navigation}){
     }
   }
 
+  async function DeleteReviewFromApi(){
+    try {
+      const response = await fetch(
+        //ipv4 localhost since running emulator
+        //10.0.2.2 is your machine's localhost when on an android emulator
+        apiPath +"/" + reviewParams.shelterId + "/review/" + reviewParams.reviewer,
+        {
+          method: "DELETE",
+        }
+      );
+      return
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function DeleteReview(){
+    Alert.alert(
+      "Are you sure",
+      "Once you delete this review, you cannot get it back",
+      [
+        {
+          text: "Cancel",
+          onPress: () => {},
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => {DeleteReviewFromApi(); navigation.goBack()} }
+      ]
+    );
+    //DeleteReviewFromApi()
+    //navigation.goBack()
+  }
+
   async function sendReviewToApi(body){
     try{
       let method
@@ -340,10 +374,10 @@ function WriteReview({route, navigation}){
       jumpValue={0.5}
       onFinishRating={setTempRev}
       />
-      <Text>Test: {editReview.toString()}</Text>
       <Button title="publish review" color="#662997" onPress={() => {
         setReadyToPublish(true)
       }}></Button>
+      <Button title="Delete Review" color="red" onPress={DeleteReview}/>
     </View>
   )
 };
