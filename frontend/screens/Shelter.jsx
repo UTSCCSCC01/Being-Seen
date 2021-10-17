@@ -63,6 +63,7 @@ function ShelterList({ navigation }) {
   const [shelters, setShelters] = useState([
     { name: "Error shelters not loaded" },
   ]);
+  const [sheltersRefrshing, setSheltersRefreshing] = useState(false)
 
   const onScreenLoad = () => {
     //when load grab shelters from api and put them into the shelters state
@@ -91,13 +92,20 @@ function ShelterList({ navigation }) {
       console.error(error);
     }
   }
+  async function refreshSheltersFromApi(){
+    setSheltersRefreshing(true)
+    getSheltersFromApi()
+    setSheltersRefreshing(false)
+  }
   return (
     <FlatList
       data={shelters}
+      onRefresh={refreshSheltersFromApi}
+      refreshing={sheltersRefrshing}
       renderItem={({ item, index, separators }) => (
         <TouchableHighlight
           onPress={() => {
-            navigation.navigate("Shelter Details", item);
+            navigation.navigate("Shelter Details", item._id);
           }}
         >
           <View style={styles.box}>
@@ -147,11 +155,49 @@ const getTags = (tags) =>{
  * @param {*} param0 recieves object containg route and navigation from react navigation
  * 
  */
-const DisplayShelter = ({ route, navigation }) => {
-  const shelter = route.params;
+function DisplayShelter({ route, navigation }) {
+  const shelterId = route.params
+  const [shelter, setShelter] = useState({})
+  const [refreshingShelter, setRefreshingShelter] = useState(false)
+
+  const onScreenLoad = () => {
+    //when load grab shelters from api and put them into the shelters state
+    getShelterByIdFromApi()
+  };
+  //essentially componentWillMount
+  useEffect(() => {
+    onScreenLoad();
+  }, []);
+  async function getShelterByIdFromApi() {
+    try {
+      const response = await fetch(
+        //ipv4 localhost since running emulator
+        //10.0.2.2 is your machine's localhost when on an android emulator
+        apiPath+"/"+shelterId,
+        {
+          method: "GET",
+        }
+      );
+      if(response.status == 200){
+        response.json().then((json) => setShelter(json))
+      }else{
+        console.log(apiPath+"/"+shelterId)
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  
+  async function refreshShelterFromApi(){
+    setRefreshingShelter(true)
+    await getShelterByIdFromApi()
+    setRefreshingShelter(false)
+  }
   return (
     <>
       <FlatList
+        onRefresh={refreshShelterFromApi}
+        refreshing={refreshingShelter}
         ListHeaderComponent={
           <>
             <ImageBackground
@@ -177,7 +223,7 @@ const DisplayShelter = ({ route, navigation }) => {
             <Rating readonly="true" startingValue={shelter.rating} tintColor={"#662997"} imageSize={40}/>
             </View>
             <DisplayTags tags={shelter.tags} />
-            <Button onPress={() => {navigation.navigate("Review Shelter", {shelterId:shelter._id, reviewer:"215322c038ded1fcd0cfdae9"})}} title="Review This Shelter" color="#662997"/>
+            <Button onPress={() => {navigation.navigate("Review Shelter", {shelterId:shelterId, reviewer:"215322c038ded1fcd0cfdae6"})}} title="Review This Shelter" color="#662997"/>
           </>
         }
         data={shelter.reviews}
@@ -196,7 +242,13 @@ const DisplayShelter = ({ route, navigation }) => {
     </>
   );
 };
-
+/**
+ * @function WriteReview
+ * @module WriteReview
+ * @description displays the page responsible for handling the creation/editing of reviews
+ * @param {*} param0 recieves object containing navigation and routing params
+ * @returns 
+ */
 function WriteReview({route, navigation}){
   const [review, setReview] = useState(
     { content: "",
@@ -321,7 +373,9 @@ export const DisplayTags = (props) => {
 
 export const DisplayDate = (dateString) => {
   let date = new Date(dateString);
-  return date.getFullYear()+"/"+date.getMonth()+"/"+date.getDay()
+  const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+  return weekdays[date.getDay()] + " " + months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear()
 }
 const styles = StyleSheet.create({
   background: {
