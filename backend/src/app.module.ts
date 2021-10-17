@@ -10,9 +10,18 @@ import { ShelterController } from './shelter/shelter.controller';
 import { ShelterModule } from './shelter/shelter.module';
 import { ShelterService } from './shelter/shelter.service';
 import { ProfileModule } from './profile/profile.module';
+import { MerchantModule } from './merchant/merchant.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGO_URI), ShelterModule, ProfileModule, AuthModule, UsersModule],
+  imports: [
+    ConfigModule.forRoot(),
+    MongooseModule.forRoot(process.env.MONGO_URI),
+    ShelterModule,
+    ProfileModule,
+    AuthModule,
+    UsersModule,
+    MerchantModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
