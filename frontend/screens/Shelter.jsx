@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import { render } from "react-dom";
+import { Rating} from 'react-native-ratings';
 import {
   Platform,
   StyleSheet,
@@ -14,13 +15,14 @@ import {
   Dimensions,
   Button,
   ImageBackground,
+  TextInput,
 } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 
 //export default function App() {
 const Stack = createNativeStackNavigator();
-
+const apiPath = "http://10.0.2.2:3000/shelter"
 /**
  * 
  * @function Shelter
@@ -31,15 +33,21 @@ function Shelter() {
   return (
     <Stack.Navigator initialRouteName="ShelterList">
       <Stack.Screen
-        name="ShelterList"
+        name="Shelter List"
         component={ShelterList}
         options={{ headerShown: true, headerTintColor: "#662997", headerStyle:styles.header}}
       />
       <Stack.Screen
-        name="ShelterDetails"
+        name="Shelter Details"
         component={DisplayShelter}
         options={{ headerShown: true, headerTintColor: "#662997", headerStyle:styles.header}}
       />
+      <Stack.Screen
+      name = "Review Shelter"
+      component = {WriteReview}
+      options={{headerShown:true, headerTintColor:"#662997", headerStyle:styles.header}}
+      />
+
     </Stack.Navigator>
   );
 }
@@ -73,7 +81,7 @@ function ShelterList({ navigation }) {
       const response = await fetch(
         //ipv4 localhost since running emulator
         //10.0.2.2 is your machine's localhost when on an android emulator
-        "http://10.0.2.2:3000/shelter",
+        apiPath,
         {
           method: "Get",
         }
@@ -89,7 +97,7 @@ function ShelterList({ navigation }) {
       renderItem={({ item, index, separators }) => (
         <TouchableHighlight
           onPress={() => {
-            navigation.navigate("ShelterDetails", item);
+            navigation.navigate("Shelter Details", item);
           }}
         >
           <View style={styles.box}>
@@ -164,16 +172,23 @@ const DisplayShelter = ({ route, navigation }) => {
               Description: {shelter.description}
             </Text>
             <Text style={styles.expandedText}>Hours: {shelter.hours}</Text>
-            <Text style={styles.expandedText}>Rating: {shelter.rating}/5</Text>
+            <View flexDirection='row'>
+            <Text style={styles.expandedText}>Rating:</Text>
+            <Rating readonly="true" startingValue={shelter.rating} tintColor={"#662997"} imageSize={40}/>
+            </View>
             <DisplayTags tags={shelter.tags} />
+            <Button onPress={() => {navigation.navigate("Review Shelter", {shelterId:shelter._id, reviewer:"215322c038ded1fcd0cfdae6"})}} title="Review This Shelter" color="#662997"/>
           </>
         }
         data={shelter.reviews}
         renderItem={({ item, index }) => (
           <View style={styles.reviewBox} key={item}>
             <Text style={styles.reviewText}>"{item.content}"</Text>
-            <Text style={styles.reviewText}>Rating: {item.rating}/5</Text>
-            <Text style={styles.reviewText}>Written on: {item.date}</Text>
+            <View flexDirection="row">
+            <Text style={styles.reviewText}>Rating: </Text>
+            <Rating readonly="true" startingValue={item.rating} tintColor={"#662997"} imageSize={25} />
+            </View>
+            <Text style={styles.reviewText}>Written on {DisplayDate(item.date)}</Text>
           </View>
         )}
         keyExtractor={(item, index) => item.reviewer.toString()}
@@ -181,6 +196,95 @@ const DisplayShelter = ({ route, navigation }) => {
     </>
   );
 };
+
+function WriteReview({route, navigation}){
+  const [review, setReview] = useState(
+    { content: "",
+      rating: 0,
+      date: new Date()},
+  );
+  //local version of review rating since onFinishRating has unwanted effects on whole object
+  const [tempRev, setTempRev] = useState(0)
+  const [editReview, setEditReview] = useState(false)
+  const [readyToPublish, setReadyToPublish] = useState(false)
+  const reviewParams = route.params;
+  
+  const onScreenLoad = () => {
+    //when load grab shelters from api and put them into the shelters state
+    getReviewFromApi()
+
+  };
+  //essentially componentWillMount
+  useEffect(() => {
+    onScreenLoad();
+  }, []);
+
+  useEffect(() => {
+    console.log(review.rating + " " + review.content)
+  }, [review])
+
+  useEffect(() =>{
+    if(readyToPublish){
+      sendReviewToApi()
+      navigation.goBack()
+    }
+    setReadyToPublish(false)
+  }, [readyToPublish])
+
+  useEffect(()=>{
+    if(tempRev != -1){
+      setReview({content:review.content, rating:tempRev, date:new Date()})
+    }
+  },[tempRev])
+
+  async function getReviewFromApi() {
+    try {
+      const response = await fetch(
+        //ipv4 localhost since running emulator
+        //10.0.2.2 is your machine's localhost when on an android emulator
+        apiPath +"/" + reviewParams.shelterId + "/review/" + reviewParams.reviewer,
+        {
+          method: "Get",
+        }
+      );
+      if(response.status == 200){ 
+        response.json().then((json) => setReview(json))
+        setEditReview(true)
+      }
+      return
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function sendReviewToApi(){
+    
+  }
+  
+  
+  return(
+    <View>
+      <Text>Content</Text>
+      <View style = {styles.reviewBox}>
+        <TextInput
+          defaultValue={review.content}
+          placeholder="Enter Review Here"
+          onChangeText={(content)=> setReview({content:content, rating:review.rating, date:review.date})}/>
+      </View>
+      <Text> Rating: {review.rating}</Text>
+      <Rating startingValue={review.rating} 
+      tintColor="#662997" 
+      jumpValue={0.5}
+      onFinishRating={setTempRev}
+      />
+      <Text>Test: {editReview.toString()}</Text>
+      <Button title="publish review" color="#662997" onPress={() => {
+        setReadyToPublish(true)
+      }}></Button>
+    </View>
+  )
+};
+
 
 /**
  * @function DisplayTags
@@ -204,6 +308,10 @@ export const DisplayTags = (props) => {
   );
 };
 
+export const DisplayDate = (dateString) => {
+  let date = new Date(dateString);
+  return date.getFullYear()+"/"+date.getMonth()+"/"+date.getDay()
+}
 const styles = StyleSheet.create({
   background: {
     flex: 1,
@@ -284,6 +392,9 @@ const styles = StyleSheet.create({
     color: "#662997",
     flexWrap: "wrap",
   },
+  reviewButton:{
+    color:"purple"
+  },
   reviewBox: {
     // flexWrap: "wrap",
     backgroundColor: "white",
@@ -291,6 +402,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   }, header:{
     
+  },
+  writeReviewBox:{
+    backgroundColor: "white",
+    borderColor: "#662997",
+    borderWidth: 1,
+    flex:1
   }
 });
 

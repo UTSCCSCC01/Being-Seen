@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Put } from '@nestjs/common';
 import { ShelterService } from '../shelter.service';
 
 @Controller('shelter/:shelterId/review')
@@ -23,6 +23,9 @@ export class ReviewController {
     @Get('/:reviewerId')
     async getReviewById(@Param('shelterId') shelterId: string, @Param('reviewerId') reviewer: string){
         const review = await this.shelterService.getShelterReviewById(shelterId, reviewer);
+        if(review == undefined){
+            throw new NotFoundException("review does not exist")
+        }
         return review
     }
     /**
@@ -39,6 +42,8 @@ export class ReviewController {
     @Body('content') content:string,
     @Body('rating') rating:number){
         //get our shelter given its id
+        console.log("content: " + content)
+        console.log("rating: " + rating)
         await this.shelterService.addShelterReview(shelterId,reviewer,content,rating)
         return
     }
