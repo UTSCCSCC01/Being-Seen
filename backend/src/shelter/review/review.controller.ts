@@ -42,8 +42,6 @@ export class ReviewController {
     @Body('content') content:string,
     @Body('rating') rating:number){
         //get our shelter given its id
-        console.log("content: " + content)
-        console.log("rating: " + rating)
         await this.shelterService.addShelterReview(shelterId,reviewer,content,rating)
         return
     }

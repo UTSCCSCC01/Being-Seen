@@ -177,7 +177,7 @@ const DisplayShelter = ({ route, navigation }) => {
             <Rating readonly="true" startingValue={shelter.rating} tintColor={"#662997"} imageSize={40}/>
             </View>
             <DisplayTags tags={shelter.tags} />
-            <Button onPress={() => {navigation.navigate("Review Shelter", {shelterId:shelter._id, reviewer:"215322c038ded1fcd0cfdae6"})}} title="Review This Shelter" color="#662997"/>
+            <Button onPress={() => {navigation.navigate("Review Shelter", {shelterId:shelter._id, reviewer:"215322c038ded1fcd0cfdae9"})}} title="Review This Shelter" color="#662997"/>
           </>
         }
         data={shelter.reviews}
@@ -219,13 +219,9 @@ function WriteReview({route, navigation}){
     onScreenLoad();
   }, []);
 
-  useEffect(() => {
-    console.log(review.rating + " " + review.content)
-  }, [review])
-
   useEffect(() =>{
     if(readyToPublish){
-      sendReviewToApi()
+      sendReviewToApi(JSON.stringify({content: review.content, rating:review.rating}))
       navigation.goBack()
     }
     setReadyToPublish(false)
@@ -257,8 +253,23 @@ function WriteReview({route, navigation}){
     }
   }
 
-  async function sendReviewToApi(){
-    
+  async function sendReviewToApi(body){
+    try{
+      let method
+      if (editReview) method="PATCH"; else method = "POST"
+
+      const response = await fetch(
+        //ipv4 localhost since running emulator
+        //10.0.2.2 is your machine's localhost when on an android emulator
+        apiPath +"/" + reviewParams.shelterId + "/review/" + reviewParams.reviewer,
+        {
+          method: method,
+          headers: { "Content-Type": "application/json" },
+          body: body
+        })
+    }catch(error){
+      console.error(error)
+    }
   }
   
   
