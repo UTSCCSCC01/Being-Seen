@@ -7,6 +7,8 @@ import { PrimaryHeader } from '../components/Headers';
 import TextField from '../components/TextField';
 import Button from '../components/Button';
 import UnderlinedLink from '../components/UnderlinedLink';
+import DisplayNotif from "../components/DisplayNotif";
+import { DisplayTags } from './Shelter';
 
 /**
  * @function Login
@@ -14,8 +16,10 @@ import UnderlinedLink from '../components/UnderlinedLink';
  * @description Login screen
  */
 const Login = () => {
+  const failedLoginMessage = "Error: Incorrect Username Or Password"
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [failedLogin, setFailedLogin] = useState(false)
 
   const navigation = useNavigation();
 
@@ -46,7 +50,7 @@ const Login = () => {
       if (data.access_token) {
         saveToken(data.access_token);
         navigation.navigate('Home');
-      }
+      }else setFailedLogin(true);
     } catch (error) {
       console.error(error);
     }
@@ -62,6 +66,8 @@ const Login = () => {
         <View style={styles.header}>
           <PrimaryHeader text="Login" />
         </View>
+        <View style={{alignItems:'center'}}><DisplayNotif notification = {failedLoginMessage} display={failedLogin} color='indianred'/></View>
+        
         <TextField placeholder="Username" onChangeText={(text) => setUsername(text)} />
         <TextField placeholder="Password" secure={true} onChangeText={(text) => setPassword(text)} />
         <View style={styles.loginButton}>
