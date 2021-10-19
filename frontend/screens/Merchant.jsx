@@ -157,7 +157,6 @@ const DisplayMerchant = ({ route, navigation }) => {
           method: "Get",
         }
       );
-      console.log("http://10.0.2.2:3000/merchant/" + merchant_id);
       return response;
     } catch (error) {
       console.error(error);
@@ -190,16 +189,6 @@ const DisplayMerchant = ({ route, navigation }) => {
       </Text>
       <Text style={styles.expandedText}>Hours: {merchant.hours}</Text>
       <DisplayTags tags={merchant.tags} />
-      <View style={styles.mapContainer}>
-        <Text
-          style={{
-            fontSize: 30,
-            lineHeight: 36,
-          }}
-        >
-          &lt;!-- Map goes here --&gt;
-        </Text>
-      </View>
     </ScrollView>
   );
 };
@@ -312,11 +301,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderColor: "#662997",
     borderWidth: 1,
-  },
-  mapContainer: {
-    backgroundColor: "#eec3be",
-    borderRadius: 10,
-    padding: 20,
   },
   header: {},
 });
