@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView, SafeAreaView, View } from 'react-native';
+import { StyleSheet, ScrollView, SafeAreaView, View, TouchableHighlight } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import {useNavigation} from '@react-navigation/native';
 import { tailwind } from 'tailwind';
@@ -68,7 +68,9 @@ const Login = () => {
           <Button label="Enter" disabled={false} onClick={submitLogin} />
         </View>
         <View style={styles.underlinedLinks}>
-          <UnderlinedLink text="Don't have an account?" />
+          <TouchableHighlight onPress={() => navigation.navigate('Landing')}>
+          <UnderlinedLink text="Don't have an account?"/>
+          </TouchableHighlight>
           <UnderlinedLink text="Can't log in?" />
         </View>
       </SafeAreaView>
