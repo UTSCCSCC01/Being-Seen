@@ -16,7 +16,8 @@ import {
   Button,
   ImageBackground,
   TextInput,
-  Alert
+  Alert,
+  KeyboardAvoidingView
 } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
@@ -24,6 +25,7 @@ import { NavigationContainer } from "@react-navigation/native";
 //export default function App() {
 const Stack = createNativeStackNavigator();
 const apiPath = "http://10.0.2.2:3000/shelter"
+export const purpleThemeColour ="#662997"
 /**
  * 
  * @function Shelter
@@ -36,17 +38,17 @@ function Shelter() {
       <Stack.Screen
         name="Shelter List"
         component={ShelterList}
-        options={{ headerShown: true, headerTintColor: "#662997", headerStyle:styles.header}}
+        options={{ headerShown: true, headerTintColor: purpleThemeColour, headerStyle:styles.header}}
       />
       <Stack.Screen
         name="Shelter Details"
         component={DisplayShelter}
-        options={{ headerShown: true, headerTintColor: "#662997", headerStyle:styles.header}}
+        options={{ headerShown: true, headerTintColor: purpleThemeColour, headerStyle:styles.header}}
       />
       <Stack.Screen
       name = "Review Shelter"
       component = {WriteReview}
-      options={{headerShown:true, headerTintColor:"#662997", headerStyle:styles.header}}
+      options={{headerShown:true, headerTintColor:purpleThemeColour, headerStyle:styles.header}}
       />
 
     </Stack.Navigator>
@@ -221,10 +223,10 @@ function DisplayShelter({ route, navigation }) {
             <Text style={styles.expandedText}>Hours: {shelter.hours}</Text>
             <View flexDirection='row'>
             <Text style={styles.expandedText}>Rating:</Text>
-            <Rating readonly="true" startingValue={shelter.rating} tintColor={"#662997"} imageSize={40}/>
+            <Rating readonly="true" startingValue={shelter.rating} tintColor={purpleThemeColour} imageSize={40} jumpValue={0.5}/>
             </View>
             <DisplayTags tags={shelter.tags} />
-            <Button onPress={() => {navigation.navigate("Review Shelter", {shelterId:shelterId, reviewer:"215322c038ded1fcd0cfdae6"})}} title="Review This Shelter" color="#662997"/>
+            <Button onPress={() => {navigation.navigate("Review Shelter", {shelterId:shelterId, reviewer:"215322c038ded1fcd0cfdae6"})}} title="Review This Shelter" color={purpleThemeColour}/>
           </>
         }
         data={shelter.reviews}
@@ -233,7 +235,7 @@ function DisplayShelter({ route, navigation }) {
             <Text style={styles.reviewText}>"{item.content}"</Text>
             <View flexDirection="row">
             <Text style={styles.reviewText}>Rating: </Text>
-            <Rating readonly="true" startingValue={item.rating} tintColor={"#662997"} imageSize={25} />
+            <Rating readonly="true" startingValue={item.rating} tintColor={purpleThemeColour} imageSize={25} />
             </View>
             <Text style={styles.reviewText}>Written on {DisplayDate(item.date)}</Text>
           </View>
@@ -361,20 +363,25 @@ function WriteReview({route, navigation}){
   
   return(
     <View>
-      <Text>Content</Text>
-      <View style = {styles.reviewBox}>
+      <View alignItems={"center"}><Text style={styles.writeReviewText}>Type Your Review Here</Text></View>
+      
+      <View style = {styles.writeReviewBox}>
         <TextInput
+          multiline={true}
           defaultValue={review.content}
           placeholder="Enter Review Here"
+          maxLength={400}
           onChangeText={(content)=> setReview({content:content, rating:review.rating, date:review.date})}/>
       </View>
-      <Text> Rating: {review.rating}</Text>
-      <Rating startingValue={review.rating} 
-      tintColor="#662997" 
-      jumpValue={0.5}
-      onFinishRating={setTempRev}
+      <View style={{padding:'1%'}}/>
+      <View style={{flex:0.5, flexDirection:'row', justifyContent:'center'}}>
+        <Rating startingValue={review.rating} 
+        tintColor={purpleThemeColour} 
+        jumpValue={0.5}
+        onFinishRating={setTempRev}
       />
-      <Button title="publish review" color="#662997" onPress={() => {
+      </View>
+      <Button title="publish review" color={purpleThemeColour} onPress={() => {
         setReadyToPublish(true)
       }}></Button>
       <Button title="Delete Review" color="red" onPress={DeleteReview}/>
@@ -444,7 +451,7 @@ const styles = StyleSheet.create({
     //width: "120%",
     //height: "15%",
     backgroundColor: "white",
-    borderColor: "#662997",
+    borderColor: purpleThemeColour,
     borderStyle: "solid",
     justifyContent: "flex-start",
     flexDirection: "row",
@@ -470,25 +477,25 @@ const styles = StyleSheet.create({
     margin: 2,
     borderRadius: 5,
     backgroundColor: "gainsboro",
-    borderColor: "#662997",
+    borderColor: purpleThemeColour,
   },
   tagText: {
     fontSize: 12,
-    color: "#662997",
+    color: purpleThemeColour,
   },
   expandedText: {
     //flex: 1,
     //flexWrap:'wrap',
     margin: 2,
     fontSize: 16,
-    color: "#662997",
+    color: purpleThemeColour,
   },
   reviewText: {
     //flex: 1,
     //flexWrap:'wrap',
     margin: 2,
     fontSize: 16,
-    color: "#662997",
+    color: purpleThemeColour,
     flexWrap: "wrap",
   },
   reviewButton:{
@@ -497,16 +504,22 @@ const styles = StyleSheet.create({
   reviewBox: {
     // flexWrap: "wrap",
     backgroundColor: "white",
-    borderColor: "#662997",
+    borderColor: purpleThemeColour,
     borderWidth: 1,
   }, header:{
     
   },
   writeReviewBox:{
     backgroundColor: "white",
-    borderColor: "#662997",
+    borderColor: purpleThemeColour,
     borderWidth: 1,
-    flex:1
+    flex:0,
+    width:'100%',
+    height:'40%'
+  },
+  writeReviewText:{
+    color:purpleThemeColour,
+    fontSize:16,
   }
 });
 
