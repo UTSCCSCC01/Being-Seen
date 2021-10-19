@@ -31,7 +31,7 @@ function Merchant() {
   return (
     <Stack.Navigator
       initialRouteName="MerchantList"
-      screenOptions={{ headerShown: true }}
+      screenOptions={{ headerShown: false }}
     >
       <Stack.Screen
         name="MerchantList"
@@ -42,12 +42,14 @@ function Merchant() {
         }}
       />
       <Stack.Screen
-        name="ShelterDetails"
+        name="MerchantDetails"
         component={DisplayMerchant}
-        options={{
+        options={({ route }) => ({
           headerTintColor: "#662997",
           headerStyle: styles.header,
-        }}
+          headerShown: true,
+          title: "",
+        })}
       />
     </Stack.Navigator>
   );
@@ -82,7 +84,6 @@ function MerchantList({ navigation }) {
       const response = await fetch("http://10.0.2.2:3000/merchant", {
         method: "Get",
       });
-      console.log("fetched");
       return response;
     } catch (error) {
       console.error(error);
@@ -145,44 +146,61 @@ const getTags = (tags) => {
  *
  */
 const DisplayMerchant = ({ route, navigation }) => {
-  const shelter = route.params;
-  return (
-    <>
-      <FlatList
-        ListHeaderComponent={
-          <>
-            <ImageBackground
-              style={styles.largePic}
-              source={{ uri: shelter.picture }}
-            ></ImageBackground>
-            <Text style={styles.expandedText}>Name: {shelter.name}</Text>
-            <Text style={styles.expandedText}>
-              Address: {shelter.address}
-              {shelter.postalCode}
-            </Text>
-            <Text style={styles.expandedText}>
-              phoneNumber: {shelter.phoneNumber}
-            </Text>
-            <Text style={styles.expandedText}>Email: {shelter.email}</Text>
-            <Text style={styles.expandedText}>
-              Description: {shelter.description}
-            </Text>
-            <Text style={styles.expandedText}>Hours: {shelter.hours}</Text>
-            <Text style={styles.expandedText}>Rating: {shelter.rating}/5</Text>
-            <DisplayTags tags={shelter.tags} />
-          </>
+  const merchant_id = route.params._id;
+  const [merchant, setMerchant] = useState({});
+
+  async function onScreenLoad() {
+    try {
+      const response = await fetch(
+        "http://10.0.2.2:3000/merchant/" + merchant_id,
+        {
+          method: "Get",
         }
-        data={shelter.reviews}
-        renderItem={({ item, index }) => (
-          <View style={styles.reviewBox} key={item}>
-            <Text style={styles.reviewText}>"{item.content}"</Text>
-            <Text style={styles.reviewText}>Rating: {item.rating}/5</Text>
-            <Text style={styles.reviewText}>Written on: {item.date}</Text>
-          </View>
-        )}
-        keyExtractor={(item, index) => item.reviewer.toString()}
-      />
-    </>
+      );
+      console.log("http://10.0.2.2:3000/merchant/" + merchant_id);
+      return response;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    onScreenLoad()
+      .then((response) => response.json())
+      .then((json) => {
+        setMerchant(json);
+        navigation.setOptions({ title: json.name });
+      })
+      .catch((error) => console.error(error));
+  }, []);
+
+  return (
+    <ScrollView>
+      <ImageBackground
+        style={styles.largePic}
+        source={{ uri: merchant.picture }}
+      ></ImageBackground>
+      <Text style={styles.expandedText}>Name: {merchant.name}</Text>
+      <Text style={styles.expandedText}>
+        Address: {merchant.address}
+        {merchant.postalCode}
+      </Text>
+      <Text style={styles.expandedText}>
+        Description: {merchant.description}
+      </Text>
+      <Text style={styles.expandedText}>Hours: {merchant.hours}</Text>
+      <DisplayTags tags={merchant.tags} />
+      <View style={styles.mapContainer}>
+        <Text
+          style={{
+            fontSize: 30,
+            lineHeight: 36,
+          }}
+        >
+          &lt;!-- Map goes here --&gt;
+        </Text>
+      </View>
+    </ScrollView>
   );
 };
 
@@ -294,6 +312,11 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderColor: "#662997",
     borderWidth: 1,
+  },
+  mapContainer: {
+    backgroundColor: "#eec3be",
+    borderRadius: 10,
+    padding: 20,
   },
   header: {},
 });

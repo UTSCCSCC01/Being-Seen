@@ -21,7 +21,7 @@ const Tab = createBottomTabNavigator();
 
 const Home = () => (
   <Tab.Navigator screenOptions={{ headerShown: false }}>
-    <Tab.Screen name="Merchant" component={View} />
+    <Tab.Screen name="Merchant" component={Merchant} />
     <Tab.Screen name="Jobs" component={View} />
     <Tab.Screen name="Social Services" component={Shelter} />
     <Tab.Screen name="Profile" component={View} />
