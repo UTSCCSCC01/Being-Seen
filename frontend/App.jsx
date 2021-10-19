@@ -20,7 +20,6 @@ const Tab = createBottomTabNavigator();
 
 const Home = () => (
   <Tab.Navigator screenOptions={{ headerShown: false }}>
-    <Tab.Screen name="Landing" component={LandingPage} />
     <Tab.Screen name="Merchant" component={View} />
     <Tab.Screen name="Jobs" component={View} />
     <Tab.Screen name="Social Services" component={Shelter} />
@@ -40,12 +39,13 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{
+      <Stack.Navigator initialRouteName="Login" screenOptions={{
         headerShown: false,
       }}
       >
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Landing" component={LandingPage} />
       </Stack.Navigator>
     </NavigationContainer>
     // <Login />
