@@ -1,28 +1,33 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
+import bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
   ) {}
 
   /**
    * Validates a user object
    * @param username Retrieves a user object and verifies the password
-   * @param pass Password to be verified
+   * @param password Password to be verified
    * @returns User object if password is correct, null otherwise
    */
-  async validateUser(username: string, pass: string): Promise<any> {
+  async validateUser(username: string, password: string): Promise<any> {
     const user = await this.usersService.findOne(username);
-    const md5Pass = require('crypto').createHash('md5').update(pass).digest('hex');
-    if (user => user[1] === md5Pass) {
-      const result = user;
-      return result;
-    }
-    return null;
+    bcrypt.hash(password, 10, async (err, hash) => {
+      if (err) {
+        return null;
+      }
+      const match = await bcrypt.compare(hash, user.password);
+      if (match) {
+        return user;
+      }
+      return null;
+    });
   }
 
   /**

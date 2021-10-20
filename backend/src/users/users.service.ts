@@ -5,9 +5,8 @@ import { User, UserDocument } from './users.schema';
 
 @Injectable()
 export class UsersService {
-
   constructor(
-    @InjectModel(User.name) private readonly UserModel: Model<UserDocument>
+    @InjectModel(User.name) private readonly UserModel: Model<UserDocument>,
   ) {}
 
   /**
@@ -16,10 +15,6 @@ export class UsersService {
    * @returns User object if found, null otherwise
    */
   async findOne(username: string) {
-    return this.UserModel.find({username: username}).exec();
-  }
-
-  async UsersInfo() {
-    // return await this.Users.find( {username: 'test'} ).exec();
+    return this.UserModel.find({ username: username }).exec();
   }
 }
