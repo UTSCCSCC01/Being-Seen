@@ -198,31 +198,36 @@ Tracking on Jira Total Mark: 11 / 20
 ---
 ## Sprint Demo (Max 14 marks) 
   - Attendance (max 2 marks)
-    - 2 marks = full team is present
+    **- 2 marks = full team is present**
     - 1 mark = one member is not present
     - 0 marks = more than one member is not present
   
   - Working software (max 2 marks)
-    - 8 marks = features presented work flawlessly
+    **- 8 marks = features presented work flawlessly**
     - 1 mark removed for each bug/error identified or for missing records on Jira
 
   - Presentation (max 2 marks)
     - 2 marks = UI demonstrated is visually appealing and intuitive for users
     - 1 mark = one or more errors identified by the demo TA
-    - 0 marks = UI is visually unappealing
+    **- 0 marks = UI is visually unappealing**
 
   - Documentation (max 2 marks)
 
-  - 2 marks = documentation has been created for frontend and backend systems with great detail
+  **- 2 marks = documentation has been created for frontend and backend systems with great detail**
   - 1 mark = documentation has been created for frontend and backend systems with some errors
   - 0 marks = documentation has not been created
 
-  Your Mark: __ / 14
+- Landing page UI isn't very visually appealing, especially with the text on the images
+- Some margins for the text on the listings would make it look nicer so the text isn't up against the left border
+- The purple square borders on the list of listings is very web 1.0, maybe some margins or rounded borders would make the Ui less harsh
+- Color scheme would also improvewd, the purple text + purple borders + gray background isn't very visually appealing
+
+  Your Mark: 12 / 14
 
 ---
 
 
 ## Total Mark
 
-53.8 / 90
+65.8 / 89
 
