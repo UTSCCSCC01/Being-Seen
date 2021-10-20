@@ -24,22 +24,22 @@ import { NavigationContainer } from "@react-navigation/native";
  * @module Profile
  * @description full page of to display profile 
  */
-function Profile(props) {
+function Profile() {
   const [profile, setProfile] = useState({
     name: "default name",
     story: "default story",
     balance: 0,
   });
 
-  async function getProfile(id) {
+  async function getProfile() {
     try {
-      const URI = "http://10.0.2.2:3000/profile/";
+      const URI = "http://10.0.2.2:3000/profiles/615a3f8470e6e721d8ee26d4";
       const response = await fetch(
         //ipv4 localhost since running emulator
         //10.0.2.2 is your machine's localhost when on an android emulator
-        URI.concat(id),
+        URI,
         {
-          method: "GET",
+          method: 'Get',
         }
       );
       return response;
@@ -49,7 +49,7 @@ function Profile(props) {
   }
 
   useEffect(() => {
-    getProfile(props.id)
+    getProfile()
       .then((response) => response.json())
       .then((json) => setProfile(json))
       .catch((error) => console.error(error));
@@ -57,6 +57,8 @@ function Profile(props) {
 
   // TODO RETURN component
   return (
-	  <p>{profile.name} {profile.story}</p>
+	  <Text>{profile.name} {profile.story}</Text>
   )
 }
+
+export default Profile;
