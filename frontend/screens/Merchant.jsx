@@ -31,7 +31,7 @@ function Merchant() {
   return (
     <Stack.Navigator
       initialRouteName="MerchantList"
-      screenOptions={{ headerShown: false }}
+      screenOptions={{ headerShown: true }}
     >
       <Stack.Screen
         name="MerchantList"
@@ -47,7 +47,6 @@ function Merchant() {
         options={({ route }) => ({
           headerTintColor: "#662997",
           headerStyle: styles.header,
-          headerShown: true,
           title: "",
         })}
       />
