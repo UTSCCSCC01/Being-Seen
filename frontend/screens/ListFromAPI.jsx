@@ -222,10 +222,10 @@ const DisplayShelter = ({ route, navigation }) => {
             >
             </ImageBackground>
             <Text style={styles.expandedText}>Name: {info.name}</Text>
-            {info.address && <Text style={styles.expandedText}>
+            {info.address ? <Text style={styles.expandedText}>
               Address: {info.address}
               {info.postalCode}
-            </Text>}
+            </Text>: null}
             <Text style={styles.expandedText}>
               phoneNumber: {info.phoneNumber}
             </Text>
@@ -233,18 +233,18 @@ const DisplayShelter = ({ route, navigation }) => {
             <Text style={styles.expandedText}>
               Description: {info.description}
             </Text>
-            {info.hours && <Text style={styles.expandedText}>Hours: {info.hours}</Text>}
-            {info.rating? <View flexDirection='row'>
+            {info.hours ? <Text style={styles.expandedText}>Hours: {info.hours}</Text>:null}
+            {info.rating ? <View flexDirection='row'>
             <Text style={styles.expandedText}>Rating:</Text>
             <Rating readonly="true" startingValue={info.rating} tintColor={purpleThemeColour} imageSize={40} jumpValue={0.5}/>
-            </View> : null}
+            </View>: null}
             <DisplayTags tags={info.tags} />
-            {info.reviews?
-            <Button onPress={() => {navigation.navigate("Review " + capitalize(query), {infoId:info._id, query:query})}} title="Review This Shelter" color={purpleThemeColour}/>:
+            {info.reviews ?
+            <Button onPress={() => {navigation.navigate("Review " + capitalize(query), {infoId:info._id, query:query})}} title="Review This Shelter" color={purpleThemeColour}/> :
             null}
             {info.website ? <Button title="Go to website" onPress={() => {
               Linking.openURL(info.website);
-            }} /> : null}
+            }} />: null}
           </>
         }
         data={info.reviews}
