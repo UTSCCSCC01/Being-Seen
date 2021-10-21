@@ -80,7 +80,7 @@ function MerchantList({ navigation }) {
 
   async function getMerchantsFromApi() {
     try {
-      const response = await fetch("http://192.168.2.49:3000/merchant", {
+      const response = await fetch("http://10.0.2.2:3000/merchant", {
         method: "Get",
       });
       return response;

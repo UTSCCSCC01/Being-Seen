@@ -16,32 +16,29 @@ import {
   ImageBackground,
 } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import * as Linking from 'expo-linking';
+import { NavigationContainer } from "@react-navigation/native";
 
+//export default function App() {
 const Stack = createNativeStackNavigator();
-
-const capitalize = s => (s && s[0].toUpperCase() + s.slice(1)) || ""
 
 /**
  * 
- * @function ListFromAPI
- * @module ListFromAPI
+ * @function Shelter
+ * @module Shelter
  * @description full page of to display list of shelters and their details
  */
-function ListFromAPI({ query }) {
-  const listName = capitalize(query) + "List";
+function Shelter() {
   return (
-    <Stack.Navigator initialRouteName={listName}>
+    <Stack.Navigator initialRouteName="ShelterList">
       <Stack.Screen
-        name={listName}
-        options={{ headerShown: true, headerTintColor: "#662997", headerStyle: styles.header }}
-      >
-        {({ navigation }) => <ShelterList navigation={navigation} query={query} />}
-      </Stack.Screen>
+        name="ShelterList"
+        component={ShelterList}
+        options={{ headerShown: true, headerTintColor: "#662997", headerStyle:styles.header}}
+      />
       <Stack.Screen
-        name={capitalize(query) + "Details"}
+        name="ShelterDetails"
         component={DisplayShelter}
-        options={{ headerShown: true, headerTintColor: "#662997", headerStyle: styles.header }}
+        options={{ headerShown: true, headerTintColor: "#662997", headerStyle:styles.header}}
       />
     </Stack.Navigator>
   );
@@ -54,16 +51,16 @@ function ListFromAPI({ query }) {
  * @param {*} navigation - screen navigator used to traverse between list of shelters and shelter details
  * 
  */
-function ShelterList({ navigation, query }) {
-  const [information, setInformation] = useState([
-    { name: "Error " + query + " not loaded" },
+function ShelterList({ navigation }) {
+  const [shelters, setShelters] = useState([
+    { name: "Error shelters not loaded" },
   ]);
 
   const onScreenLoad = () => {
     //when load grab shelters from api and put them into the shelters state
-    getInfoFromApi(query)
+    getSheltersFromApi()
       .then((response) => response.json())
-      .then((json) => setInformation(json))
+      .then((json) => setShelters(json))
       .catch((error) => console.error(error));
   };
   //essentially componentWillMount
@@ -71,12 +68,12 @@ function ShelterList({ navigation, query }) {
     onScreenLoad();
   }, []);
 
-  async function getInfoFromApi(query) {
+  async function getSheltersFromApi() {
     try {
       const response = await fetch(
         //ipv4 localhost since running emulator
         //10.0.2.2 is your machine's localhost when on an android emulator
-        "http://192.168.2.49:3000/" + query,
+        "http://10.0.2.2:3000/shelter",
         {
           method: "Get",
         }
@@ -88,34 +85,32 @@ function ShelterList({ navigation, query }) {
   }
   return (
     <FlatList
-      data={information}
-      renderItem={({ item, index, separators }) => {
-        return (
-          <TouchableHighlight
-            onPress={() => {
-              navigation.navigate(capitalize(query) + "Details", item);
-            }}
-          >
-            <View style={styles.box}>
-              <Image style={styles.icon} source={{ uri: item.picture }} />
-              <View style={{ flex: 1 }}>
-                <Text style={styles.text} numberOfLines={1}>
-                  Name: {item.name}
-                </Text>
-                {item.address && <Text style={styles.text} numberOfLines={1}>
-                  Address: {item.address}
-                </Text>}
-                <Text style={styles.text} numberOfLines={1}>
-                  Phone: {item.phoneNumber}
-                </Text>
-                <Text style={styles.text} numberOfLines={1}>
-                  Tags: {item.tags ? getTags(item.tags) : "None"}
-                </Text>
-              </View>
+      data={shelters}
+      renderItem={({ item, index, separators }) => (
+        <TouchableHighlight
+          onPress={() => {
+            navigation.navigate("ShelterDetails", item);
+          }}
+        >
+          <View style={styles.box}>
+            <Image style={styles.icon} source={{ uri: item.picture }} />
+            <View style={{ flex: 1 }}>
+              <Text style={styles.text} numberOfLines={1}>
+                Name: {item.name}
+              </Text>
+              <Text style={styles.text} numberOfLines={1}>
+                Address: {item.address}
+              </Text>
+              <Text style={styles.text} numberOfLines={1}>
+                Phone: {item.phoneNumber}
+              </Text>
+              <Text style={styles.text} numberOfLines={1}>
+                Tags: {item.tags ? getTags(item.tags): "None"}
+              </Text>
             </View>
-          </TouchableHighlight>
-        )
-      }}
+          </View>
+        </TouchableHighlight>
+      )}
       keyExtractor={(item, index) => index.toString()}
       style={styles.scrollBackground}
     />
@@ -128,11 +123,11 @@ function ShelterList({ navigation, query }) {
  * @param {Tag[]} tags array of tags for a shelter
  * 
  */
-const getTags = (tags) => {
+const getTags = (tags) =>{
   let toRet = ''
-  for (let i = 0; i < tags.length; i++) {
+  for(let i = 0; i < tags.length; i++){
     toRet += tags[i].tagName
-    if (i != tags.length - 1) toRet += ", "
+    if(i != tags.length - 1) toRet += ", "
   }
   return toRet
 }
@@ -145,7 +140,7 @@ const getTags = (tags) => {
  * 
  */
 const DisplayShelter = ({ route, navigation }) => {
-  const info = route.params;
+  const shelter = route.params;
   return (
     <>
       <FlatList
@@ -153,30 +148,27 @@ const DisplayShelter = ({ route, navigation }) => {
           <>
             <ImageBackground
               style={styles.largePic}
-              source={{ uri: info.picture }}
+              source={{ uri: shelter.picture }}
             >
             </ImageBackground>
-            <Text style={styles.expandedText}>Name: {info.name}</Text>
-            {info.address && <Text style={styles.expandedText}>
-              Address: {info.address}
-              {info.postalCode}
-            </Text>}
+            <Text style={styles.expandedText}>Name: {shelter.name}</Text>
             <Text style={styles.expandedText}>
-              phoneNumber: {info.phoneNumber}
+              Address: {shelter.address}
+              {shelter.postalCode}
             </Text>
-            <Text style={styles.expandedText}>Email: {info.email}</Text>
             <Text style={styles.expandedText}>
-              Description: {info.description}
+              phoneNumber: {shelter.phoneNumber}
             </Text>
-            {info.hours && <Text style={styles.expandedText}>Hours: {info.hours}</Text>}
-            <Text style={styles.expandedText}>Rating: {info.rating}/5</Text>
-            <DisplayTags tags={info.tags} />
-            {info.website ? <Button title="Go to website" onPress={() => {
-              Linking.openURL(info.website);
-            }} /> : null}
+            <Text style={styles.expandedText}>Email: {shelter.email}</Text>
+            <Text style={styles.expandedText}>
+              Description: {shelter.description}
+            </Text>
+            <Text style={styles.expandedText}>Hours: {shelter.hours}</Text>
+            <Text style={styles.expandedText}>Rating: {shelter.rating}/5</Text>
+            <DisplayTags tags={shelter.tags} />
           </>
         }
-        data={info.reviews}
+        data={shelter.reviews}
         renderItem={({ item, index }) => (
           <View style={styles.reviewBox} key={item}>
             <Text style={styles.reviewText}>"{item.content}"</Text>
@@ -208,7 +200,7 @@ export const DisplayTags = (props) => {
           <Text>{item.tagName}</Text>
         </View>
       )}
-      keyExtractor={(item, index) => index.toString()} />
+      keyExtractor={(item, index) => index.toString()}/>
   );
 };
 
@@ -297,10 +289,9 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderColor: "#662997",
     borderWidth: 1,
-  }, header: {
-
+  }, header:{
+    
   }
 });
 
-export default ListFromAPI;
-;
+export default Shelter;

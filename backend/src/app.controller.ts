@@ -1,11 +1,5 @@
-import {
-  Controller,
-  Get,
-  Request,
-  Post,
-  UseGuards,
-  Body,
-} from '@nestjs/common';
+import { Controller, Get, Request, Post, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth/auth.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { LocalAuthGuard } from './auth/local-auth.guard';
@@ -13,53 +7,33 @@ import { UsersService } from './users/users.service';
 
 @Controller()
 export class AppController {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly usersService: UsersService,
-  ) {}
+  constructor(private readonly authService: AuthService,
+    private readonly usersService: UsersService) {}
 
   /**
-   * Checks if database is online
-   * GET /
-   * @returns String success message
-   */
-  @Get()
-  index() {
-    return 'Being Seen database is online!';
-  }
-
-  /**
-   * Log in user
-   * POST /auth/login
+   * Guard for passport local strategy
    * @param req Request
-   * @returns User object or error
+   * @returns User object
    */
-  // @UseGuards(LocalAuthGuard)
+  @UseGuards(LocalAuthGuard)
   @Post('auth/login')
-  async login(@Body() user) {
-    return await this.authService.login(user);
+  async login(@Request() req) {
+    return this.authService.login(req.user);
   }
 
   /**
-   * Gets the access token's user profile
-   * GET /profile
+   * Guard for JWT
    * @param req Request
-   * @returns User object or error
+   * @returns User object
    */
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  getProfile(@Body() user) {
-    return user;
+  getProfile(@Request() req) {
+    return req.user;
   }
 
-  /**
-   * Registers a new user
-   * POST /auth/register
-   * @param user user object
-   * @returns user object or error
-   */
-  @Post('auth/register')
-  async register(@Body() user) {
-    return await this.usersService.createUser(user);
+  @Get()
+  index() {
+    return this.usersService.findOne('test');
   }
 }
