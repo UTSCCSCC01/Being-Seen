@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { EducationModule } from './education/education.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ShelterModule } from './shelter/shelter.module';
@@ -25,8 +26,9 @@ import { MerchantModule } from './merchant/merchant.module';
     AuthModule,
     UsersModule,
     MerchantModule,
+    EducationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
