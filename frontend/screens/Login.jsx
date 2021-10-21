@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView, SafeAreaView, View } from 'react-native';
+import { StyleSheet, ScrollView, SafeAreaView, View, TouchableHighlight } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { tailwind } from 'tailwind';
 import { PrimaryHeader } from '../components/Headers';
 import TextField from '../components/TextField';
 import Button from '../components/Button';
 import UnderlinedLink from '../components/UnderlinedLink';
+import DisplayNotif from "../components/DisplayNotif";
+// import { DisplayTags } from './Shelter';
 
 /**
  * @function Login
@@ -14,8 +16,10 @@ import UnderlinedLink from '../components/UnderlinedLink';
  * @description Login screen
  */
 const Login = () => {
+  const failedLoginMessage = "Error: Incorrect Username Or Password"
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [failedLogin, setFailedLogin] = useState(false)
 
   const navigation = useNavigation();
 
@@ -29,7 +33,7 @@ const Login = () => {
 
   const submitLogin = async () => {
     try {
-      const response = await fetch('http://10.0.2.2:3000/auth/login', {
+      const response = await fetch('http://192.168.2.49:3000/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -46,7 +50,7 @@ const Login = () => {
       if (data.access_token) {
         saveToken(data.access_token);
         navigation.navigate('Home');
-      }
+      } else setFailedLogin(true);
     } catch (error) {
       console.error(error);
     }
@@ -62,13 +66,17 @@ const Login = () => {
         <View style={styles.header}>
           <PrimaryHeader text="Login" />
         </View>
+        <View style={{ alignItems: 'center' }}><DisplayNotif notification={failedLoginMessage} display={failedLogin} color='indianred' /></View>
+
         <TextField placeholder="Username" onChangeText={(text) => setUsername(text)} />
-        <TextField placeholder="Password" secure onChangeText={(text) => setPassword(text)} />
+        <TextField placeholder="Password" secure={true} onChangeText={(text) => setPassword(text)} />
         <View style={styles.loginButton}>
           <Button label="Enter" disabled={false} onClick={submitLogin} />
         </View>
         <View style={styles.underlinedLinks}>
-          <UnderlinedLink text="Don't have an account?" />
+          <TouchableHighlight onPress={() => navigation.navigate('Landing')}>
+            <UnderlinedLink text="Don't have an account?" />
+          </TouchableHighlight>
           <UnderlinedLink text="Can't log in?" />
         </View>
       </SafeAreaView>
