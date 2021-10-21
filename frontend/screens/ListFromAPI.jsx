@@ -21,6 +21,8 @@ import {
 } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as Linking from 'expo-linking';
+import * as SecureStore from 'expo-secure-store';
+import jwt_decode from 'jwt-decode'
 
 const Stack = createNativeStackNavigator();
 const apiPath = "http://10.0.2.2:3000/"
@@ -90,6 +92,12 @@ async function getInfoFromApiById(query, id) {
   } catch (error) {
     console.error(error);
   }
+}
+
+async function getProfileIdFromToken(){
+  let token = await SecureStore.getItemAsync('token')
+  let decoded = await jwt_decode(token);
+  return decoded.id;
 }
 /*
 
@@ -232,7 +240,7 @@ const DisplayShelter = ({ route, navigation }) => {
             </View> : null}
             <DisplayTags tags={info.tags} />
             {info.reviews?
-            <Button onPress={() => {navigation.navigate("Review " + capitalize(query), {infoId:info._id, reviewer:"215322c038ded1fcd0cfdae6", query:query})}} title="Review This Shelter" color={purpleThemeColour}/>:
+            <Button onPress={() => {navigation.navigate("Review " + capitalize(query), {infoId:info._id, query:query})}} title="Review This Shelter" color={purpleThemeColour}/>:
             null}
             {info.website ? <Button title="Go to website" onPress={() => {
               Linking.openURL(info.website);
@@ -272,17 +280,23 @@ function WriteReview({route, navigation}){
   const [tempRev, setTempRev] = useState(0)
   const [editReview, setEditReview] = useState(false)
   const [readyToPublish, setReadyToPublish] = useState(false)
+  const [reviewer, setReviewer] = useState(null)
   const reviewParams = route.params;
   
-  const onScreenLoad = () => {
+  async function onScreenLoad(){
     //when load grab shelters from api and put them into the shelters state
-    getReviewFromApi()
+    let profId = await getProfileIdFromToken()
+    setReviewer(profId)
 
   };
   //essentially componentWillMount
   useEffect(() => {
     onScreenLoad();
   }, []);
+
+  useEffect(() =>{
+    getReviewFromApi()
+  }, [reviewer])
 
   useEffect(() =>{
     if(readyToPublish){
@@ -303,7 +317,7 @@ function WriteReview({route, navigation}){
       const response = await fetch(
         //ipv4 localhost since running emulator
         //10.0.2.2 is your machine's localhost when on an android emulator
-        apiPath + reviewParams.query +"/" + reviewParams.infoId + "/review/" + reviewParams.reviewer,
+        apiPath + reviewParams.query +"/" + reviewParams.infoId + "/review/" + reviewer,
         {
           method: "Get",
         }
@@ -323,7 +337,7 @@ function WriteReview({route, navigation}){
       const response = await fetch(
         //ipv4 localhost since running emulator
         //10.0.2.2 is your machine's localhost when on an android emulator
-        apiPath + reviewParams.query+"/"+ reviewParams.infoId + "/review/" + reviewParams.reviewer,
+        apiPath + reviewParams.query+"/"+ reviewParams.infoId + "/review/" + reviewer,
         {
           method: "DELETE",
         }
@@ -359,7 +373,7 @@ function WriteReview({route, navigation}){
       const response = await fetch(
         //ipv4 localhost since running emulator
         //10.0.2.2 is your machine's localhost when on an android emulator
-        apiPath + reviewParams.query+"/" + reviewParams.infoId + "/review/" + reviewParams.reviewer,
+        apiPath + reviewParams.query+"/" + reviewParams.infoId + "/review/" + reviewer,
         {
           method: method,
           headers: { "Content-Type": "application/json" },
