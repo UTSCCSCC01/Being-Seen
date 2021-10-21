@@ -5,7 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SecureStore from "expo-secure-store";
-import Shelter from "./screens/Shelter";
+// import Shelter from "./screens/Shelter";
 import LandingPage from "./screens/landing_page";
 import Login from "./screens/Login";
 import Merchant from "./screens/Merchant";

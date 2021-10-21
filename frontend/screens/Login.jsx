@@ -8,7 +8,7 @@ import TextField from '../components/TextField';
 import Button from '../components/Button';
 import UnderlinedLink from '../components/UnderlinedLink';
 import DisplayNotif from "../components/DisplayNotif";
-import { DisplayTags } from './Shelter';
+// import { DisplayTags } from './Shelter';
 
 /**
  * @function Login
