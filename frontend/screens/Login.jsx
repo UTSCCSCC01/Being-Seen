@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, ScrollView, SafeAreaView, View, TouchableHighlight } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { tailwind } from 'tailwind';
 import { PrimaryHeader } from '../components/Headers';
 import TextField from '../components/TextField';
 import Button from '../components/Button';
 import UnderlinedLink from '../components/UnderlinedLink';
 import DisplayNotif from "../components/DisplayNotif";
-import { DisplayTags } from './Shelter';
+// import { DisplayTags } from './Shelter';
 
 /**
  * @function Login
@@ -16,6 +16,8 @@ import { DisplayTags } from './Shelter';
  * @description Login screen
  */
 const Login = () => {
+  const androidPath = '10.0.2.2:3000/'
+  const otherPath = '192.168.2.49:3000/'
   const failedLoginMessage = "Error: Incorrect Username Or Password"
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -33,7 +35,7 @@ const Login = () => {
 
   const submitLogin = async () => {
     try {
-      const response = await fetch('http://10.0.2.2:3000/auth/login', {
+      const response = await fetch('http://' + androidPath+ 'auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -50,7 +52,7 @@ const Login = () => {
       if (data.access_token) {
         saveToken(data.access_token);
         navigation.navigate('Home');
-      }else setFailedLogin(true);
+      } else setFailedLogin(true);
     } catch (error) {
       console.error(error);
     }
@@ -66,8 +68,8 @@ const Login = () => {
         <View style={styles.header}>
           <PrimaryHeader text="Login" />
         </View>
-        <View style={{alignItems:'center'}}><DisplayNotif notification = {failedLoginMessage} display={failedLogin} color='indianred'/></View>
-        
+        <View style={{ alignItems: 'center' }}><DisplayNotif notification={failedLoginMessage} display={failedLogin} color='indianred' /></View>
+
         <TextField placeholder="Username" onChangeText={(text) => setUsername(text)} />
         <TextField placeholder="Password" secure={true} onChangeText={(text) => setPassword(text)} />
         <View style={styles.loginButton}>
@@ -75,7 +77,7 @@ const Login = () => {
         </View>
         <View style={styles.underlinedLinks}>
           <TouchableHighlight onPress={() => navigation.navigate('Landing')}>
-          <UnderlinedLink text="Don't have an account?"/>
+            <UnderlinedLink text="Don't have an account?" />
           </TouchableHighlight>
           <UnderlinedLink text="Can't log in?" />
         </View>

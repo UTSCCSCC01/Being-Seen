@@ -22,23 +22,33 @@ import { NavigationContainer } from "@react-navigation/native";
 const Stack = createNativeStackNavigator();
 
 /**
- * 
- * @function Shelter
- * @module Shelter
- * @description full page of to display list of shelters and their details
+ *
+ * @function Merchant
+ * @module Merchant
+ * @description full page of to display list of merchants and their details
  */
-function Shelter() {
+function Merchant() {
   return (
-    <Stack.Navigator initialRouteName="ShelterList">
+    <Stack.Navigator
+      initialRouteName="MerchantList"
+      screenOptions={{ headerShown: true }}
+    >
       <Stack.Screen
-        name="ShelterList"
-        component={ShelterList}
-        options={{ headerShown: true, headerTintColor: "#662997", headerStyle:styles.header}}
+        name="MerchantList"
+        component={MerchantList}
+        options={{
+          headerTintColor: "#662997",
+          headerStyle: styles.header,
+        }}
       />
       <Stack.Screen
-        name="ShelterDetails"
-        component={DisplayShelter}
-        options={{ headerShown: true, headerTintColor: "#662997", headerStyle:styles.header}}
+        name="MerchantDetails"
+        component={DisplayMerchant}
+        options={({ route }) => ({
+          headerTintColor: "#662997",
+          headerStyle: styles.header,
+          title: "",
+        })}
       />
     </Stack.Navigator>
   );
@@ -49,18 +59,18 @@ function Shelter() {
  * @module ShelterList ShelterList
  * @description display list of shelters
  * @param {*} navigation - screen navigator used to traverse between list of shelters and shelter details
- * 
+ *
  */
-function ShelterList({ navigation }) {
-  const [shelters, setShelters] = useState([
-    { name: "Error shelters not loaded" },
+function MerchantList({ navigation }) {
+  const [merchants, setMerchants] = useState([
+    { name: "Error merchants not loaded" },
   ]);
 
   const onScreenLoad = () => {
     //when load grab shelters from api and put them into the shelters state
-    getSheltersFromApi()
+    getMerchantsFromApi()
       .then((response) => response.json())
-      .then((json) => setShelters(json))
+      .then((json) => setMerchants(json))
       .catch((error) => console.error(error));
   };
   //essentially componentWillMount
@@ -68,16 +78,11 @@ function ShelterList({ navigation }) {
     onScreenLoad();
   }, []);
 
-  async function getSheltersFromApi() {
+  async function getMerchantsFromApi() {
     try {
-      const response = await fetch(
-        //ipv4 localhost since running emulator
-        //10.0.2.2 is your machine's localhost when on an android emulator
-        "http://10.0.2.2:3000/shelter",
-        {
-          method: "Get",
-        }
-      );
+      const response = await fetch("http://192.168.2.49:3000/merchant", {
+        method: "Get",
+      });
       return response;
     } catch (error) {
       console.error(error);
@@ -85,11 +90,11 @@ function ShelterList({ navigation }) {
   }
   return (
     <FlatList
-      data={shelters}
+      data={merchants}
       renderItem={({ item, index, separators }) => (
         <TouchableHighlight
           onPress={() => {
-            navigation.navigate("ShelterDetails", item);
+            navigation.navigate("MerchantDetails", item);
           }}
         >
           <View style={styles.box}>
@@ -105,7 +110,7 @@ function ShelterList({ navigation }) {
                 Phone: {item.phoneNumber}
               </Text>
               <Text style={styles.text} numberOfLines={1}>
-                Tags: {item.tags ? getTags(item.tags): "None"}
+                Tags: {item.tags ? getTags(item.tags) : "None"}
               </Text>
             </View>
           </View>
@@ -121,64 +126,69 @@ function ShelterList({ navigation }) {
  * @module getTags getTags
  * @description function responsible for extracting and formatting names of tags for a shelter
  * @param {Tag[]} tags array of tags for a shelter
- * 
+ *
  */
-const getTags = (tags) =>{
-  let toRet = ''
-  for(let i = 0; i < tags.length; i++){
-    toRet += tags[i].tagName
-    if(i != tags.length - 1) toRet += ", "
+const getTags = (tags) => {
+  let toRet = "";
+  for (let i = 0; i < tags.length; i++) {
+    toRet += tags[i].tagName;
+    if (i != tags.length - 1) toRet += ", ";
   }
-  return toRet
-}
+  return toRet;
+};
 
 /**
  * @function DisplayShelter displays expanded details of a shelter
  * @module DisplayShelter DisplayShelter
  * @description displays expanded details of a shelter
  * @param {*} param0 recieves object containg route and navigation from react navigation
- * 
+ *
  */
-const DisplayShelter = ({ route, navigation }) => {
-  const shelter = route.params;
-  return (
-    <>
-      <FlatList
-        ListHeaderComponent={
-          <>
-            <ImageBackground
-              style={styles.largePic}
-              source={{ uri: shelter.picture }}
-            >
-            </ImageBackground>
-            <Text style={styles.expandedText}>Name: {shelter.name}</Text>
-            <Text style={styles.expandedText}>
-              Address: {shelter.address}
-              {shelter.postalCode}
-            </Text>
-            <Text style={styles.expandedText}>
-              phoneNumber: {shelter.phoneNumber}
-            </Text>
-            <Text style={styles.expandedText}>Email: {shelter.email}</Text>
-            <Text style={styles.expandedText}>
-              Description: {shelter.description}
-            </Text>
-            <Text style={styles.expandedText}>Hours: {shelter.hours}</Text>
-            <Text style={styles.expandedText}>Rating: {shelter.rating}/5</Text>
-            <DisplayTags tags={shelter.tags} />
-          </>
+const DisplayMerchant = ({ route, navigation }) => {
+  const merchant_id = route.params._id;
+  const [merchant, setMerchant] = useState({});
+
+  async function onScreenLoad() {
+    try {
+      const response = await fetch(
+        "http://10.0.2.2:3000/merchant/" + merchant_id,
+        {
+          method: "Get",
         }
-        data={shelter.reviews}
-        renderItem={({ item, index }) => (
-          <View style={styles.reviewBox} key={item}>
-            <Text style={styles.reviewText}>"{item.content}"</Text>
-            <Text style={styles.reviewText}>Rating: {item.rating}/5</Text>
-            <Text style={styles.reviewText}>Written on: {item.date}</Text>
-          </View>
-        )}
-        keyExtractor={(item, index) => item.reviewer.toString()}
-      />
-    </>
+      );
+      return response;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    onScreenLoad()
+      .then((response) => response.json())
+      .then((json) => {
+        setMerchant(json);
+        navigation.setOptions({ title: json.name });
+      })
+      .catch((error) => console.error(error));
+  }, []);
+
+  return (
+    <ScrollView>
+      <ImageBackground
+        style={styles.largePic}
+        source={{ uri: merchant.picture }}
+      ></ImageBackground>
+      <Text style={styles.expandedText}>Name: {merchant.name}</Text>
+      <Text style={styles.expandedText}>
+        Address: {merchant.address}
+        {merchant.postalCode}
+      </Text>
+      <Text style={styles.expandedText}>
+        Description: {merchant.description}
+      </Text>
+      <Text style={styles.expandedText}>Hours: {merchant.hours}</Text>
+      <DisplayTags tags={merchant.tags} />
+    </ScrollView>
   );
 };
 
@@ -187,7 +197,7 @@ const DisplayShelter = ({ route, navigation }) => {
  * @module DisplayTags
  * @description displays given tags within a flatlist of boxes
  * @param {*} props propety object which contains tags
- * 
+ *
  */
 export const DisplayTags = (props) => {
   const tags = props.tags;
@@ -200,7 +210,8 @@ export const DisplayTags = (props) => {
           <Text>{item.tagName}</Text>
         </View>
       )}
-      keyExtractor={(item, index) => index.toString()}/>
+      keyExtractor={(item, index) => index.toString()}
+    />
   );
 };
 
@@ -289,9 +300,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderColor: "#662997",
     borderWidth: 1,
-  }, header:{
-    
-  }
+  },
+  header: {},
 });
 
-export default Shelter;
+export default Merchant;

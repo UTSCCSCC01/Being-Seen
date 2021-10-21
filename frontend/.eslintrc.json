@@ -21,6 +21,9 @@
         "no-use-before-define": "off",
         "react/style-prop-object": "off",
         "import/no-unresolved": "off",
-        "linebreak-style": "off"
+        "linebreak-style": "off",
+        "prettier/prettier": ["error", {
+            "endOfLine": "auto"
+        }]
     }
 }
