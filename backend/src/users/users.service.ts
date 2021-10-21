@@ -1,14 +1,18 @@
-import { Model } from 'mongoose';
-import { Injectable } from '@nestjs/common';
+import { Model, Schema } from 'mongoose';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { User, UserDocument } from './users.schema';
-import * as crypto from 'crypto';
+import { User } from './users.schema';
+import { CreateUserDto } from './dto/createUser.dto';
+const bcrypt = require('bcrypt');
 
 @Injectable()
 export class UsersService {
-
   constructor(
-    @InjectModel(User.name) private readonly UserModel: Model<UserDocument>
+    @InjectModel(User.name) private readonly UserModel: Model<User>,
   ) {}
 
   /**
@@ -16,11 +20,57 @@ export class UsersService {
    * @param username Username query
    * @returns User object if found, null otherwise
    */
-  async findOne(username: string) {
-    return this.UserModel.find({username: username}).exec();
+  async getUserByUsername(username: string) {
+    try {
+      const user = await this.UserModel.find({ username }).exec();
+      return user;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
-  async UsersInfo() {
-    // return await this.Users.find( {username: 'test'} ).exec();
+  /**
+   * Find user by user id
+   * @param id User id
+   * @returns User object if found, null otherwise
+   */
+  async getUserById(id: Schema.Types.ObjectId) {
+    try {
+      const user = await this.UserModel.findById({ _id: id }).exec();
+      return user;
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
+
+  /**
+   * Create new user
+   * @param createUserDto User object
+   * @returns New user object or error if user creation fails
+   */
+  async createUser(createUserDto: CreateUserDto) {
+    const userExists = await this.getUserByUsername(createUserDto.username);
+    if (userExists.length === 0) {
+      bcrypt.hash(createUserDto.password, 10, async (error, hash) => {
+        if (error) {
+          throw new InternalServerErrorException(error);
+        }
+
+        const userObject = new this.UserModel({
+          username: createUserDto.username,
+          password: hash,
+          permissions: createUserDto.permissions,
+        });
+
+        try {
+          const newUser = await userObject.save();
+          return newUser;
+        } catch (error) {
+          throw new InternalServerErrorException(error);
+        }
+      });
+    } else {
+      throw new ConflictException('Username already exists');
+    }
   }
 }
