@@ -44,9 +44,13 @@ export class ShelterService {
      */
     async addShelterReview(shelterId: string, reviewer:string, content:string,
         rating:number){
-        const shelter = await this.findShelterPrimitive(shelterId)
-        shelter.reviews.push({reviewer:new Types.ObjectId(reviewer), content:content, rating: rating, date: new Date()})
-        this.updateShelterScore(shelter)
+        try{
+            const shelter = await this.findShelterPrimitive(shelterId)
+            shelter.reviews.push({reviewer:new Types.ObjectId(reviewer), content:content, rating: rating, date: new Date()})
+            this.updateShelterScore(shelter)
+        }catch(error){
+            console.error(error)
+        }
     }
     /**
      * delete review posted by user reviewerId on shelter given by shelterId
@@ -72,18 +76,22 @@ export class ShelterService {
      * @returns  null
      */
     async editShelterReview(shelterId:string, reviewerId: string, content:string, rating:number){
-        const shelter = await this.findShelterPrimitive(shelterId)
-        const index = shelter.reviews.findIndex(review => review.reviewer == reviewerId)
-        if(index > -1){
-            if(shelter.reviews[index].content){ 
-                shelter.reviews[index].content = content;
+        try{
+            const shelter = await this.findShelterPrimitive(shelterId)
+            const index = shelter.reviews.findIndex(review => review.reviewer == reviewerId)
+            if(index > -1){
+                if(shelter.reviews[index].content){ 
+                    shelter.reviews[index].content = content;
+                }
+                if(shelter.reviews[index].rating){ 
+                    shelter.reviews[index].rating = rating;
+                }
             }
-            if(shelter.reviews[index].rating){ 
-                shelter.reviews[index].rating = rating;
-            }
+            shelter.markModified("reviews")
+            this.updateShelterScore(shelter)
+        }catch(error){
+            console.error(error)
         }
-        shelter.markModified("reviews")
-        this.updateShelterScore(shelter)
         
         return
     }

@@ -16,6 +16,8 @@ import DisplayNotif from "../components/DisplayNotif";
  * @description Login screen
  */
 const Login = () => {
+  const androidPath = '10.0.2.2:3000/'
+  const otherPath = '192.168.2.49:3000/'
   const failedLoginMessage = "Error: Incorrect Username Or Password"
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -33,7 +35,7 @@ const Login = () => {
 
   const submitLogin = async () => {
     try {
-      const response = await fetch('http://192.168.2.49:3000/auth/login', {
+      const response = await fetch('http://' + androidPath+ 'auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
