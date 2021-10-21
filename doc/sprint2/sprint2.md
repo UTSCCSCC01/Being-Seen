@@ -48,7 +48,7 @@ As Mark, I can click a job posting to check the prerequisites, responsibilities,
 
 ## Team Capacity
 
-**80 hours**
+**114 hours**
 
 ## Participants
 Lianting, Mark, Ali, Glenn, Yiyang, Kyle
