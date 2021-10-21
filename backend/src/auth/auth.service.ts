@@ -1,7 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
-// import bcrypt from 'bcrypt';
+import { loginUserDto } from 'src/users/dto/loginUser.dto';
 const bcrypt = require('bcrypt');
 
 @Injectable()
@@ -13,22 +17,28 @@ export class AuthService {
 
   /**
    * Validates a user object
-   * @param username Retrieves a user object and verifies the password
-   * @param password Password to be verified
+   * @param loginUserDto Login user object
    * @returns User object if password is correct, null otherwise
    */
-  async validateUser(username: string, password: string): Promise<any> {
-    const user = await this.usersService.getUserByUsername(username);
-    bcrypt.hash(password, 10, async (err, hash) => {
-      if (err) {
-        return null;
-      }
-      const match = await bcrypt.compare(hash, user['password']);
+  async validateUser(loginUserDto: loginUserDto): Promise<any> {
+    const user = await this.usersService.getUserByUsername(
+      loginUserDto.username,
+    );
+    try {
+      const match = await bcrypt.compare(
+        loginUserDto.password,
+        user[0].password,
+      );
       if (match) {
+        loginUserDto._id = user[0]._id;
+        loginUserDto.permissions = user[0].permissions;
+        loginUserDto.createdAt = user[0].createdAt;
         return user;
       }
       return null;
-    });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
   /**
@@ -36,10 +46,19 @@ export class AuthService {
    * @param user User object to be encoded
    * @returns JWT token
    */
-  async login(user: any) {
-    const payload = { username: user.username, sub: user.userId };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+  async login(loginUserDto: loginUserDto) {
+    const validated = await this.validateUser(loginUserDto);
+    if (validated !== null) {
+      const payload = {
+        id: loginUserDto._id,
+        username: loginUserDto.username,
+        permissions: loginUserDto.permissions,
+        createdAt: loginUserDto.createdAt,
+      };
+      return {
+        access_token: this.jwtService.sign(payload),
+      };
+    }
+    return new UnauthorizedException();
   }
 }

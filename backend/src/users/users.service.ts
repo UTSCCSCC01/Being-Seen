@@ -5,10 +5,9 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-// import bcrypt from 'bcrypt';
-const bcrypt = require('bcrypt');
 import { User } from './users.schema';
 import { CreateUserDto } from './dto/createUser.dto';
+const bcrypt = require('bcrypt');
 
 @Injectable()
 export class UsersService {
