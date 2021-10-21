@@ -16,27 +16,30 @@ import {
   ImageBackground,
 } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { NavigationContainer } from "@react-navigation/native";
+import * as Linking from 'expo-linking';
 
-//export default function App() {
 const Stack = createNativeStackNavigator();
+
+const capitalize = s => (s && s[0].toUpperCase() + s.slice(1)) || ""
 
 /**
  * 
- * @function Shelter
- * @module Shelter
+ * @function ListFromAPI
+ * @module ListFromAPI
  * @description full page of to display list of shelters and their details
  */
-function Shelter() {
+function ListFromAPI({ query }) {
+  const listName = capitalize(query) + "List";
   return (
-    <Stack.Navigator initialRouteName="ShelterList">
+    <Stack.Navigator initialRouteName={listName}>
       <Stack.Screen
-        name="ShelterList"
-        component={ShelterList}
+        name={listName}
         options={{ headerShown: true, headerTintColor: "#662997", headerStyle: styles.header }}
-      />
+      >
+        {({ navigation }) => <ShelterList navigation={navigation} query={query} />}
+      </Stack.Screen>
       <Stack.Screen
-        name="ShelterDetails"
+        name={capitalize(query) + "Details"}
         component={DisplayShelter}
         options={{ headerShown: true, headerTintColor: "#662997", headerStyle: styles.header }}
       />
@@ -51,16 +54,16 @@ function Shelter() {
  * @param {*} navigation - screen navigator used to traverse between list of shelters and shelter details
  * 
  */
-function ShelterList({ navigation }) {
-  const [shelters, setShelters] = useState([
-    { name: "Error shelters not loaded" },
+function ShelterList({ navigation, query }) {
+  const [information, setInformation] = useState([
+    { name: "Error " + query + " not loaded" },
   ]);
 
   const onScreenLoad = () => {
     //when load grab shelters from api and put them into the shelters state
-    getSheltersFromApi()
+    getInfoFromApi(query)
       .then((response) => response.json())
-      .then((json) => setShelters(json))
+      .then((json) => setInformation(json))
       .catch((error) => console.error(error));
   };
   //essentially componentWillMount
@@ -68,12 +71,12 @@ function ShelterList({ navigation }) {
     onScreenLoad();
   }, []);
 
-  async function getSheltersFromApi() {
+  async function getInfoFromApi(query) {
     try {
       const response = await fetch(
         //ipv4 localhost since running emulator
         //10.0.2.2 is your machine's localhost when on an android emulator
-        "http://192.168.2.49:3000/shelter",
+        "http://192.168.2.49:3000/" + query,
         {
           method: "Get",
         }
@@ -85,32 +88,34 @@ function ShelterList({ navigation }) {
   }
   return (
     <FlatList
-      data={shelters}
-      renderItem={({ item, index, separators }) => (
-        <TouchableHighlight
-          onPress={() => {
-            navigation.navigate("ShelterDetails", item);
-          }}
-        >
-          <View style={styles.box}>
-            <Image style={styles.icon} source={{ uri: item.picture }} />
-            <View style={{ flex: 1 }}>
-              <Text style={styles.text} numberOfLines={1}>
-                Name: {item.name}
-              </Text>
-              <Text style={styles.text} numberOfLines={1}>
-                Address: {item.address}
-              </Text>
-              <Text style={styles.text} numberOfLines={1}>
-                Phone: {item.phoneNumber}
-              </Text>
-              <Text style={styles.text} numberOfLines={1}>
-                Tags: {item.tags ? getTags(item.tags) : "None"}
-              </Text>
+      data={information}
+      renderItem={({ item, index, separators }) => {
+        return (
+          <TouchableHighlight
+            onPress={() => {
+              navigation.navigate(capitalize(query) + "Details", item);
+            }}
+          >
+            <View style={styles.box}>
+              <Image style={styles.icon} source={{ uri: item.picture }} />
+              <View style={{ flex: 1 }}>
+                <Text style={styles.text} numberOfLines={1}>
+                  Name: {item.name}
+                </Text>
+                {item.address && <Text style={styles.text} numberOfLines={1}>
+                  Address: {item.address}
+                </Text>}
+                <Text style={styles.text} numberOfLines={1}>
+                  Phone: {item.phoneNumber}
+                </Text>
+                <Text style={styles.text} numberOfLines={1}>
+                  Tags: {item.tags ? getTags(item.tags) : "None"}
+                </Text>
+              </View>
             </View>
-          </View>
-        </TouchableHighlight>
-      )}
+          </TouchableHighlight>
+        )
+      }}
       keyExtractor={(item, index) => index.toString()}
       style={styles.scrollBackground}
     />
@@ -140,7 +145,7 @@ const getTags = (tags) => {
  * 
  */
 const DisplayShelter = ({ route, navigation }) => {
-  const shelter = route.params;
+  const info = route.params;
   return (
     <>
       <FlatList
@@ -148,27 +153,30 @@ const DisplayShelter = ({ route, navigation }) => {
           <>
             <ImageBackground
               style={styles.largePic}
-              source={{ uri: shelter.picture }}
+              source={{ uri: info.picture }}
             >
             </ImageBackground>
-            <Text style={styles.expandedText}>Name: {shelter.name}</Text>
+            <Text style={styles.expandedText}>Name: {info.name}</Text>
+            {info.address && <Text style={styles.expandedText}>
+              Address: {info.address}
+              {info.postalCode}
+            </Text>}
             <Text style={styles.expandedText}>
-              Address: {shelter.address}
-              {shelter.postalCode}
+              phoneNumber: {info.phoneNumber}
             </Text>
+            <Text style={styles.expandedText}>Email: {info.email}</Text>
             <Text style={styles.expandedText}>
-              phoneNumber: {shelter.phoneNumber}
+              Description: {info.description}
             </Text>
-            <Text style={styles.expandedText}>Email: {shelter.email}</Text>
-            <Text style={styles.expandedText}>
-              Description: {shelter.description}
-            </Text>
-            <Text style={styles.expandedText}>Hours: {shelter.hours}</Text>
-            <Text style={styles.expandedText}>Rating: {shelter.rating}/5</Text>
-            <DisplayTags tags={shelter.tags} />
+            {info.hours && <Text style={styles.expandedText}>Hours: {info.hours}</Text>}
+            <Text style={styles.expandedText}>Rating: {info.rating}/5</Text>
+            <DisplayTags tags={info.tags} />
+            {info.website && <Button title="Go to website" onPress={() => {
+              Linking.openURL(info.website);
+            }} />}
           </>
         }
-        data={shelter.reviews}
+        data={info.reviews}
         renderItem={({ item, index }) => (
           <View style={styles.reviewBox} key={item}>
             <Text style={styles.reviewText}>"{item.content}"</Text>
@@ -294,4 +302,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Shelter;
+export default ListFromAPI;

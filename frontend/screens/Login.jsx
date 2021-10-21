@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, ScrollView, SafeAreaView, View, TouchableHighlight } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { tailwind } from 'tailwind';
 import { PrimaryHeader } from '../components/Headers';
 import TextField from '../components/TextField';
@@ -33,7 +33,7 @@ const Login = () => {
 
   const submitLogin = async () => {
     try {
-      const response = await fetch('http://10.0.2.2:3000/auth/login', {
+      const response = await fetch('http://192.168.2.49:3000/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ const Login = () => {
       if (data.access_token) {
         saveToken(data.access_token);
         navigation.navigate('Home');
-      }else setFailedLogin(true);
+      } else setFailedLogin(true);
     } catch (error) {
       console.error(error);
     }
@@ -66,8 +66,8 @@ const Login = () => {
         <View style={styles.header}>
           <PrimaryHeader text="Login" />
         </View>
-        <View style={{alignItems:'center'}}><DisplayNotif notification = {failedLoginMessage} display={failedLogin} color='indianred'/></View>
-        
+        <View style={{ alignItems: 'center' }}><DisplayNotif notification={failedLoginMessage} display={failedLogin} color='indianred' /></View>
+
         <TextField placeholder="Username" onChangeText={(text) => setUsername(text)} />
         <TextField placeholder="Password" secure={true} onChangeText={(text) => setPassword(text)} />
         <View style={styles.loginButton}>
@@ -75,7 +75,7 @@ const Login = () => {
         </View>
         <View style={styles.underlinedLinks}>
           <TouchableHighlight onPress={() => navigation.navigate('Landing')}>
-          <UnderlinedLink text="Don't have an account?"/>
+            <UnderlinedLink text="Don't have an account?" />
           </TouchableHighlight>
           <UnderlinedLink text="Can't log in?" />
         </View>
