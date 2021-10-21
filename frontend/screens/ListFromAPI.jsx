@@ -171,9 +171,9 @@ const DisplayShelter = ({ route, navigation }) => {
             {info.hours && <Text style={styles.expandedText}>Hours: {info.hours}</Text>}
             <Text style={styles.expandedText}>Rating: {info.rating}/5</Text>
             <DisplayTags tags={info.tags} />
-            <Button title="Go to website" onPress={() => {
+            {info.website ? <Button title="Go to website" onPress={() => {
               Linking.openURL(info.website);
-            }} />
+            }} /> : null}
           </>
         }
         data={info.reviews}
@@ -303,3 +303,4 @@ const styles = StyleSheet.create({
 });
 
 export default ListFromAPI;
+;
