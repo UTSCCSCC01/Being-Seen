@@ -8,7 +8,6 @@ import * as SecureStore from "expo-secure-store";
 // import Shelter from "./screens/Shelter";
 import LandingPage from "./screens/landing_page";
 import Login from "./screens/Login";
-import Merchant from "./screens/Merchant";
 import ListFromAPI from "./screens/ListFromAPI";
 
 const Stack = createNativeStackNavigator();
@@ -22,7 +21,9 @@ const Tab = createBottomTabNavigator();
 
 const Home = () => (
   <Tab.Navigator screenOptions={{ headerShown: false }}>
-    <Tab.Screen name="Merchant" component={Merchant} />
+    <Tab.Screen name="Merchant">
+      {() => <ListFromAPI query="Merchant" />}
+    </Tab.Screen>
     <Tab.Screen name="Jobs" component={View} />
     <Tab.Screen name="Profile" component={View} />
     <Tab.Screen name="Social Services">
