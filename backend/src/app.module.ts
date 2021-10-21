@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ShelterModule } from './shelter/shelter.module';
 import { ProfileModule } from './profile/profile.module';
+import { MerchantModule } from './merchant/merchant.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ProfileModule } from './profile/profile.module';
     ProfileModule,
     AuthModule,
     UsersModule,
+    MerchantModule,
   ],
   controllers: [AppController],
   providers: [AppService],
