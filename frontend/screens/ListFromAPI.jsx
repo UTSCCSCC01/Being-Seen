@@ -34,14 +34,11 @@ const capitalize = s => (s && s[0].toUpperCase() + s.slice(1)) || ""
  * @module ListFromAPI
  * @description full page of to display list of shelters and their details
  */
-function ListFromAPI({ query }) {
+ function ListFromAPI({ query }) {
   const listName = capitalize(query) + "List";
   return (
     <Stack.Navigator initialRouteName={listName}>
       <Stack.Screen
-      name = {"Review" + capitalize(query)}
-      component = {WriteReview}
-      options={{headerShown:true, headerTintColor:purpleThemeColour, headerStyle:styles.header}}
         name={listName}
         options={{ headerShown: true, headerTintColor: "#662997", headerStyle: styles.header }}
       >
@@ -52,10 +49,51 @@ function ListFromAPI({ query }) {
         component={DisplayShelter}
         options={{ headerShown: true, headerTintColor: "#662997", headerStyle: styles.header }}
       />
-
+      <Stack.Screen
+      name = {"Review " + capitalize(query)}
+      component = {WriteReview}
+      options={{headerShown:true, headerTintColor:purpleThemeColour, headerStyle:styles.header}}
+      />
     </Stack.Navigator>
   );
 }
+
+async function getInfoFromApi(query) {
+  try {
+    const response = await fetch(
+      //ipv4 localhost since running emulator
+      //10.0.2.2 is your machine's localhost when on an android emulator
+      apiPath + query,
+      //"http://192.168.2.49:3000/" + query,
+      {
+        method: "Get",
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function getInfoFromApiById(query, id) {
+  try {
+    const response = await fetch(
+      //ipv4 localhost since running emulator
+      //10.0.2.2 is your machine's localhost when on an android emulator
+      apiPath + query +'/' + id,
+      //"http://192.168.2.49:3000/" + query,
+      {
+        method: "Get",
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}
+/*
+
+      */
 
 /**
  * @function ShelterList display list of shelters
@@ -68,7 +106,7 @@ function ShelterList({ navigation, query }) {
   const [information, setInformation] = useState([
     { name: "Error " + query + " not loaded" },
   ]);
-  const [sheltersRefrshing, setSheltersRefreshing] = useState(false)
+  const [sheltersRefreshing, setSheltersRefreshing] = useState(false)
 
   const onScreenLoad = () => {
     //when load grab shelters from api and put them into the shelters state
@@ -82,35 +120,21 @@ function ShelterList({ navigation, query }) {
     onScreenLoad();
   }, []);
 
-  async function getInfoFromApi(query) {
-    try {
-      const response = await fetch(
-        //ipv4 localhost since running emulator
-        //10.0.2.2 is your machine's localhost when on an android emulator
-        //apiPath + query,
-        "http://192.168.2.49:3000/" + query,
-        {
-          method: "Get",
-        }
-      );
-      return response;
-    } catch (error) {
-      console.error(error);
-    }
-  }
   async function refreshSheltersFromApi(){
     setSheltersRefreshing(true)
-    getSheltersFromApi()
+    getInfoFromApi(query)
     setSheltersRefreshing(false)
   }
   return (
     <FlatList
       data={information}
+      refreshing={sheltersRefreshing}
+      onRefresh={refreshSheltersFromApi}
       renderItem={({ item, index, separators }) => {
         return (
           <TouchableHighlight
             onPress={() => {
-              navigation.navigate(capitalize(query) + "Details", item);
+              navigation.navigate(capitalize(query) + "Details", {item:item, query:query});
             }}
           >
             <View style={styles.box}>
@@ -162,12 +186,26 @@ const getTags = (tags) => {
  * 
  */
 const DisplayShelter = ({ route, navigation }) => {
-  const info = route.params;
+  const [refreshing, setRefreshing] = useState(false)
+  const [info, setInfo] = useState(route.params.item)
+  const query = route.params.query;
+
+  
+  async function refreshShelters(){
+    setRefreshing(true)
+    let res = await getInfoFromApiById(query, info._id)
+    if(res.status == 200){
+      res.json().then((json) => setInfo(json))
+    }
+    setRefreshing(false)
+  }
+
+  
   return (
     <>
       <FlatList
-        onRefresh={refreshShelterFromApi}
-        refreshing={refreshingShelter}
+      refreshing={refreshing}
+      onRefresh={refreshShelters}
         ListHeaderComponent={
           <>
             <ImageBackground
@@ -194,7 +232,7 @@ const DisplayShelter = ({ route, navigation }) => {
             </View> : null}
             <DisplayTags tags={info.tags} />
             {info.reviews?
-            <Button onPress={() => {navigation.navigate("Review Shelter", {shelterId:shelterId, reviewer:"215322c038ded1fcd0cfdae6"})}} title="Review This Shelter" color={purpleThemeColour}/>:
+            <Button onPress={() => {navigation.navigate("Review " + capitalize(query), {infoId:info._id, reviewer:"215322c038ded1fcd0cfdae6", query:query})}} title="Review This Shelter" color={purpleThemeColour}/>:
             null}
             {info.website ? <Button title="Go to website" onPress={() => {
               Linking.openURL(info.website);
@@ -209,7 +247,7 @@ const DisplayShelter = ({ route, navigation }) => {
             <Text style={styles.reviewText}>Rating: </Text>
             <Rating readonly="true" startingValue={item.rating} tintColor={purpleThemeColour} imageSize={25} />
             </View>
-            <Text style={styles.reviewText}>Written on {DisplayDate(item.date)}</Text>
+            <Text style={styles.reviewText}>Written on {FormatDate(item.date)}</Text>
           </View>
         )}
         keyExtractor={(item, index) => item.reviewer.toString()}
@@ -265,7 +303,7 @@ function WriteReview({route, navigation}){
       const response = await fetch(
         //ipv4 localhost since running emulator
         //10.0.2.2 is your machine's localhost when on an android emulator
-        apiPath + query +"/" + reviewParams.shelterId + "/review/" + reviewParams.reviewer,
+        apiPath + reviewParams.query +"/" + reviewParams.infoId + "/review/" + reviewParams.reviewer,
         {
           method: "Get",
         }
@@ -285,7 +323,7 @@ function WriteReview({route, navigation}){
       const response = await fetch(
         //ipv4 localhost since running emulator
         //10.0.2.2 is your machine's localhost when on an android emulator
-        apiPath +"/" + reviewParams.shelterId + "/review/" + reviewParams.reviewer,
+        apiPath + reviewParams.query+"/"+ reviewParams.infoId + "/review/" + reviewParams.reviewer,
         {
           method: "DELETE",
         }
@@ -321,7 +359,7 @@ function WriteReview({route, navigation}){
       const response = await fetch(
         //ipv4 localhost since running emulator
         //10.0.2.2 is your machine's localhost when on an android emulator
-        apiPath +"/" + reviewParams.shelterId + "/review/" + reviewParams.reviewer,
+        apiPath + reviewParams.query+"/" + reviewParams.infoId + "/review/" + reviewParams.reviewer,
         {
           method: method,
           headers: { "Content-Type": "application/json" },
