@@ -28,6 +28,9 @@ const Home = () => (
     <Tab.Screen name="Social Services">
       {() => <ListFromAPI query="Shelter" />}
     </Tab.Screen>
+    <Tab.Screen name="Education">
+      {() => <ListFromAPI query="Education" />}
+    </Tab.Screen>
   </Tab.Navigator>
 );
 
