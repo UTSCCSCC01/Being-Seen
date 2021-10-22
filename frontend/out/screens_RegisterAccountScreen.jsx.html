@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: components/UnderlinedLink.jsx</title>
+    <title>JSDoc: Source: screens/RegisterAccountScreen.jsx</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: components/UnderlinedLink.jsx</h1>
+    <h1 class="page-title">Source: screens/RegisterAccountScreen.jsx</h1>
 
     
 
@@ -27,40 +27,64 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import React from 'react';
-import PropTypes from 'prop-types';
-import { Text, StyleSheet, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, SafeAreaView, View, Linking, TouchableHighlight } from 'react-native';
 import { tailwind } from 'tailwind';
+import ScreenHeader from '../components/ScreenHeader';
+import Button from '../components/Button';
 import { useNavigation } from '@react-navigation/native';
 
 /**
- * @function UnderlinedLink
- * @module UnderlinedLink
- * @description An underlined text link
- * @prop {string} text - The text to display
- * @prop {string} to
+ * @function RegisterAccountScreen
+ * @module RegisterAccountScreen
+ * @description Signup screen
  */
-const UnderlinedLink = ({ text, to }) => {
+const RegisterAccountScreen = () => {
   const navigation = useNavigation();
 
   return (
-    &lt;TouchableHighlight onPress={() => navigation.push(to)} underlayColor="gray">
-      &lt;Text style={styles.text}>{text}&lt;/Text>
-    &lt;/TouchableHighlight>
+    &lt;SafeAreaView>
+      &lt;ScreenHeader
+        leftNode={
+          &lt;View>
+            &lt;TouchableHighlight onPress={() => navigation.goBack()} underlayColor="transparent">
+              &lt;Text style={styles.backButton}>Back&lt;/Text>
+            &lt;/TouchableHighlight>
+          &lt;/View>
+        }
+        headerText="Register"
+      />
+      &lt;View style={styles.body}>
+        &lt;Text style={styles.text}>Don't have an account? Email us today and we will create one for you! 
+        Don't miss out on the opportunities this app can give you!{'\n'}{'\n'}
+        Click below to email us and tell us what you are looking for in this app. We will be contacting you shortly with next steps.&lt;/Text>
+      &lt;View style={styles.buttonView}>
+        &lt;Button 
+          label="Register"
+          onClick={() => Linking.openURL('mailto:support@beingseen.com?subject=Register An Account&amp;body=') }
+          disabled={false}
+        />
+      &lt;/View>
+      &lt;/View>
+    &lt;/SafeAreaView>
   );
 };
 
-UnderlinedLink.propTypes = {
-  text: PropTypes.string.isRequired,
-  to: PropTypes.string.isRequired,
-};
-
 const styles = StyleSheet.create({
+  backButton: {
+    ...tailwind('text-primaryPurple text-opacity-90 text-xl'),
+  },
+  body: {
+    ...tailwind('px-4 py-6'),
+  },
   text: {
-    ...tailwind('text-base text-primaryPurple text-opacity-75 underline'),
+    ...tailwind('text-primaryPurple text-base'),
+  },
+  buttonView: {
+    ...tailwind('px-4 py-8'),
   },
 });
 
-export default UnderlinedLink;
+export default RegisterAccountScreen;
 </code></pre>
         </article>
     </section>

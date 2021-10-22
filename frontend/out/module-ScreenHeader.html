@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: TextField</title>
+    <title>JSDoc: Module: ScreenHeader</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: TextField</h1>
+    <h1 class="page-title">Module: ScreenHeader</h1>
 
     
 
@@ -38,7 +38,7 @@
     <div class="container-overview">
     
         
-            <div class="description">A single line text field</div>
+            <div class="description">Header component for a screen</div>
         
 
         
@@ -86,42 +86,13 @@
 
         <tr>
             
-                <td class="name"><code>placeholder</code></td>
+                <td class="name"><code>leftNode</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Placeholder text</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>keyboardType</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
+<span class="param-type">JSX.Element</span>
 
 
             
@@ -139,20 +110,20 @@
 
             
 
-            <td class="description last">Keyboard layout</td>
+            <td class="description last">left header component</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>textContentType</code></td>
+                <td class="name"><code>rightNode</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">JSX.Element</span>
 
 
             
@@ -170,14 +141,14 @@
 
             
 
-            <td class="description last">Type of text for autofill (iOS)</td>
+            <td class="description last">right header component</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>autoCompleteType</code></td>
+                <td class="name"><code>headerText</code></td>
             
 
             <td class="type">
@@ -201,76 +172,14 @@
 
             
 
-            <td class="description last">Type of text for autofill (Android)</td>
+            <td class="description last">header text</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>secure</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Censor text input</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>autocorrect</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">Autocorrect text input</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>onChangeText</code></td>
+                <td class="name"><code>handleOnPressLeftNode</code></td>
             
 
             <td class="type">
@@ -294,14 +203,14 @@
 
             
 
-            <td class="description last">Callback for text change</td>
+            <td class="description last">onPress function for left header component</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>onSubmitEditing</code></td>
+                <td class="name"><code>handleOnPressRightNode</code></td>
             
 
             <td class="type">
@@ -325,7 +234,69 @@
 
             
 
-            <td class="description last">Callback for submit</td>
+            <td class="description last">onPress function for right header component</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>rightContainerStyle</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">style</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">styling for right header component</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>leftContainerStyle</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">style</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">styling for left header component</td>
         </tr>
 
     
@@ -364,7 +335,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_TextField.jsx.html">components/TextField.jsx</a>, <a href="components_TextField.jsx.html#line6">line 6</a>
+        <a href="components_ScreenHeader.jsx.html">components/ScreenHeader.jsx</a>, <a href="components_ScreenHeader.jsx.html#line9">line 9</a>
     </li></ul></dd>
     
 

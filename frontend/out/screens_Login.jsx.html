@@ -26,13 +26,18 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React from 'react';
-import { StyleSheet, ScrollView, SafeAreaView, View } from 'react-native';
+            <pre class="prettyprint source linenums"><code>import React, { useState, useEffect } from 'react';
+import {
+  StyleSheet, ScrollView, SafeAreaView, View, TouchableHighlight,
+} from 'react-native';
+import * as SecureStore from 'expo-secure-store';
+import { useNavigation } from '@react-navigation/native';
 import { tailwind } from 'tailwind';
 import { PrimaryHeader } from '../components/Headers';
 import TextField from '../components/TextField';
 import Button from '../components/Button';
 import UnderlinedLink from '../components/UnderlinedLink';
+import DisplayNotif from '../components/DisplayNotif';
 
 /**
  * @function Login
@@ -40,22 +45,66 @@ import UnderlinedLink from '../components/UnderlinedLink';
  * @description Login screen
  */
 const Login = () => {
-  const hey = "adasd";
+  const androidPath = '10.0.2.2:3000/';
+  const otherPath = '192.168.2.49:3000/';
+  const failedLoginMessage = 'Error: Incorrect Username Or Password';
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [failedLogin, setFailedLogin] = useState(false);
+
+  const navigation = useNavigation();
+
+  const saveToken = async (value) => {
+    await SecureStore.setItemAsync('token', value);
+  };
+
+  const deleteToken = async (key) => {
+    await SecureStore.deleteItemAsync(key);
+  };
+
+  const submitLogin = async () => {
+    try {
+      const response = await fetch(`http://${androidPath}auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
+      const data = await response.json();
+      if (data.access_token) {
+        saveToken(data.access_token);
+        navigation.navigate('Home');
+      } else setFailedLogin(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    deleteToken('token');
+  }, []);
 
   return (
-    &lt;ScrollView>
+    &lt;ScrollView keyboardShouldPersistTaps="handled">
       &lt;SafeAreaView style={styles.view}>
         &lt;View style={styles.header}>
           &lt;PrimaryHeader text="Login" />
         &lt;/View>
-        &lt;TextField placeholder="Username" />
-        &lt;TextField placeholder="Password" secure />
+        &lt;View style={{ alignItems: 'center' }}>&lt;DisplayNotif notification={failedLoginMessage} display={failedLogin} color="indianred" />&lt;/View>
+
+        &lt;TextField placeholder="Username" onChangeText={(text) => setUsername(text)} />
+        &lt;TextField placeholder="Password" secure onChangeText={(text) => setPassword(text)} />
         &lt;View style={styles.loginButton}>
-          &lt;Button label="Enter" disabled={false} onClick={() => {}} />
+          &lt;Button label="Enter" disabled={false} onClick={submitLogin} />
         &lt;/View>
         &lt;View style={styles.underlinedLinks}>
-          &lt;UnderlinedLink text="Don't have an account?" />
-          &lt;UnderlinedLink text="Can't log in?" />
+          &lt;UnderlinedLink text="Don't have an account?" to="RegisterAccount" />
+          &lt;UnderlinedLink text="Can't log in?" to="RecoverAccount" />
+          &lt;UnderlinedLink text="Learn More About Being Seen" to="Landing"/>
         &lt;/View>
       &lt;/SafeAreaView>
     &lt;/ScrollView>
@@ -88,13 +137,13 @@ export default Login;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Button.html">Button</a></li><li><a href="module-Headers.html">Headers</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-TextField.html">TextField</a></li><li><a href="module-UnderlinedLink.html">UnderlinedLink</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Button.html">Button</a></li><li><a href="module-DisplayNotif.html">DisplayNotif</a></li><li><a href="module-DisplayShelter%2520DisplayShelter.html">DisplayShelter DisplayShelter</a></li><li><a href="module-DisplayTags.html">DisplayTags</a></li><li><a href="module-getTags%2520getTags.html">getTags getTags</a></li><li><a href="module-Headers.html">Headers</a></li><li><a href="module-LandingPage.html">LandingPage</a></li><li><a href="module-ListFromAPI.html">ListFromAPI</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-RecoverAccountScreen.html">RecoverAccountScreen</a></li><li><a href="module-RegisterAccountScreen.html">RegisterAccountScreen</a></li><li><a href="module-ScreenHeader.html">ScreenHeader</a></li><li><a href="module-ShelterList%2520ShelterList.html">ShelterList ShelterList</a></li><li><a href="module-TextField.html">TextField</a></li><li><a href="module-UnderlinedLink.html">UnderlinedLink</a></li><li><a href="module-WriteReview.html">WriteReview</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Oct 03 2021 20:07:10 GMT-0400 (Eastern Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Oct 22 2021 18:09:49 GMT-0400 (Eastern Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>
