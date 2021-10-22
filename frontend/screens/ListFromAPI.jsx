@@ -295,7 +295,6 @@ const DisplayShelter = ({ route, navigation }) => {
  * @module WriteReview
  * @description displays the page responsible for handling the creation/editing of reviews
  * @param {*} param0 recieves object containing navigation and routing params
- * @returns 
  */
 function WriteReview({route, navigation}){
   const [review, setReview] = useState(
