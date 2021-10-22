@@ -187,6 +187,17 @@ const getTags = (tags) => {
   return toRet
 }
 
+export function openPhone(phone){
+  let phoneNumber
+  if (Platform.OS !== 'android') {
+    phoneNumber = `telprompt:${phone}`;
+  }
+  else  {
+    phoneNumber = `tel:${phone}`;
+  }
+  return Linking.openURL(phoneNumber);
+}
+
 /**
  * @function DisplayShelter displays expanded details of a shelter
  * @module DisplayShelter DisplayShelter
@@ -209,6 +220,7 @@ const DisplayShelter = ({ route, navigation }) => {
     setRefreshing(false)
   }
 
+
   
   return (
     <>
@@ -229,9 +241,14 @@ const DisplayShelter = ({ route, navigation }) => {
               Address: {info.address}
               {info.postalCode}
             </Text>: null}
-            <Text style={styles.expandedText}>
-              phoneNumber: {info.phoneNumber}
-            </Text>
+            {info.phoneNumber?
+            <View style={{flexDirection:'row'}}>
+              <Text style={styles.expandedText}> Phone Number: </Text>
+              <TouchableHighlight underlayColor='white' onPress={()=>{openPhone(info.phoneNumber)}}>
+              <Text style={styles.expandedTextUnderlines} color='purple'> {info.phoneNumber}</Text>
+              </TouchableHighlight>
+            </View>
+            :null }
             {info.email ? 
             <View style={{flexDirection:'row'}}>
               <Text style={styles.expandedText}>Email:</Text>
