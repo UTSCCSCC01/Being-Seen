@@ -146,7 +146,7 @@ function ShelterList({ navigation, query }) {
             }}
           >
             <View style={styles.box}>
-              <Image style={styles.icon} source={{ uri: item.picture }} />
+              {item.picture?<Image style={styles.icon} source={{ uri: item.picture }} /> : null}
               <View style={{ flex: 1 }}>
                 <Text style={styles.text} numberOfLines={1}>
                   Name: {item.name}
@@ -216,11 +216,13 @@ const DisplayShelter = ({ route, navigation }) => {
       onRefresh={refreshShelters}
         ListHeaderComponent={
           <>
+          {info.picture?
             <ImageBackground
               style={styles.largePic}
               source={{ uri: info.picture }}
             >
             </ImageBackground>
+          : null}
             <Text style={styles.expandedText}>Name: {info.name}</Text>
             {info.address ? <Text style={styles.expandedText}>
               Address: {info.address}

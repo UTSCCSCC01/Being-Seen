@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module';
 import { ShelterModule } from './shelter/shelter.module';
 import { ProfileModule } from './profile/profile.module';
 import { MerchantModule } from './merchant/merchant.module';
+import { JobModule } from './jobresource/jobresource.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { MerchantModule } from './merchant/merchant.module';
     UsersModule,
     MerchantModule,
     EducationModule,
+    JobModule,
   ],
   controllers: [AppController],
   providers: [AppService],
