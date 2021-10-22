@@ -9,6 +9,8 @@ import * as SecureStore from "expo-secure-store";
 import LandingPage from "./screens/landing_page";
 import Login from "./screens/Login";
 import ListFromAPI from "./screens/ListFromAPI";
+import RegisterAccountScreen from "./screens/RegisterAccountScreen";
+import RecoverAccountScreen from "./screens/RecoverAccountScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -58,6 +60,8 @@ export default function App() {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Landing" component={LandingPage} />
+        <Stack.Screen name="RegisterAccount" component={RegisterAccountScreen} />
+        <Stack.Screen name="RecoverAccount" component={RecoverAccountScreen} />
       </Stack.Navigator>
     </NavigationContainer>
     // <Login />
