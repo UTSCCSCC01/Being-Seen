@@ -24,7 +24,9 @@ const Home = () => (
     <Tab.Screen name="Merchant">
       {() => <ListFromAPI query="Merchant" />}
     </Tab.Screen>
-    <Tab.Screen name="Jobs" component={View} />
+    <Tab.Screen name="Jobs">
+      {()=> <ListFromAPI query = 'Job'/> }
+    </Tab.Screen>
     <Tab.Screen name="Profile" component={View} />
     <Tab.Screen name="Social Services">
       {() => <ListFromAPI query="Shelter" />}
