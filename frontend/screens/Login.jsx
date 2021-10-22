@@ -76,6 +76,7 @@ const Login = () => {
         <View style={styles.underlinedLinks}>
           <UnderlinedLink text="Don't have an account?" to="RegisterAccount" />
           <UnderlinedLink text="Can't log in?" to="RecoverAccount" />
+          <UnderlinedLink text="Learn More About Being Seen" to="Landing"/>
         </View>
       </SafeAreaView>
     </ScrollView>
