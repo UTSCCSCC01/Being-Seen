@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Image } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -11,6 +11,7 @@ import Login from "./screens/Login";
 import ListFromAPI from "./screens/ListFromAPI";
 import RegisterAccountScreen from "./screens/RegisterAccountScreen";
 import RecoverAccountScreen from "./screens/RecoverAccountScreen";
+import icons from "./constants/icons";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -22,8 +23,27 @@ const Tab = createBottomTabNavigator();
  */
 
 const Home = () => (
-  <Tab.Navigator screenOptions={{ headerShown: false }}>
-    <Tab.Screen name="Merchant">
+  <Tab.Navigator screenOptions={({ route }) => ({
+    headerShown: false,
+    tabBarIcon: ({}) => {
+      let iconName;
+
+      if (route.name === "Merchants") {
+        iconName = icons.merchants;
+      } else if (route.name === "Jobs") {
+        iconName = icons.jobs;
+      } else if (route.name === "Profile") {
+        iconName = icons.profile;
+      } else if (route.name === "Social Services") {
+        iconName = icons.social_services;
+      } else if (route.name === "Education") {
+        iconName = icons.education;
+      }
+
+      return <Image source={iconName} style={{ width: 30, height: 30 }} />;
+    }
+  })}>
+    <Tab.Screen name="Merchants">
       {() => <ListFromAPI query="Merchant" />}
     </Tab.Screen>
     <Tab.Screen name="Jobs">

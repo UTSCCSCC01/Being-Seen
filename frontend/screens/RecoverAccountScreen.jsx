@@ -5,6 +5,11 @@ import ScreenHeader from '../components/ScreenHeader';
 import Button from '../components/Button';
 import { useNavigation } from '@react-navigation/native';
 
+/**
+ * @function RecoverAccountScreen
+ * @module RecoverAccountScreen
+ * @description Account recovery screen
+ */
 const RecoverAccountScreen = () => {
   const navigation = useNavigation();
 

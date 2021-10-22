@@ -6,6 +6,18 @@ import PropTypes from 'prop-types';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { tailwind } from 'tailwind';
 
+/**
+ * @function ScreenHeader
+ * @module ScreenHeader
+ * @description Header component for a screen
+ * @prop {JSX.Element} [leftNode] - left header component
+ * @prop {JSX.Element} [rightNode] - right header component
+ * @prop {string} [headerText] - header text
+ * @prop {Function} [handleOnPressLeftNode] - onPress function for left header component
+ * @prop {Function} [handleOnPressRightNode] - onPress function for right header component
+ * @prop {style} [rightContainerStyle] - styling for right header component
+ * @prop {style} [leftContainerStyle] - styling for left header component
+ */
 const ScreenHeader = ({
   leftNode,
   rightNode,
