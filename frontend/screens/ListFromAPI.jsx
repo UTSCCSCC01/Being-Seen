@@ -17,10 +17,11 @@ import {
   ImageBackground,
   TextInput,
   Alert,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  Touchable,
+  Linking
 } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import * as Linking from 'expo-linking';
 import * as SecureStore from 'expo-secure-store';
 import jwt_decode from 'jwt-decode'
 
@@ -231,7 +232,14 @@ const DisplayShelter = ({ route, navigation }) => {
             <Text style={styles.expandedText}>
               phoneNumber: {info.phoneNumber}
             </Text>
-            <Text style={styles.expandedText}>Email: {info.email}</Text>
+            {info.email ? 
+            <View style={{flexDirection:'row'}}>
+              <Text style={styles.expandedText}>Email:</Text>
+              <TouchableHighlight  underlayColor='white' onPress={()=> {Linking.openURL(`mailto:${info.email}?subject=&body=`)}}>
+                <Text style={styles.expandedTextUnderlines} color='purple'> {info.email}</Text>
+              </TouchableHighlight>
+            </View>
+            : null}
             <Text style={styles.expandedText}>
               Description: {info.description}
             </Text>
@@ -515,6 +523,13 @@ const styles = StyleSheet.create({
     margin: 2,
     fontSize: 16,
     color: purpleThemeColour,
+  },
+  expandedTextUnderlines:{
+    margin: 2,
+    fontSize: 16,
+    color: purpleThemeColour,
+    textDecorationLine: 'underline',
+    textDecorationColor: purpleThemeColour
   },
   reviewText: {
     //flex: 1,
