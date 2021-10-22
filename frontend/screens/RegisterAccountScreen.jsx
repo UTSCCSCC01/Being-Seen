@@ -5,6 +5,11 @@ import ScreenHeader from '../components/ScreenHeader';
 import Button from '../components/Button';
 import { useNavigation } from '@react-navigation/native';
 
+/**
+ * @function RegisterAccountScreen
+ * @module RegisterAccountScreen
+ * @description Signup screen
+ */
 const RegisterAccountScreen = () => {
   const navigation = useNavigation();
 
