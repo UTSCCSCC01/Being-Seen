@@ -5,7 +5,8 @@
     },
     "extends": [
         "plugin:react/recommended",
-        "airbnb"
+        "airbnb",
+        "eslint-config-prettier"
     ],
     "parserOptions": {
         "ecmaFeatures": {
@@ -15,7 +16,8 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react"
+        "react",
+        "eslint-config-prettier"
     ],
     "rules": {
         "no-use-before-define": "off",
@@ -24,6 +26,7 @@
         "linebreak-style": "off",
         "prettier/prettier": ["error", {
             "endOfLine": "auto"
-        }]
+        }],
+        "arrow-body-style": "off"
     }
 }
