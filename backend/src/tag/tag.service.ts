@@ -47,13 +47,26 @@ export class TagService {
     async createTag(name:string){
         let tagFound = await this.getTagByName(name)
         if(tagFound){
-            return
+            return tagFound
         } 
         const TagJob = new this.tagModel({
             tagName:name
         })
         const result = await TagJob.save()
-        return result._id
+        return result
+    }
+    /**
+     * creates a tag Object within for each entry in tagList (if it doesn't already exist) and returns list of said tag objects
+     * @param tagList list containing names of tags to be created
+     * @returns list of tag objects that have been created within db
+     */
+    async createTagList(tagList: string[]){
+        let retList = []
+        for(let i = 0; i < tagList.length; i++){
+            let result = await this.createTag(tagList[i])
+            retList.push(result)
+        }
+        return retList
     }
     /**
      * Edits Tag with id of id to have tagName of name

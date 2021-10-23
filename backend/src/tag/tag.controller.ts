@@ -10,16 +10,23 @@ export class TagController {
         const tag = await this.tagService.getTagByName(tagName)
         return tag
     }
-
+    
     @Post()
     async getTagList(@Body('tagList') tagList:string[]){
         let list = await this.tagService.getListOfTags(tagList)
         return list
     }
+    /*
     @Put("/:tagName")
     async createTag(@Param('tagName') tagName:string){
         let id = await this.tagService.createTag(tagName)
         return id
+    }
+    */
+    @Put()
+    async createTagList(@Body('tagList') tagList:string[]){
+        let list = await this.tagService.createTagList(tagList)
+        return list
     }
     @Patch('/:tagId')
     async editTag(@Param('tagId') tagId: string,
