@@ -2,10 +2,12 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { JobResource, JobResourceDocument } from 'src/Schemas/jobresource.schema';
+import { TagService } from 'src/tag/tag.service';
 
 @Injectable()
 export class JobService {
-    constructor(@InjectModel("JobResource") private readonly jobModel: Model<JobResourceDocument>){}
+    constructor(@InjectModel("JobResource") private readonly jobModel: Model<JobResourceDocument>,
+    private readonly tagService: TagService){}
     /**
      * Returns all job resources from db
      * @returns all job resrouces from db
@@ -37,10 +39,11 @@ export class JobService {
      * @returns id of new/modified resource
      */
     async createJobResource(name:string, description:string, website="", email="", phoneNumber="", tags=[], address="", postalCode="", picture=""){
+        let tagList = await this.tagService.createTagList(tags)
         const newJob = new this.jobModel({
             name:name,
             description:description,
-            tags:this.convertOidArr(tags),
+            tags:tagList,
             website:website,
             email:email,
             phoneNumber:phoneNumber,
@@ -49,6 +52,7 @@ export class JobService {
             picture:picture
         })
         const result = await newJob.save()
+        console.log(result)
         return result.id
         
     }

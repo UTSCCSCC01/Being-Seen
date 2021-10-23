@@ -49,7 +49,7 @@ export class JobResourceController {
     @Body('website') website: string,
     @Body('email') email: string,
     @Body('phoneNumber') phoneNumber: string,
-    @Body('tags') tags: Tag[],
+    @Body('tags') tags: string[],
     @Body('address') address:string,
     @Body('postalCode') postalCode:string,
     @Body('picture') picture:string
