@@ -44,7 +44,7 @@ export class EducationController {
     @Body('website') website:string,
     @Body('email') email:string,
     @Body('phoneNumber') phoneNumber:string,
-    @Body('tags') tags:Tag[]){
+    @Body('tags') tags:string[]){
         const newId = await this.educationService.createEducationResource(name,description,website,email,phoneNumber,tags)
         return newId
     }
