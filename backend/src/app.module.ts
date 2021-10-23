@@ -10,6 +10,7 @@ import { ShelterModule } from './shelter/shelter.module';
 import { ProfileModule } from './profile/profile.module';
 import { MerchantModule } from './merchant/merchant.module';
 import { JobModule } from './jobresource/jobresource.module';
+import { TagModule } from './tag/tag.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { JobModule } from './jobresource/jobresource.module';
     MerchantModule,
     EducationModule,
     JobModule,
+    TagModule,
   ],
   controllers: [AppController],
   providers: [AppService],
