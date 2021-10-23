@@ -13,10 +13,11 @@ export class TagService {
      * @returns Tag with name tagName
      */
     async getTagByName(tagName:string){
+        let name = tagName.replace(" ", "_")
         //const tag = await this.tagModel.findById(tagName)
         try{
             //finding by tagName returns an array: we return first element since tagName SHOULD be a primary key
-            const tag = await this.tagModel.find().where('tagName').equals(tagName)
+            const tag = await this.tagModel.find().where('tagName').equals(name)
             //return first element in array, which should be only element
             return tag[0];
         }catch(error){
@@ -42,10 +43,11 @@ export class TagService {
     }
     /**
      * creates Tag object in database with tagName name, if no such tag already exists
-     * @param name 
-     * @returns 
+     * @param tagName name of tag to be created if it doesnt not exist 
+     * @returns created tag or tag that already exists with tagName of tagName
      */
-    async createTag(name:string){
+    async createTag(tagName:string){
+        let name = tagName.replace(" ", "_")
         let tagFound = await this.getTagByName(name)
         if(tagFound){
             return tagFound
@@ -72,9 +74,10 @@ export class TagService {
     /**
      * Edits Tag with id of id to have tagName of name
      * @param id id of tag to be edited
-     * @param name new name of tag
+     * @param tagName new name of tag
      */
-    async editTagById(id:string, name:string){
+    async editTagById(id:string, tagName:string){
+        let name = tagName.replace(" ", "_")
         try{
             let tag = await this.tagModel.findById(id)
             tag.tagName = name
@@ -85,7 +88,12 @@ export class TagService {
         }
         
     }
-
+    /**
+     * Returns a list of schemas given by model that contain all tags within tagList
+     * @param tagList list of tags to search for
+     * @param model model of schema to search for
+     * @returns all objects within model schema that contain all tags within tagList
+     */
     async searchForObjectsWithTags(tagList: string[], model){
         let listOfTags = await this.getListOfTags(tagList)
         let listOfModels = await model.find({ tags: { $all: listOfTags } } )

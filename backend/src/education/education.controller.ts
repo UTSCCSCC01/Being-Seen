@@ -38,7 +38,7 @@ export class EducationController {
      * @param tags - tags used to describe resource
      * @returns id of modified or new resource
      */
-    @Put()
+    @Post()
     async createEducationResource(@Body("name") name:string,
     @Body("description") description:string,
     @Body('website') website:string,

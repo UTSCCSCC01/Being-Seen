@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Put, Delete, Param } from '@nestjs/common';
+import { Controller, Get, Body, Put, Delete, Param, Post } from '@nestjs/common';
 import { isPostalCode } from 'class-validator';
 import { Tag } from 'src/Schemas/tag.schema';
 import { JobService } from './jobresource.service';
@@ -42,7 +42,7 @@ export class JobResourceController {
    * @param picture url of picture of resources
    * @returns id of modified or new resource
    */
-  @Put()
+  @Post()
   async createJobResource(
     @Body('name') name: string,
     @Body('description') description: string,
