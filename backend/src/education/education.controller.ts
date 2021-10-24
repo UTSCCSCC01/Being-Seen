@@ -58,4 +58,15 @@ export class EducationController {
         await this.educationService.deleteEducationResource(educationId)
         return
     }
+    
+    /**
+     * returns a list of education resources that have all tags mentioned in tagList
+     * @param tagList list of tags to search by
+     * @returns returns a list of education resources that have all tags mentioned in tagList
+     */
+    @Put()
+    async searchEducation(@Body('tagList') tagList:string[]){
+        const eduList = await this.educationService.searchEducationByTags(tagList)
+        return eduList;
+    }
 }

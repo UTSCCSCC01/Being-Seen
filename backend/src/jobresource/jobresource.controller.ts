@@ -77,4 +77,15 @@ export class JobResourceController {
     await this.jobService.deleteJobResource(jobId);
     return;
   }
+  
+  /**
+   * returns a list of education resources that have all tags mentioned in tagList
+   * @param tagList list of tags to search by
+   * @returns returns a list of education resources that have all tags mentioned in tagList
+   */
+  @Put()
+  async searchJobs(@Body('tagList') tagList:string[]){
+    const result = await this.jobService.searchJobByTags(tagList)
+    return result
+  }
 }

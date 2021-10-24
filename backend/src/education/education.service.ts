@@ -59,6 +59,16 @@ export class EducationService {
           throw new NotFoundException('Could not find resource.');
         }
     }
+
+    /**
+     * returns a list of education resources that have all tags mentioned in tagList
+     * @param tagList list of tags to search by
+     * @returns returns a list of education resources that have all tags mentioned in tagList
+     */
+    async searchEducationByTags(tagList: string[]){
+        const eduList = await this.tagService.searchForObjectsWithTags(tagList, this.educationModel);
+        return eduList;
+    }
 //HELPER FUNCTIONS BELOW THIS LINE
 //---------------------------------------------------
     private async findEducation(educationId: string): Promise<EducationResource>{

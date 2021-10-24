@@ -66,6 +66,16 @@ export class JobService {
           throw new NotFoundException('Could not find resource.');
         }
     }
+
+    /**
+     * returns a list of job resources that have all tags mentioned in tagList
+     * @param tagList list of tags to search by
+     * @returns returns a list of job resources that have all tags mentioned in tagList
+     */
+    async searchJobByTags(tagList: string[]){
+        const result = await this.tagService.searchForObjectsWithTags(tagList, this.jobModel)
+        return result;
+    }
 //HELPER FUNCTIONS BELOW THIS LINE
 //---------------------------------------------------
     private async findJob(jobId: string): Promise<JobResource>{
