@@ -37,7 +37,6 @@ export class TagService {
                 let tagObj = await this.getTagByName(tagList[i])
                 listOfTags.push(tagObj)
             }catch(error){}
-            console.log(listOfTags)
         }
         return listOfTags
     }
@@ -96,13 +95,7 @@ export class TagService {
      */
     async searchForObjectsWithTags(tagList: string[], model){
         let listOfTags = await this.getListOfTags(tagList)
-        console.log('list of tags:')
-        console.log(typeof(listOfTags))
-        console.log(listOfTags)
-        let query = await model.find({ tags: { $all: listOfTags } } ).getFilter()
         let listOfModels = await model.find({ tags: { $all: listOfTags } } ).exec()
-        console.log('list of Models:')
-        console.log(listOfModels)
         return listOfModels;
     }
 }
