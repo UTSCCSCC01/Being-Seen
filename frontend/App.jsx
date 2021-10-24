@@ -24,7 +24,7 @@ const Home = () => (
   <Tab.Navigator screenOptions={{ headerShown: false }}>
     <Tab.Screen name="Merchant" component={Merchant} />
     <Tab.Screen name="Jobs" component={View} />
-    <Tab.Screen name="Profile" component={View} />
+    <Tab.Screen name="Profile" component={Profile} />
     <Tab.Screen name="Social Services">
       {() => <ListFromAPI query="Shelter" />}
     </Tab.Screen>
