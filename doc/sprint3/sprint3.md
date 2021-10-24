@@ -3,16 +3,16 @@
 ## Sprint goal
 Complete as many stories as possible so last sprint may be spent making final touches to app and ui as well as to give time for testing
 
-## Spikes: 
-Figure out how to recognize first sign in, figure out backend/display of newsreel, figure out search bar on frontend with recognizing spaces
+## Spikes
+Figure out how to recognize first sign in, figure out backend/display of newsreel, figure out search bar on frontend with recognizing spaces\
 
-## Team Capacity: 
+## Team Capacity
 115 hours
 
-## participants: 
+## Participants
 Ali, Glenn, Mark, Yiyang, Lianting, Kyle
 
-## User Stories/Tasks:
+## User Stories/Tasks
 
 BRUT-5: As Alex, I should be able to filter for social services based on criteria so that I can more easily find social services that I may need. (8 points) - Yiyang
 	Implement backend of searching (4 hours)
