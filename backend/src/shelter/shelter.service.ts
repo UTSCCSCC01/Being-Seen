@@ -128,6 +128,13 @@ export class ShelterService {
         return newShelter.id
     }
 
+    async searchShelterByTags(tagList: string[]){
+        let shelterList
+        if(tagList.length == 0) shelterList = await this.getAllShelters()
+        else shelterList = await this.tagService.searchForObjectsWithTags(tagList, this.shelterModel);
+        return shelterList;
+    }
+
 
     // All Helper Functions Below This Line//
     //--------------------------------------------------------//

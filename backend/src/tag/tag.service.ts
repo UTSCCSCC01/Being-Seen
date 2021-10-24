@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Query } from 'mongoose';
 import { Service } from 'src/Schemas/service.schema';
 import { TagDocument } from 'src/Schemas/tag.schema';
 
@@ -96,7 +96,13 @@ export class TagService {
      */
     async searchForObjectsWithTags(tagList: string[], model){
         let listOfTags = await this.getListOfTags(tagList)
-        let listOfModels = await model.find({ tags: { $all: listOfTags } } )
+        console.log('list of tags:')
+        console.log(typeof(listOfTags))
+        console.log(listOfTags)
+        let query = await model.find({ tags: { $all: listOfTags } } ).getFilter()
+        let listOfModels = await model.find({ tags: { $all: listOfTags } } ).exec()
+        console.log('list of Models:')
+        console.log(listOfModels)
         return listOfModels;
     }
 }

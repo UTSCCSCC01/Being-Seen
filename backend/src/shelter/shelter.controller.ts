@@ -56,5 +56,10 @@ export class ShelterController {
         return newId
     }
 
+    @Put()
+    async searchShelter(@Body('tagList') tagList:string[]){
+        let shelters = await this.shelterService.searchShelterByTags(tagList)
+        return shelters
+    }
     
 }
