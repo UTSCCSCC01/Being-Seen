@@ -1,13 +1,13 @@
 # Sprint 3
 
-## Sprint goal
-Complete as many stories as possible so last sprint may be spent making final touches to app and ui as well as to give time for testing
+## Sprint Goal
+Complete as many stories as possible so last sprint may be spent making final touches to app and ui as well as to give time for testing.
 
 ## Spikes
-Figure out how to recognize first sign in, figure out backend/display of newsreel, figure out search bar on frontend with recognizing spaces\
+Figure out how to recognize first sign in, figure out backend/display of newsreel, figure out search bar on frontend with recognizing spaces.
 
 ## Team Capacity
-115 hours
+**115 hours**
 
 ## Participants
 Ali, Glenn, Mark, Yiyang, Lianting, Kyle
