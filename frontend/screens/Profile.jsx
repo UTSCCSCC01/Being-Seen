@@ -20,16 +20,14 @@ import { NavigationContainer } from "@react-navigation/native";
 
 /**
  *
- * @function Profile
- * @module Profile
+ * @function Profile Display profile tab
+ * @module Profile Profile
  * @description full page of to display profile 
  */
 function Profile() {
-  const [profile, setProfile] = useState({
-    name: "default name",
-    story: "default story",
-    balance: 0,
-  });
+  const [name, setName] = useState('');
+  const [story, setStory] = useState('');
+  const [balance, setBalance] = useState(0);
 
   async function getProfile() {
     try {
@@ -50,14 +48,18 @@ function Profile() {
 
   useEffect(() => {
     getProfile()
-      .then((response) => response.json())
-      .then((json) => setProfile(json))
+      .then((response) => response.json()) // handles parsing
+      .then((responseJSON) => { // handles setting
+        setName(responseJSON.name);
+        setStory(responseJSON.story);
+        setBalance(responseJSON.balance);
+      })
       .catch((error) => console.error(error));
   }, []);
 
   // TODO RETURN component
   return (
-	  <Text>{profile.name} {profile.story}</Text>
+	  <Text>{name} {story} {balance}</Text>
   )
 }
 
