@@ -94,7 +94,12 @@ export class TagService {
      * @returns all objects within model schema that contain all tags within tagList
      */
     async searchForObjectsWithTags(tagList: string[], model){
-        let listOfTags = await this.getListOfTags(tagList)
+        let listOfTags
+        if(tagList.length == 0){
+            listOfTags = await model.find().exec()
+            return listOfTags;
+        }
+        listOfTags = await this.getListOfTags(tagList)
         let listOfModels = await model.find({ tags: { $all: listOfTags } } ).exec()
         return listOfModels;
     }
