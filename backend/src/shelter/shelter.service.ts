@@ -127,6 +127,17 @@ export class ShelterService {
         newShelter.save()
         return newShelter.id
     }
+    /**
+     * returns list of shelters that have tags mentioned in tagList
+     * @param tagList list of tags to search by
+     * @returns list of shelters that have tags mentioned in tagList
+     */
+    async searchShelterByTags(tagList: string[]){
+        let shelterList
+        if(tagList.length == 0) shelterList = await this.getAllShelters()
+        else shelterList = await this.tagService.searchForObjectsWithTags(tagList, this.shelterModel);
+        return shelterList;
+    }
 
 
     // All Helper Functions Below This Line//

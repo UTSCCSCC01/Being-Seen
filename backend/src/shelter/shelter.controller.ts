@@ -55,6 +55,15 @@ export class ShelterController {
         const newId = await this.shelterService.createShelter(name,address,postalCode,phoneNumber,email,description,hours,tags,picture)
         return newId
     }
-
+    /**
+     * returns list of shelters that have tags mentioned in tagList
+     * @param tagList list of tags to search by
+     * @returns list of shelters that have tags mentioned in tagList
+     */
+    @Put()
+    async searchShelter(@Body('tagList') tagList:string[]){
+        let shelters = await this.shelterService.searchShelterByTags(tagList)
+        return shelters
+    }
     
 }
