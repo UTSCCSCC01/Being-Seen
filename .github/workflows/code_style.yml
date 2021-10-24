@@ -10,13 +10,13 @@ jobs:
       - name: Enter frontend directory
         run: cd frontend
       - name: Install Eslint
-        run: npm install @typescript-eslint/eslint-plugin \
-              @typescript-eslint/parser \
-              eslint \
-              eslint-config-prettier \
-              eslint-plugin-prettier \
-              eslint-plugin-react \
-              eslint-plugin-react-native \
+        run: npm install @typescript-eslint/eslint-plugin
+              @typescript-eslint/parser
+              eslint
+              eslint-config-prettier
+              eslint-plugin-prettier
+              eslint-plugin-react 
+              eslint-plugin-react-native
               eslint-plugin-simple-import-sort
       - name: Lint
         run: npm run lint:check
@@ -41,13 +41,13 @@ jobs:
       - name: Enter backend directory
         run: cd backend
       - name: Install Eslint
-        run: npm install @typescript-eslint/eslint-plugin \
-              @typescript-eslint/parser \
-              eslint \
-              eslint-config-prettier \
-              eslint-plugin-prettier \
-              eslint-plugin-react \
-              eslint-plugin-react-native \
+        run: npm install @typescript-eslint/eslint-plugin
+              @typescript-eslint/parser
+              eslint
+              eslint-config-prettier
+              eslint-plugin-prettier
+              eslint-plugin-react
+              eslint-plugin-react-native
               eslint-plugin-simple-import-sort
       - name: Lint
         run: npm run lint:check
