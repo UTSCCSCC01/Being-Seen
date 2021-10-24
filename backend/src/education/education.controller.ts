@@ -38,13 +38,13 @@ export class EducationController {
      * @param tags - tags used to describe resource
      * @returns id of modified or new resource
      */
-    @Put()
+    @Post()
     async createEducationResource(@Body("name") name:string,
     @Body("description") description:string,
     @Body('website') website:string,
     @Body('email') email:string,
     @Body('phoneNumber') phoneNumber:string,
-    @Body('tags') tags:Tag[]){
+    @Body('tags') tags:string[]){
         const newId = await this.educationService.createEducationResource(name,description,website,email,phoneNumber,tags)
         return newId
     }

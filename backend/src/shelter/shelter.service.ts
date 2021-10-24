@@ -4,12 +4,14 @@ import { Model, Mongoose, ObjectId, Schema, Types } from 'mongoose';
 import { execPath } from 'process';
 import { Review } from 'src/Schemas/review.schema';
 import { Tag } from 'src/Schemas/tag.schema';
+import { TagService } from 'src/tag/tag.service';
 import { Shelter, ShelterDocument } from '../Schemas/shelter.schema';
 
 @Injectable()
 export class ShelterService {
 
-    constructor(@InjectModel("Shelter") private readonly shelterModel: Model<ShelterDocument>){}
+    constructor(@InjectModel("Shelter") private readonly shelterModel: Model<ShelterDocument>,
+    private readonly tagService: TagService){}
     
     /**
      * retrieves all shelter schemas from db
@@ -109,9 +111,8 @@ export class ShelterService {
      * @returns new shelter id
      */
     async createShelter(name:string, address:string, postalCode:string, phoneNumber:string, email:string,
-    description:string, hours:string, tags:Tag[], picture:string){
-        let review = []
-        let rating = []
+    description:string, hours:string, tags:string[], picture:string){
+        let tagList = await this.tagService.createTagList(tags)
         const newShelter = new this.shelterModel({
             name:name,
             address:address,
@@ -120,7 +121,7 @@ export class ShelterService {
             email:email,
             description:description,
             hours:hours,
-            tags: this.convertOidArr(tags),
+            tags: tagList,
             picture:picture
         })
         newShelter.save()

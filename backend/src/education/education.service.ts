@@ -2,10 +2,12 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { EducationResource, EducationResourceDocument } from 'src/Schema/educationresource.schema';
+import { TagService } from 'src/tag/tag.service';
 
 @Injectable()
 export class EducationService {
-    constructor(@InjectModel("EducationResource") private readonly educationModel: Model<EducationResourceDocument>){}
+    constructor(@InjectModel("EducationResource") private readonly educationModel: Model<EducationResourceDocument>,
+    private readonly tagService: TagService){}
     /**
      * Returns all education resources from db
      * @returns all education resrouces from db
@@ -34,10 +36,11 @@ export class EducationService {
      * @returns id of new/modified resource
      */
     async createEducationResource(name:string, description:string, website="", email="", phoneNumber="", tags=[]){
+        let tagList = await this.tagService.createTagList(tags)
         const newEducation = new this.educationModel({
             name:name,
             description:description,
-            tags:this.convertOidArr(tags),
+            tags:tagList,
             website:website,
             email:email,
             phoneNumber:phoneNumber

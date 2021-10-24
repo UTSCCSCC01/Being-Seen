@@ -50,7 +50,7 @@ export class ShelterController {
     @Body('email') email:string,
     @Body('description') description:string,
     @Body('hours') hours:string,
-    @Body('tags') tags:Tag[],
+    @Body('tags') tags:string[],
     @Body('picture') picture:string){
         const newId = await this.shelterService.createShelter(name,address,postalCode,phoneNumber,email,description,hours,tags,picture)
         return newId
