@@ -1,0 +1,67 @@
+name: 'CODE_STYLE'
+on: pull_request
+jobs:
+  LINT_FRONTEND:
+    name: LINT_FRONTEND
+    runs-on: ubuntu-latest
+    container: node:14.17.0
+    steps:
+      - uses: actions/checkout@v2
+      - name: Enter frontend directory
+        run: cd frontend
+      - name: Install Eslint
+        run: yarn add \
+              @typescript-eslint/eslint-plugin \
+              @typescript-eslint/parser \
+              eslint \
+              eslint-config-prettier \
+              eslint-plugin-prettier \
+              eslint-plugin-react \
+              eslint-plugin-react-native \
+              eslint-plugin-simple-import-sort
+      - name: Lint
+        run: yarn lint:check
+  FORMAT_FRONTEND:
+    name: FORMAT_FRONTEND
+    runs-on: ubuntu-latest
+    container: node:14.17.0
+    steps: 
+      - uses: actions/checkout@v2
+      - name: Enter frontend directory
+        run: cd frontend
+      - name: Install Prettier
+        run: yarn add prettier
+      - name: Format
+        run: yarn format:check
+  LINT_BACKEND:
+    name: LINT_BACKEND
+    runs-on: ubuntu-latest
+    container: node:14.17.0
+    steps:
+      - uses: actions/checkout@v2
+      - name: Enter frontend directory
+        run: cd frontend
+      - name: Install Eslint
+        run: yarn add \
+              @typescript-eslint/eslint-plugin \
+              @typescript-eslint/parser \
+              eslint \
+              eslint-config-prettier \
+              eslint-plugin-prettier \
+              eslint-plugin-react \
+              eslint-plugin-react-native \
+              eslint-plugin-simple-import-sort
+      - name: Lint
+        run: yarn lint:check
+  FORMAT_BACKEND:
+    name: FORMAT_FRONTEND
+    runs-on: ubuntu-latest
+    container: node:14.17.0
+    steps: 
+      - uses: actions/checkout@v2
+      - name: Enter frontend directory
+        run: cd frontend
+      - name: Install Prettier
+        run: yarn add prettier
+      - name: Format
+        run: yarn format:check
