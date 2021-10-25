@@ -1,16 +1,8 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-  Put,
-} from '@nestjs/common';
-import { Tag } from 'src/Schemas/tag.schema';
-import { MerchantService } from './merchant.service';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { Merchant } from 'src/Schemas/merchant.schema';
+import { Tag } from 'src/Schemas/tag.schema';
+
+import { MerchantService } from './merchant.service';
 
 /**
  * Send api requests to  .../merchant/<endpoint>
@@ -32,7 +24,7 @@ export class MerchantController {
    */
   @Get()
   async getMerchantsHandler(): Promise<Merchant[]> {
-    let merchants = await this.merchantService.getAllMerchants();
+    const merchants = await this.merchantService.getAllMerchants();
     return merchants;
   }
 
@@ -50,7 +42,7 @@ export class MerchantController {
    */
   @Get(':id')
   async getMerchantByIdHandler(@Param('id') id: string): Promise<Merchant> {
-    let merchant = await this.merchantService.getMerchantById(id);
+    const merchant = await this.merchantService.getMerchantById(id);
     return merchant;
   }
 
@@ -94,8 +86,7 @@ export class MerchantController {
     @Body('hours') hours: string,
     @Body('picture') picture: string,
   ): Promise<string> {
-    let merchantId;
-    merchantId = await this.merchantService.createMerchant(
+    const merchantId = await this.merchantService.createMerchant(
       name,
       description,
       address,
@@ -120,8 +111,8 @@ export class MerchantController {
    * and 0 on failure.
    */
   @Delete(':id')
-  async deleteMerchantHandler(@Body('id') id: string): Promise<Number> {
-    let deleteCount = await this.merchantService.deleteMerchant(id);
+  async deleteMerchantHandler(@Body('id') id: string): Promise<number> {
+    const deleteCount = await this.merchantService.deleteMerchant(id);
     return deleteCount;
   }
 }

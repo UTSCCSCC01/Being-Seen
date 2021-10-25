@@ -1,12 +1,14 @@
-import { Model, Schema } from 'mongoose';
 import {
   ConflictException,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from './users.schema';
+import { Model, Schema } from 'mongoose';
+
 import { CreateUserDto } from './dto/createUser.dto';
+import { User } from './users.schema';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const bcrypt = require('bcrypt');
 
 @Injectable()
