@@ -7,8 +7,6 @@ jobs:
     container: node:14.17.0
     steps:
       - uses: actions/checkout@v2
-      - name: Enter frontend directory
-        run: cd frontend
       - name: Install Eslint
         run: npm install eslint
               eslint-config-airbnb
@@ -20,28 +18,28 @@ jobs:
               eslint-plugin-react-hooks
               eslint-plugin-react-native
               eslint-plugin-simple-import-sort
+        working-directory: frontend
       - name: Lint
         run: npx eslint . --ext .js,.jsx
+        working-directory: frontend
   FORMAT_FRONTEND:
     name: FORMAT_FRONTEND
     runs-on: ubuntu-latest
     container: node:14.17.0
     steps: 
       - uses: actions/checkout@v2
-      - name: Enter frontend directory
-        run: cd frontend
       - name: Install Prettier
         run: npm install prettier
+        working-directory: frontend
       - name: Format
         run: npx prettier --check "**/*.{js,jsx}"
+        working-directory: frontend
   LINT_BACKEND:
     name: LINT_BACKEND
     runs-on: ubuntu-latest
     container: node:14.17.0
     steps:
       - uses: actions/checkout@v2
-      - name: Enter backend directory
-        run: cd backend
       - name: Install Eslint
         run: npm install @typescript-eslint/eslint-plugin
               @typescript-eslint/parser
@@ -49,17 +47,19 @@ jobs:
               eslint-config-prettier
               eslint-plugin-prettier
               eslint-plugin-simple-import-sort
+        working-directory: backend
       - name: Lint
         run: npx eslint . --ext .ts
+        working-directory: backend
   FORMAT_BACKEND:
     name: FORMAT_BACKEND
     runs-on: ubuntu-latest
     container: node:14.17.0
     steps: 
       - uses: actions/checkout@v2
-      - name: Enter backend directory
-        run: cd backend
       - name: Install Prettier
         run: npm install prettier
+        working-directory: backend
       - name: Format
         run: npx prettier --check "**/*.ts"
+        working-directory: backend
