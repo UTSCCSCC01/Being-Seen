@@ -23,32 +23,32 @@ const Tab = createBottomTabNavigator();
  */
 
 const Home = () => (
-  <Tab.Navigator screenOptions={({ route }) => ({
-    headerShown: false,
-    tabBarIcon: ({}) => {
-      let iconName;
+  <Tab.Navigator
+    screenOptions={({ route }) => ({
+      headerShown: false,
+      tabBarIcon: ({}) => {
+        let iconName;
 
-      if (route.name === "Merchants") {
-        iconName = icons.merchants;
-      } else if (route.name === "Jobs") {
-        iconName = icons.jobs;
-      } else if (route.name === "Profile") {
-        iconName = icons.profile;
-      } else if (route.name === "Social Services") {
-        iconName = icons.social_services;
-      } else if (route.name === "Education") {
-        iconName = icons.education;
-      }
+        if (route.name === "Merchants") {
+          iconName = icons.merchants;
+        } else if (route.name === "Jobs") {
+          iconName = icons.jobs;
+        } else if (route.name === "Profile") {
+          iconName = icons.profile;
+        } else if (route.name === "Social Services") {
+          iconName = icons.social_services;
+        } else if (route.name === "Education") {
+          iconName = icons.education;
+        }
 
-      return <Image source={iconName} style={{ width: 30, height: 30 }} />;
-    }
-  })}>
+        return <Image source={iconName} style={{ width: 30, height: 30 }} />;
+      },
+    })}
+  >
     <Tab.Screen name="Merchants">
       {() => <ListFromAPI query="Merchant" />}
     </Tab.Screen>
-    <Tab.Screen name="Jobs">
-      {()=> <ListFromAPI query = 'Job'/> }
-    </Tab.Screen>
+    <Tab.Screen name="Jobs">{() => <ListFromAPI query="Job" />}</Tab.Screen>
     <Tab.Screen name="Profile" component={View} />
     <Tab.Screen name="Social Services">
       {() => <ListFromAPI query="Shelter" />}
@@ -80,7 +80,10 @@ export default function App() {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Landing" component={LandingPage} />
-        <Stack.Screen name="RegisterAccount" component={RegisterAccountScreen} />
+        <Stack.Screen
+          name="RegisterAccount"
+          component={RegisterAccountScreen}
+        />
         <Stack.Screen name="RecoverAccount" component={RecoverAccountScreen} />
       </Stack.Navigator>
     </NavigationContainer>

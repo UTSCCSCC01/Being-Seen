@@ -3,22 +3,22 @@ babelConfig = (api) => {
     api.cache(false);
   }
 
-  const presets = ['babel-preset-expo'];
+  const presets = ["babel-preset-expo"];
   const plugins = [
     [
-      'module-resolver',
+      "module-resolver",
       {
         alias: {
-          tailwind: './tailwind'
+          tailwind: "./tailwind",
         },
-        cwd: 'babelrc'
-      }
-    ]
+        cwd: "babelrc",
+      },
+    ],
   ];
 
   return {
     presets,
-    plugins
+    plugins,
   };
 };
 

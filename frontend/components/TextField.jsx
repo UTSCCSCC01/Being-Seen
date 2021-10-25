@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { TextInput, StyleSheet } from 'react-native';
-import { tailwind } from 'tailwind';
+import React from "react";
+import PropTypes from "prop-types";
+import { TextInput, StyleSheet } from "react-native";
+import { tailwind } from "tailwind";
 
 /**
  * @function TextField
@@ -51,9 +51,9 @@ TextField.propTypes = {
 };
 
 TextField.defaultProps = {
-  keyboardType: 'default',
-  textContentType: 'none',
-  autoCompleteType: 'off',
+  keyboardType: "default",
+  textContentType: "none",
+  autoCompleteType: "off",
   secure: false,
   autocorrect: false,
   onChangeText: () => {},
@@ -62,7 +62,7 @@ TextField.defaultProps = {
 
 const styles = StyleSheet.create({
   textBox: {
-    ...tailwind('text-lg h-12 my-2 p-1 border-b-2 border-primaryPurple'),
+    ...tailwind("text-lg h-12 my-2 p-1 border-b-2 border-primaryPurple"),
   },
 });
 
