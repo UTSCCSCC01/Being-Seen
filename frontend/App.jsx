@@ -10,6 +10,7 @@ import LandingPage from "./screens/landing_page";
 import Login from "./screens/Login";
 import Merchant from "./screens/Merchant";
 import ListFromAPI from "./screens/ListFromAPI";
+import Profile from "./screens/Profile";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();

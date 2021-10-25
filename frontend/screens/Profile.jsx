@@ -18,13 +18,35 @@ import {
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 
+const Stack = createNativeStackNavigator();
+
+function Profile() {
+  return (
+    <Stack.Navigator initialRouteName={MainProfile}>
+      <Stack.Screen
+        name = "MainProfile"
+        options = {{ headerShown: true, headerTintColor: "#662997" }}
+        component = {MainProfile}
+      >
+      </Stack.Screen>
+      <Stack.Screen
+        name = "EditProfile"
+        options = {{ headerShown: true, headerTintColor: "#662997" }}
+        component = {EditProfile}
+      >
+
+      </Stack.Screen>
+    </Stack.Navigator>
+  )
+}
+
 /**
  *
- * @function Profile Display profile tab
- * @module Profile Profile
+ * @function MainProfile Display profile tab
+ * @module MainProfile Profile
  * @description full page of to display profile 
  */
-function Profile() {
+function MainProfile( { route, navigation} ) {
   const [name, setName] = useState('');
   const [story, setStory] = useState('');
   const [balance, setBalance] = useState(0);
@@ -59,7 +81,29 @@ function Profile() {
 
   // TODO RETURN component
   return (
-	  <Text>{name} {story} {balance}</Text>
+    <View>
+      <Text>{name} {story} {balance}</Text>
+      <Button title='Edit Profile' onPress = { 
+          () => {
+            navigation.navigate("EditProfile", 
+              {
+                name: name, story: story
+              }
+            )
+          } 
+        } />
+    </View>
+	  
+  )
+}
+
+function EditProfile({ route, navigation }) {
+  const [name, setName] = useState(route.params.name);
+  const [story, setStory] = useState(route.params.story);
+  return (
+    <View>
+      <Text>{name} {story}</Text>
+    </View>
   )
 }
 
