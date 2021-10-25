@@ -11,16 +11,20 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install ESLint
-        run: npm install eslint
-              eslint-config-airbnb
-              eslint-config-prettier
-              eslint-plugin-import
-              eslint-plugin-jsx-a11y
-              eslint-plugin-prettier
-              eslint-plugin-react
-              eslint-plugin-react-hooks
-              eslint-plugin-react-native
-              eslint-plugin-simple-import-sort
+        run: | 
+          rm -rf node_modules
+          rm package-lock.json
+          npm cache clean --force
+          npm install eslint
+            eslint-config-airbnb
+            eslint-config-prettier
+            eslint-plugin-import
+            eslint-plugin-jsx-a11y
+            eslint-plugin-prettier
+            eslint-plugin-react
+            eslint-plugin-react-hooks
+            eslint-plugin-react-native
+            eslint-plugin-simple-import-sort
       - name: Lint
         run: npx eslint . --ext .js,.jsx
   FORMAT_FRONTEND:
@@ -33,7 +37,11 @@ jobs:
     steps: 
       - uses: actions/checkout@v2
       - name: Install Prettier
-        run: npm install prettier
+        run: |
+          rm -rf node_modules
+          rm package-lock.json
+          npm cache clean --force 
+          npm install prettier
       - name: Format
         run: npx prettier --check "**/*.{js,jsx}"
   LINT_BACKEND:
