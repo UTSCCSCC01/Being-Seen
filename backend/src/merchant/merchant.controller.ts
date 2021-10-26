@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { Merchant } from 'src/Schemas/merchant.schema';
 import { Tag } from 'src/Schemas/tag.schema';
 
@@ -58,12 +58,8 @@ export class MerchantController {
    *   "address": "1234 abcd Rd.",
    *   "hours": "9-5",
    *   "tags": [
-   *     {
-   *       "id": "615b140f04816ef571baa486"
-   *     },
-   *     {
-   *       "id": "615b142f04816ef571baa48f"
-   *     }
+   *     "Tag1",
+   *     "Tag2"
    *   ]
    * }
    *
@@ -81,7 +77,7 @@ export class MerchantController {
   async createMerchantHandler(
     @Body('name') name: string,
     @Body('description') description: string,
-    @Body('tags') tags: Tag[],
+    @Body('tags') tags: string[],
     @Body('address') address: string,
     @Body('hours') hours: string,
     @Body('picture') picture: string,
@@ -115,4 +111,34 @@ export class MerchantController {
     const deleteCount = await this.merchantService.deleteMerchant(id);
     return deleteCount;
   }
+
+  /**
+   * NestJS handler. The request uri to this endpoint is:
+   * 
+   *   PUT .../merchant
+   * 
+   * with the payload of this format: 
+   * 
+   * NestJS handler. The request uri to this endpoint is:
+   *
+   *   POST .../merchant/
+   *
+   * with a body containing a json file of the format:
+   * 
+   * {
+   *   "tagList": [
+   *        "tag1",
+   *        "tag2"
+   *    ]
+   * }
+   * 
+   * returns a list of merchants that have all tags mentioned in tagList
+   * @param tagList list of tags to search by
+   * @returns returns a list of education resources that have all tags mentioned in tagList
+   */
+   @Put()
+   async searchEducation(@Body('tagList') tagList: string[]) {
+     const merList = await this.merchantService.searchMerchantByTags(tagList);
+     return merList;
+   }
 }

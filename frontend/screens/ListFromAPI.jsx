@@ -117,7 +117,10 @@ function ListFromAPI({ query }) {
 
     async function refreshSheltersFromApi() {
       setSheltersRefreshing(true);
-      getInfoFromApi(query);
+      getInfoFromApi(query)
+        .then((response) => response.json())
+        .then((json) => setInformation(json))
+        .catch((error) => console.error(error));
       setSheltersRefreshing(false);
     }
     return (
