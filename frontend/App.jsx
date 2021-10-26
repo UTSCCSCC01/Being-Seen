@@ -8,7 +8,6 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import icons from "./constants/icons";
-// import Shelter from "./screens/Shelter";
 import LandingPage from "./screens/landing_page";
 import ListFromAPI from "./screens/ListFromAPI";
 import Login from "./screens/Login";
@@ -28,7 +27,7 @@ const Home = () => (
   <Tab.Navigator
     screenOptions={({ route }) => ({
       headerShown: false,
-      tabBarIcon: ({}) => {
+      tabBarIcon: () => {
         let iconName;
 
         if (route.name === "Merchants") {
@@ -74,8 +73,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        // initialRouteName="Login"
-        initialRouteName="Home"
+        initialRouteName="Login"
+        // initialRouteName="Home"
         screenOptions={{
           headerShown: false,
         }}
