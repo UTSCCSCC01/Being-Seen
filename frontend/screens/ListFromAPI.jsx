@@ -29,9 +29,11 @@ import { Rating } from "react-native-ratings";
 import ScreenHeader from "../components/ScreenHeader";
 import SearchBar from "../components/SearchBar";
 import colors from "../constants/colors";
+import SearchScreen from "./SearchScreen";
 
 const Stack = createNativeStackNavigator();
-const apiPath = "http://10.0.2.2:3000/";
+// const apiPath = "http://10.0.2.2:3000/";
+const apiPath = "http://192.168.0.13:3000/";
 export const purpleThemeColour = "#662997";
 
 const capitalize = (s) => (s && s[0].toUpperCase() + s.slice(1)) || "";
@@ -79,7 +81,11 @@ function ListFromAPI({ query }) {
         >
           {({ navigation }) => (
             <>
-              <SearchBar navigation={navigation} screenName="searchResult" />
+              <SearchBar
+                navigation={navigation}
+                screenName="searchResult"
+                serviceType={query}
+              />
               <ShelterList navigation={navigation} query={query} />
             </>
           )}
@@ -104,8 +110,8 @@ function ListFromAPI({ query }) {
         />
         <Stack.Screen
           name="searchResult"
-          component={View}
-          options={{ headerShown: true }}
+          component={SearchScreen}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </>

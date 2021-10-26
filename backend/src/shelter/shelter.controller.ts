@@ -71,6 +71,7 @@ export class ShelterController {
    */
   @Put()
   async searchShelter(@Body('tagList') tagList: string[]) {
+    console.log(tagList);
     const shelters = await this.shelterService.searchShelterByTags(tagList);
     return shelters;
   }

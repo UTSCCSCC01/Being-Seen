@@ -1,6 +1,6 @@
-import React from "react";
-import { Pressable, StyleSheet, View, ViewPropTypes, Text } from "react-native";
 import PropTypes from "prop-types";
+import React from "react";
+import { Pressable, StyleSheet, Text, View, ViewPropTypes } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { tailwind } from "tailwind";
 
@@ -67,16 +67,16 @@ ScreenHeader.defaultProps = {
 };
 
 const styles = StyleSheet.create({
-  pageHeaderContainer: tailwind(
-    "flex flex-row items-center justify-between border-b border-gray-200"
-  ),
-  leftItem: tailwind("flex-1 pl-4 py-4"),
-  rightItem: tailwind("flex-1 pr-4 items-end py-4"),
   headerItem: {
     ...tailwind("py-4 items-center"),
     flex: 3,
   },
   headerText: tailwind("text-primaryPurple font-bold text-2xl"),
+  leftItem: tailwind("flex-1 pl-4 py-4"),
+  pageHeaderContainer: tailwind(
+    "flex flex-row items-center justify-between border-b border-gray-200"
+  ),
+  rightItem: tailwind("flex-1 pr-4 items-end py-4"),
 });
 
 export default ScreenHeader;

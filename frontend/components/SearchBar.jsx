@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -7,9 +7,13 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 import colors from "../constants/colors";
 
-function SearchBar({ navigation, screenName }) {
+function SearchBar({ navigation, screenName, serviceType }) {
+  const [searchKeys, setSearchKeys] = useState("");
   const onSubmitEditing = () => {
-    navigation.navigate(screenName);
+    navigation.push(screenName, {
+      serviceType: serviceType.toLowerCase(),
+      searchKeys,
+    });
   };
 
   return (
@@ -20,6 +24,9 @@ function SearchBar({ navigation, screenName }) {
           placeholder="Search"
           style={styles.textInput}
           onSubmitEditing={onSubmitEditing}
+          onChangeText={(text) => {
+            setSearchKeys(text);
+          }}
         />
       </View>
     </SafeAreaView>
@@ -29,6 +36,7 @@ function SearchBar({ navigation, screenName }) {
 SearchBar.propTypes = {
   navigation: PropTypes.object.isRequired,
   screenName: PropTypes.string.isRequired,
+  serviceType: PropTypes.string.isRequired,
 };
 
 const styles = StyleSheet.create({
