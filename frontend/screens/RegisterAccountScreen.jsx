@@ -1,16 +1,17 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import {
+  Linking,
+  SafeAreaView,
   StyleSheet,
   Text,
-  SafeAreaView,
-  View,
-  Linking,
   TouchableHighlight,
+  View,
 } from "react-native";
 import { tailwind } from "tailwind";
-import ScreenHeader from "../components/ScreenHeader";
+
 import Button from "../components/Button";
-import { useNavigation } from "@react-navigation/native";
+import ScreenHeader from "../components/ScreenHeader";
 
 /**
  * @function RegisterAccountScreen
@@ -37,8 +38,9 @@ const RegisterAccountScreen = () => {
       />
       <View style={styles.body}>
         <Text style={styles.text}>
-          Don't have an account? Email us today and we will create one for you!
-          Don't miss out on the opportunities this app can give you!{"\n"}
+          Don&apos;t have an account? Email us today and we will create one for
+          you! Don&apos;t miss out on the opportunities this app can give you!
+          {"\n"}
           {"\n"}
           Click below to email us and tell us what you are looking for in this
           app. We will be contacting you shortly with next steps.
@@ -66,11 +68,11 @@ const styles = StyleSheet.create({
   body: {
     ...tailwind("px-4 py-6"),
   },
-  text: {
-    ...tailwind("text-primaryPurple text-base"),
-  },
   buttonView: {
     ...tailwind("px-4 py-8"),
+  },
+  text: {
+    ...tailwind("text-primaryPurple text-base"),
   },
 });
 

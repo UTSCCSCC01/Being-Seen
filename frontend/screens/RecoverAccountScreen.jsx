@@ -1,16 +1,17 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import {
+  Linking,
+  SafeAreaView,
   StyleSheet,
   Text,
-  SafeAreaView,
-  View,
-  Linking,
   TouchableHighlight,
+  View,
 } from "react-native";
 import { tailwind } from "tailwind";
-import ScreenHeader from "../components/ScreenHeader";
+
 import Button from "../components/Button";
-import { useNavigation } from "@react-navigation/native";
+import ScreenHeader from "../components/ScreenHeader";
 
 /**
  * @function RecoverAccountScreen
@@ -37,11 +38,11 @@ const RecoverAccountScreen = () => {
       />
       <View style={styles.body}>
         <Text style={styles.text}>
-          Can't log in? Don't worry! Email us and we will help you go through a
-          series of steps to securely recover your account.{"\n"}
+          Can&apos;t log in? Don&apos;t worry! Email us and we will help you go
+          through a series of steps to securely recover your account.{"\n"}
           {"\n"}
-          Click below to email us why you can't log in. We will be contacting
-          you shortly with next steps.
+          Click below to email us why you can&apos;t log in. We will be
+          contacting you shortly with next steps.
         </Text>
         <View style={styles.buttonView}>
           <Button
@@ -66,11 +67,11 @@ const styles = StyleSheet.create({
   body: {
     ...tailwind("px-4 py-6"),
   },
-  text: {
-    ...tailwind("text-primaryPurple text-base"),
-  },
   buttonView: {
     ...tailwind("px-4 py-8"),
+  },
+  text: {
+    ...tailwind("text-primaryPurple text-base"),
   },
 });
 

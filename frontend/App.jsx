@@ -1,17 +1,18 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SecureStore from "expo-secure-store";
+import { StatusBar } from "expo-status-bar";
+import React, { useEffect, useState } from "react";
+import { Image, StyleSheet, Text, View } from "react-native";
+
+import icons from "./constants/icons";
 // import Shelter from "./screens/Shelter";
 import LandingPage from "./screens/landing_page";
-import Login from "./screens/Login";
 import ListFromAPI from "./screens/ListFromAPI";
-import RegisterAccountScreen from "./screens/RegisterAccountScreen";
+import Login from "./screens/Login";
 import RecoverAccountScreen from "./screens/RecoverAccountScreen";
-import icons from "./constants/icons";
+import RegisterAccountScreen from "./screens/RegisterAccountScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();

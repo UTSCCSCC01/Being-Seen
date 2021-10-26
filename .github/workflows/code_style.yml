@@ -25,6 +25,7 @@ jobs:
             eslint-plugin-react-hooks \
             eslint-plugin-react-native \
             eslint-plugin-simple-import-sort \
+            prettier \
       - name: Lint
         run: npx eslint . --ext .js,.jsx
   FORMAT_FRONTEND:

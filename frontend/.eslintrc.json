@@ -37,6 +37,8 @@
             "endOfLine": "auto"
         }],
         "simple-import-sort/imports": "error",
-        "simple-import-sort/exports": "error"
+        "simple-import-sort/exports": "error",
+        "import/extensions": "off",
+        "no-unused-vars": "off"
     }
 }

@@ -1,29 +1,41 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useState, useEffect } from "react";
-import { render } from "react-dom";
-import { Rating } from "react-native-ratings";
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  ScrollView,
-  Image,
-  FlatList,
-  TouchableHighlight,
-  Dimensions,
-  Button,
-  ImageBackground,
-  TextInput,
-  Alert,
-  KeyboardAvoidingView,
-  Touchable,
-  Linking,
-} from "react-native";
+/* eslint-disable react-native/sort-styles */
+/* eslint-disable react-native/no-color-literals */
+/* eslint-disable react-native/no-unused-styles */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable eqeqeq */
+/* eslint-disable no-plusplus */
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable react/jsx-no-bind */
+/* eslint-disable consistent-return */
+/* eslint-disable react/prop-types */
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SecureStore from "expo-secure-store";
+import { StatusBar } from "expo-status-bar";
+// eslint-disable-next-line camelcase
 import jwt_decode from "jwt-decode";
+import React, { useEffect, useState } from "react";
+import { render } from "react-dom";
+import {
+  Alert,
+  Button,
+  Dimensions,
+  FlatList,
+  Image,
+  ImageBackground,
+  KeyboardAvoidingView,
+  Linking,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  Touchable,
+  TouchableHighlight,
+  View,
+} from "react-native";
+import { Rating } from "react-native-ratings";
 
 const Stack = createNativeStackNavigator();
 const apiPath = "http://10.0.2.2:3000/";
@@ -38,7 +50,7 @@ const capitalize = (s) => (s && s[0].toUpperCase() + s.slice(1)) || "";
  * @description full page of to display list of shelters and their details
  */
 function ListFromAPI({ query }) {
-  const listName = capitalize(query) + "List";
+  const listName = `${capitalize(query)}List`;
   return (
     <Stack.Navigator initialRouteName={listName}>
       <Stack.Screen
@@ -54,7 +66,7 @@ function ListFromAPI({ query }) {
         )}
       </Stack.Screen>
       <Stack.Screen
-        name={capitalize(query) + "Details"}
+        name={`${capitalize(query)}Details`}
         component={DisplayShelter}
         options={{
           headerShown: true,
@@ -63,7 +75,7 @@ function ListFromAPI({ query }) {
         }}
       />
       <Stack.Screen
-        name={"Review " + capitalize(query)}
+        name={`Review ${capitalize(query)}`}
         component={WriteReview}
         options={{
           headerShown: true,
@@ -78,10 +90,10 @@ function ListFromAPI({ query }) {
 async function getInfoFromApi(query) {
   try {
     const response = await fetch(
-      //ipv4 localhost since running emulator
-      //10.0.2.2 is your machine's localhost when on an android emulator
+      // ipv4 localhost since running emulator
+      // 10.0.2.2 is your machine's localhost when on an android emulator
       apiPath + query,
-      //"http://192.168.2.49:3000/" + query,
+      // "http://192.168.2.49:3000/" + query,
       {
         method: "Get",
       }
@@ -95,10 +107,10 @@ async function getInfoFromApi(query) {
 async function getInfoFromApiById(query, id) {
   try {
     const response = await fetch(
-      //ipv4 localhost since running emulator
-      //10.0.2.2 is your machine's localhost when on an android emulator
-      apiPath + query + "/" + id,
-      //"http://192.168.2.49:3000/" + query,
+      // ipv4 localhost since running emulator
+      // 10.0.2.2 is your machine's localhost when on an android emulator
+      `${apiPath + query}/${id}`,
+      // "http://192.168.2.49:3000/" + query,
       {
         method: "Get",
       }
@@ -110,8 +122,8 @@ async function getInfoFromApiById(query, id) {
 }
 
 async function getProfileIdFromToken() {
-  let token = await SecureStore.getItemAsync("token");
-  let decoded = await jwt_decode(token);
+  const token = await SecureStore.getItemAsync("token");
+  const decoded = await jwt_decode(token);
   return decoded.id;
 }
 /*
@@ -127,18 +139,18 @@ async function getProfileIdFromToken() {
  */
 function ShelterList({ navigation, query }) {
   const [information, setInformation] = useState([
-    { name: "Error " + query + " not loaded" },
+    { name: `Error ${query} not loaded` },
   ]);
   const [sheltersRefreshing, setSheltersRefreshing] = useState(false);
 
   const onScreenLoad = () => {
-    //when load grab shelters from api and put them into the shelters state
+    // when load grab shelters from api and put them into the shelters state
     getInfoFromApi(query)
       .then((response) => response.json())
       .then((json) => setInformation(json))
       .catch((error) => console.error(error));
   };
-  //essentially componentWillMount
+  // essentially componentWillMount
   useEffect(() => {
     onScreenLoad();
   }, []);
@@ -157,9 +169,9 @@ function ShelterList({ navigation, query }) {
         return (
           <TouchableHighlight
             onPress={() => {
-              navigation.navigate(capitalize(query) + "Details", {
-                item: item,
-                query: query,
+              navigation.navigate(`${capitalize(query)}Details`, {
+                item,
+                query,
               });
             }}
           >
@@ -228,11 +240,11 @@ export function openPhone(phone) {
 const DisplayShelter = ({ route, navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [info, setInfo] = useState(route.params.item);
-  const query = route.params.query;
+  const { query } = route.params;
 
   async function refreshShelters() {
     setRefreshing(true);
-    let res = await getInfoFromApiById(query, info._id);
+    const res = await getInfoFromApiById(query, info._id);
     if (res.status == 200) {
       res.json().then((json) => setInfo(json));
     }
@@ -250,7 +262,7 @@ const DisplayShelter = ({ route, navigation }) => {
               <ImageBackground
                 style={styles.largePic}
                 source={{ uri: info.picture }}
-              ></ImageBackground>
+              />
             ) : null}
             <Text style={styles.expandedText}>Name: {info.name}</Text>
             {info.address ? (
@@ -313,9 +325,9 @@ const DisplayShelter = ({ route, navigation }) => {
             {info.reviews ? (
               <Button
                 onPress={() => {
-                  navigation.navigate("Review " + capitalize(query), {
+                  navigation.navigate(`Review ${capitalize(query)}`, {
                     infoId: info._id,
-                    query: query,
+                    query,
                   });
                 }}
                 title="Review This Shelter"
@@ -367,7 +379,7 @@ function WriteReview({ route, navigation }) {
     rating: 0,
     date: new Date(),
   });
-  //local version of review rating since onFinishRating has unwanted effects on whole object
+  // local version of review rating since onFinishRating has unwanted effects on whole object
   const [tempRev, setTempRev] = useState(0);
   const [editReview, setEditReview] = useState(false);
   const [readyToPublish, setReadyToPublish] = useState(false);
@@ -375,11 +387,11 @@ function WriteReview({ route, navigation }) {
   const reviewParams = route.params;
 
   async function onScreenLoad() {
-    //when load grab shelters from api and put them into the shelters state
-    let profId = await getProfileIdFromToken();
+    // when load grab shelters from api and put them into the shelters state
+    const profId = await getProfileIdFromToken();
     setReviewer(profId);
   }
-  //essentially componentWillMount
+  // essentially componentWillMount
   useEffect(() => {
     onScreenLoad();
   }, []);
@@ -407,14 +419,11 @@ function WriteReview({ route, navigation }) {
   async function getReviewFromApi() {
     try {
       const response = await fetch(
-        //ipv4 localhost since running emulator
-        //10.0.2.2 is your machine's localhost when on an android emulator
-        apiPath +
-          reviewParams.query +
-          "/" +
-          reviewParams.infoId +
-          "/review/" +
-          reviewer,
+        // ipv4 localhost since running emulator
+        // 10.0.2.2 is your machine's localhost when on an android emulator
+        `${apiPath + reviewParams.query}/${
+          reviewParams.infoId
+        }/review/${reviewer}`,
         {
           method: "Get",
         }
@@ -432,14 +441,11 @@ function WriteReview({ route, navigation }) {
   async function DeleteReviewFromApi() {
     try {
       const response = await fetch(
-        //ipv4 localhost since running emulator
-        //10.0.2.2 is your machine's localhost when on an android emulator
-        apiPath +
-          reviewParams.query +
-          "/" +
-          reviewParams.infoId +
-          "/review/" +
-          reviewer,
+        // ipv4 localhost since running emulator
+        // 10.0.2.2 is your machine's localhost when on an android emulator
+        `${apiPath + reviewParams.query}/${
+          reviewParams.infoId
+        }/review/${reviewer}`,
         {
           method: "DELETE",
         }
@@ -469,8 +475,8 @@ function WriteReview({ route, navigation }) {
         },
       ]
     );
-    //DeleteReviewFromApi()
-    //navigation.goBack()
+    // DeleteReviewFromApi()
+    // navigation.goBack()
   }
 
   async function sendReviewToApi(body) {
@@ -480,18 +486,15 @@ function WriteReview({ route, navigation }) {
       else method = "POST";
 
       const response = await fetch(
-        //ipv4 localhost since running emulator
-        //10.0.2.2 is your machine's localhost when on an android emulator
-        apiPath +
-          reviewParams.query +
-          "/" +
-          reviewParams.infoId +
-          "/review/" +
-          reviewer,
+        // ipv4 localhost since running emulator
+        // 10.0.2.2 is your machine's localhost when on an android emulator
+        `${apiPath + reviewParams.query}/${
+          reviewParams.infoId
+        }/review/${reviewer}`,
         {
-          method: method,
+          method,
           headers: { "Content-Type": "application/json" },
-          body: body,
+          body,
         }
       );
     } catch (error) {
@@ -501,19 +504,19 @@ function WriteReview({ route, navigation }) {
 
   return (
     <View>
-      <View alignItems={"center"}>
+      <View alignItems="center">
         <Text style={styles.writeReviewText}>Type Your Review Here</Text>
       </View>
 
       <View style={styles.writeReviewBox}>
         <TextInput
-          multiline={true}
+          multiline
           defaultValue={review.content}
           placeholder="Enter Review Here"
           maxLength={400}
           onChangeText={(content) =>
             setReview({
-              content: content,
+              content,
               rating: review.rating,
               date: review.date,
             })
@@ -537,7 +540,7 @@ function WriteReview({ route, navigation }) {
         onPress={() => {
           setReadyToPublish(true);
         }}
-      ></Button>
+      />
       <Button title="Delete Review" color="red" onPress={DeleteReview} />
     </View>
   );
@@ -551,10 +554,10 @@ function WriteReview({ route, navigation }) {
  *
  */
 export const DisplayTags = (props) => {
-  const tags = props.tags;
+  const { tags } = props;
   return (
     <FlatList
-      horizontal={true}
+      horizontal
       data={tags}
       renderItem={({ item, index, separators }) => (
         <View style={styles.tagBox}>
@@ -567,7 +570,7 @@ export const DisplayTags = (props) => {
 };
 
 export const FormatDate = (dateString) => {
-  let date = new Date(dateString);
+  const date = new Date(dateString);
   const weekdays = [
     "Sunday",
     "Monday",
@@ -591,48 +594,22 @@ export const FormatDate = (dateString) => {
     "November",
     "December",
   ];
-  return (
-    weekdays[date.getDay()] +
-    " " +
-    months[date.getMonth()] +
-    " " +
-    date.getDate() +
-    ", " +
-    date.getFullYear()
-  );
+  return `${weekdays[date.getDay()]} ${
+    months[date.getMonth()]
+  } ${date.getDate()}, ${date.getFullYear()}`;
 };
 const styles = StyleSheet.create({
   background: {
-    flex: 1,
+    alignItems: "flex-start",
     backgroundColor: "#fff",
-    alignItems: "flex-start",
-    justifyContent: "center",
-    alignItems: "flex-start",
-    flexDirection: "column",
-  },
-  displayBackground: {
     flex: 1,
-    backgroundColor: "#fffefc",
-    alignItems: "flex-start",
-    justifyContent: "center",
-    alignItems: "flex-start",
     flexDirection: "column",
-  },
-  scrollBackground: {
-    // flex: 1,
-    //backgroundColor: '#fff',
-    // alignItems: 'center',
-    //justifyContent: 'center',
-    //flexDirection: 'row',
-    //alignItems: 'flex-start',
-    // justifyContent:'center',
-    backgroundColor: "white",
-    flex: 1,
+    justifyContent: "center",
   },
   box: {
     flex: 1,
-    //width: "120%",
-    //height: "15%",
+    // width: "120%",
+    // height: "15%",
     backgroundColor: "white",
     borderColor: purpleThemeColour,
     borderStyle: "solid",
@@ -642,54 +619,37 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     margin: 1,
   },
-  icon: {
-    width: "25%",
-    height: "99%",
-    flex: 0.25,
-  },
-  largePic: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height / 4,
-    resizeMode: "cover",
-  },
-  text: {
+  displayBackground: {
+    alignItems: "flex-start",
+    backgroundColor: "#fffefc",
     flex: 1,
-    flexWrap: "wrap",
-  },
-  tagBox: {
-    margin: 2,
-    borderRadius: 5,
-    backgroundColor: "gainsboro",
-    borderColor: purpleThemeColour,
-  },
-  tagText: {
-    fontSize: 12,
-    color: purpleThemeColour,
+    flexDirection: "column",
+    justifyContent: "center",
   },
   expandedText: {
-    //flex: 1,
-    //flexWrap:'wrap',
+    // flex: 1,
+    // flexWrap:'wrap',
     margin: 2,
     fontSize: 16,
     color: purpleThemeColour,
   },
   expandedTextUnderlines: {
-    margin: 2,
-    fontSize: 16,
     color: purpleThemeColour,
-    textDecorationLine: "underline",
+    fontSize: 16,
+    margin: 2,
     textDecorationColor: purpleThemeColour,
+    textDecorationLine: "underline",
   },
-  reviewText: {
-    //flex: 1,
-    //flexWrap:'wrap',
-    margin: 2,
-    fontSize: 16,
-    color: purpleThemeColour,
-    flexWrap: "wrap",
+  header: {},
+  icon: {
+    flex: 0.25,
+    height: "99%",
+    width: "25%",
   },
-  reviewButton: {
-    color: "purple",
+  largePic: {
+    height: Dimensions.get("window").height / 4,
+    resizeMode: "cover",
+    width: Dimensions.get("window").width,
   },
   reviewBox: {
     // flexWrap: "wrap",
@@ -697,14 +657,49 @@ const styles = StyleSheet.create({
     borderColor: purpleThemeColour,
     borderWidth: 1,
   },
-  header: {},
+  reviewButton: {
+    color: "purple",
+  },
+  reviewText: {
+    // flex: 1,
+    // flexWrap:'wrap',
+    margin: 2,
+    fontSize: 16,
+    color: purpleThemeColour,
+    flexWrap: "wrap",
+  },
+  scrollBackground: {
+    // flex: 1,
+    // backgroundColor: '#fff',
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    // flexDirection: 'row',
+    // alignItems: 'flex-start',
+    // justifyContent:'center',
+    backgroundColor: "white",
+    flex: 1,
+  },
+  tagBox: {
+    backgroundColor: "gainsboro",
+    borderColor: purpleThemeColour,
+    borderRadius: 5,
+    margin: 2,
+  },
+  tagText: {
+    color: purpleThemeColour,
+    fontSize: 12,
+  },
+  text: {
+    flex: 1,
+    flexWrap: "wrap",
+  },
   writeReviewBox: {
     backgroundColor: "white",
     borderColor: purpleThemeColour,
     borderWidth: 1,
     flex: 0,
-    width: "100%",
     height: "40%",
+    width: "100%",
   },
   writeReviewText: {
     color: purpleThemeColour,
