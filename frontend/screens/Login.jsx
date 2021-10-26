@@ -1,19 +1,14 @@
-import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  ScrollView,
-  SafeAreaView,
-  View,
-  TouchableHighlight,
-} from "react-native";
-import * as SecureStore from "expo-secure-store";
 import { useNavigation } from "@react-navigation/native";
+import * as SecureStore from "expo-secure-store";
+import React, { useEffect, useState } from "react";
+import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
 import { tailwind } from "tailwind";
+
+import Button from "../components/Button";
+import DisplayNotif from "../components/DisplayNotif";
 import { PrimaryHeader } from "../components/Headers";
 import TextField from "../components/TextField";
-import Button from "../components/Button";
 import UnderlinedLink from "../components/UnderlinedLink";
-import DisplayNotif from "../components/DisplayNotif";
 
 /**
  * @function Login
@@ -70,7 +65,7 @@ const Login = () => {
         <View style={styles.header}>
           <PrimaryHeader text="Login" />
         </View>
-        <View style={{ alignItems: "center" }}>
+        <View style={styles.errorMessage}>
           <DisplayNotif
             notification={failedLoginMessage}
             display={failedLogin}
@@ -101,8 +96,8 @@ const Login = () => {
 };
 
 const styles = StyleSheet.create({
-  view: {
-    ...tailwind("flex flex-col justify-center mx-5 my-10"),
+  errorMessage: {
+    ...tailwind("items-center"),
   },
   header: {
     ...tailwind("flex items-center my-10"),
@@ -112,6 +107,9 @@ const styles = StyleSheet.create({
   },
   underlinedLinks: {
     ...tailwind("flex flex-col items-center"),
+  },
+  view: {
+    ...tailwind("flex flex-col justify-center mx-5 my-10"),
   },
 });
 

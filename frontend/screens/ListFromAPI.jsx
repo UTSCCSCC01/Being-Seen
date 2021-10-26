@@ -1,6 +1,19 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable react-native/sort-styles */
+/* eslint-disable react-native/no-color-literals */
+/* eslint-disable react-native/no-unused-styles */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable eqeqeq */
+/* eslint-disable no-plusplus */
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable react/jsx-no-bind */
+/* eslint-disable consistent-return */
+/* eslint-disable react/prop-types */
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SecureStore from "expo-secure-store";
 import { StatusBar } from "expo-status-bar";
+// eslint-disable-next-line camelcase
 import jwt_decode from "jwt-decode";
 import React, { useEffect, useState } from "react";
 import { render } from "react-dom";

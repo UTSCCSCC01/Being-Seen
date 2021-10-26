@@ -1,8 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Text, StyleSheet, TouchableHighlight } from "react-native";
-import { tailwind } from "tailwind";
 import { useNavigation } from "@react-navigation/native";
+import PropTypes from "prop-types";
+import React from "react";
+import { StyleSheet, Text, TouchableHighlight } from "react-native";
+import { tailwind } from "tailwind";
 
 /**
  * @function UnderlinedLink

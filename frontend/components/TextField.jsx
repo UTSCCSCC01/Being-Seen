@@ -1,6 +1,6 @@
-import React from "react";
 import PropTypes from "prop-types";
-import { TextInput, StyleSheet } from "react-native";
+import React from "react";
+import { StyleSheet, TextInput } from "react-native";
 import { tailwind } from "tailwind";
 
 /**
