@@ -76,6 +76,7 @@ function SearchScreen({ route, navigation }) {
           screenName="searchResult"
           serviceType={serviceType}
           prefill={searchKeys}
+          isSecondary
         />
       </SafeAreaView>
       <FlatList

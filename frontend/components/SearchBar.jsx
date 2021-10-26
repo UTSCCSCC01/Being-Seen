@@ -1,13 +1,26 @@
 import PropTypes from "prop-types";
 import React, { useState } from "react";
-import { StyleSheet, TextInput, View } from "react-native";
+import {
+  StyleSheet,
+  TextInput,
+  TouchableHighlight,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import * as Animatable from "react-native-animatable";
 import { SafeAreaView } from "react-native-safe-area-context";
+import FeatherIcon from "react-native-vector-icons/Feather";
 import Icon from "react-native-vector-icons/Ionicons";
 
 import colors from "../constants/colors";
 
-function SearchBar({ navigation, screenName, serviceType, prefill }) {
+function SearchBar({
+  navigation,
+  screenName,
+  serviceType,
+  prefill,
+  isSecondary,
+}) {
   const [searchString, setSearchString] = useState(prefill);
   const onSubmitEditing = () => {
     navigation.push(screenName, {
@@ -30,6 +43,14 @@ function SearchBar({ navigation, screenName, serviceType, prefill }) {
           defaultValue={prefill}
         />
       </View>
+      {isSecondary ? (
+        <TouchableOpacity
+          style={styles.backIconContainer}
+          onPress={() => navigation.goBack()}
+        >
+          <FeatherIcon name="delete" style={styles.backIcon} />
+        </TouchableOpacity>
+      ) : null}
     </View>
   );
 }
@@ -39,24 +60,41 @@ SearchBar.propTypes = {
   screenName: PropTypes.string.isRequired,
   serviceType: PropTypes.string.isRequired,
   prefill: PropTypes.string,
+  isSecondary: PropTypes.bool,
 };
 
 SearchBar.defaultProps = {
   prefill: "",
+  isSecondary: false,
 };
 
 const styles = StyleSheet.create({
+  backIcon: {
+    color: colors.backgroundColor,
+    fontSize: 24,
+  },
+  backIconContainer: {
+    alignItems: "center",
+    // backgroundColor: "blue",
+    flexDirection: "row",
+    justifyContent: "center",
+    marginLeft: 5,
+    marginRight: -10,
+    width: 40,
+  },
   headerBackGround: {
+    alignItems: "center",
     backgroundColor: colors.themeMain,
+    flexDirection: "row",
     height: 60,
     justifyContent: "center",
     paddingHorizontal: 20,
-    paddingVertical: 20,
   },
   searchBoxContainer: {
     alignItems: "center",
     backgroundColor: colors.backgroundColor,
     borderRadius: 20,
+    flex: 1,
     flexDirection: "row",
     height: 40,
     paddingHorizontal: 15,
