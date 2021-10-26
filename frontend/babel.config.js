@@ -1,4 +1,4 @@
-babelConfig = (api) => {
+const babelConfig = (api) => {
   if (api) {
     api.cache(false);
   }

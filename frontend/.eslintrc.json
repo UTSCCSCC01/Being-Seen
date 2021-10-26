@@ -39,6 +39,8 @@
         "simple-import-sort/imports": "error",
         "simple-import-sort/exports": "error",
         "import/extensions": "off",
-        "no-unused-vars": "off"
+        "no-unused-vars": "warn",
+        "react-native/no-unused-styles": "off",
+        "camelcase": "warn"
     }
 }

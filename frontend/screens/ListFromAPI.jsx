@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react-native/sort-styles */
 /* eslint-disable react-native/no-color-literals */
 /* eslint-disable react-native/no-unused-styles */
