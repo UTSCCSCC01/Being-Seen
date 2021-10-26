@@ -1,17 +1,21 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable no-empty-pattern */
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SecureStore from "expo-secure-store";
+import { StatusBar } from "expo-status-bar";
+import React, { useEffect, useState } from "react";
+import { Image, StyleSheet, Text, View } from "react-native";
+
+import icons from "./constants/icons";
 // import Shelter from "./screens/Shelter";
 import LandingPage from "./screens/landing_page";
-import Login from "./screens/Login";
 import ListFromAPI from "./screens/ListFromAPI";
-import RegisterAccountScreen from "./screens/RegisterAccountScreen";
+import Login from "./screens/Login";
 import RecoverAccountScreen from "./screens/RecoverAccountScreen";
-import icons from "./constants/icons";
+import RegisterAccountScreen from "./screens/RegisterAccountScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -23,32 +27,32 @@ const Tab = createBottomTabNavigator();
  */
 
 const Home = () => (
-  <Tab.Navigator screenOptions={({ route }) => ({
-    headerShown: false,
-    tabBarIcon: ({}) => {
-      let iconName;
+  <Tab.Navigator
+    screenOptions={({ route }) => ({
+      headerShown: false,
+      tabBarIcon: ({}) => {
+        let iconName;
 
-      if (route.name === "Merchants") {
-        iconName = icons.merchants;
-      } else if (route.name === "Jobs") {
-        iconName = icons.jobs;
-      } else if (route.name === "Profile") {
-        iconName = icons.profile;
-      } else if (route.name === "Social Services") {
-        iconName = icons.social_services;
-      } else if (route.name === "Education") {
-        iconName = icons.education;
-      }
+        if (route.name === "Merchants") {
+          iconName = icons.merchants;
+        } else if (route.name === "Jobs") {
+          iconName = icons.jobs;
+        } else if (route.name === "Profile") {
+          iconName = icons.profile;
+        } else if (route.name === "Social Services") {
+          iconName = icons.social_services;
+        } else if (route.name === "Education") {
+          iconName = icons.education;
+        }
 
-      return <Image source={iconName} style={{ width: 30, height: 30 }} />;
-    }
-  })}>
+        return <Image source={iconName} style={{ width: 30, height: 30 }} />;
+      },
+    })}
+  >
     <Tab.Screen name="Merchants">
       {() => <ListFromAPI query="Merchant" />}
     </Tab.Screen>
-    <Tab.Screen name="Jobs">
-      {()=> <ListFromAPI query = 'Job'/> }
-    </Tab.Screen>
+    <Tab.Screen name="Jobs">{() => <ListFromAPI query="Job" />}</Tab.Screen>
     <Tab.Screen name="Profile" component={View} />
     <Tab.Screen name="Social Services">
       {() => <ListFromAPI query="Shelter" />}
@@ -80,7 +84,10 @@ export default function App() {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Landing" component={LandingPage} />
-        <Stack.Screen name="RegisterAccount" component={RegisterAccountScreen} />
+        <Stack.Screen
+          name="RegisterAccount"
+          component={RegisterAccountScreen}
+        />
         <Stack.Screen name="RecoverAccount" component={RecoverAccountScreen} />
       </Stack.Navigator>
     </NavigationContainer>

@@ -4,9 +4,14 @@
         "es2021": true
     },
     "extends": [
+        "eslint:recommended",
         "plugin:react/recommended",
+        "plugin:react-hooks/recommended",
+        "plugin:react-native/all",
         "airbnb",
-        "eslint-config-prettier"
+        "plugin:import/recommended",
+        "plugin:jsx-a11y/recommended",
+        "plugin:prettier/recommended"
     ],
     "parserOptions": {
         "ecmaFeatures": {
@@ -17,7 +22,11 @@
     },
     "plugins": [
         "react",
-        "eslint-config-prettier"
+        "react-native",
+        "import",
+        "jsx-a11y",
+        "prettier",
+        "simple-import-sort"
     ],
     "rules": {
         "no-use-before-define": "off",
@@ -27,6 +36,11 @@
         "prettier/prettier": ["error", {
             "endOfLine": "auto"
         }],
-        "arrow-body-style": "off"
+        "simple-import-sort/imports": "error",
+        "simple-import-sort/exports": "error",
+        "import/extensions": "off",
+        "no-unused-vars": "warn",
+        "react-native/no-unused-styles": "off",
+        "camelcase": "warn"
     }
 }

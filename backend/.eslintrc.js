@@ -1,11 +1,15 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: 'backend/tsconfig.json',
+    project: 'tsconfig.json',
     sourceType: 'module',
   },
-  plugins: ['@typescript-eslint/eslint-plugin'],
+  plugins: [
+    '@typescript-eslint/eslint-plugin',
+    "simple-import-sort"
+  ],
   extends: [
+    'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
   ],
@@ -23,5 +27,7 @@ module.exports = {
     'prettier/prettier': ["error", {
       "endOfLine": "auto",
     }],
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error"
   },
 };

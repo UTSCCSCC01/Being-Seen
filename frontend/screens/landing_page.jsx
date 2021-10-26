@@ -1,16 +1,23 @@
-import React, { useState } from "react";
-import {
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-  View,
-  ImageBackground,
-  Image,
-  ScrollView,
-  Dimensions,
-} from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+/* eslint-disable react/prop-types */
+/* eslint-disable global-require */
+/* eslint-disable react-native/no-color-literals */
+/* eslint-disable no-shadow */
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable react/jsx-no-bind */
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import React from "react";
+import {
+  Dimensions,
+  Image,
+  ImageBackground,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { tailwind } from "tailwind";
+
 import Login from "./Login";
 
 /**
@@ -171,7 +178,7 @@ function LandingPage({ navigation }) {
       <View style={styles.container}>
         <Header />
         <Body />
-        <View style={{ flex: 50 }}></View>
+        <View style={{ flex: 50 }} />
       </View>
     );
   }
@@ -186,9 +193,9 @@ function LandingPage({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
+    ...tailwind("bg-white"),
     alignItems: "stretch",
+    flex: 1,
     justifyContent: "flex-start",
   },
   h1: {

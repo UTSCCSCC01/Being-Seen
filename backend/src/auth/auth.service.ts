@@ -3,9 +3,11 @@ import {
   InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { loginUserDto } from 'src/users/dto/loginUser.dto';
+
+import { UsersService } from '../users/users.service';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const bcrypt = require('bcrypt');
 
 @Injectable()

@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primaryPurple: '#662997',
+        primaryPurple: "#662997",
       },
     },
   },
@@ -12,4 +12,4 @@ module.exports = {
     extend: {},
   },
   plugins: [],
-}
+};

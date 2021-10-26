@@ -1,7 +1,6 @@
-import { ConsoleLogger, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Mongoose, ObjectId, Schema, Types } from 'mongoose';
-import { execPath } from 'process';
+import { Model, Types } from 'mongoose';
 import { MerchantDocument } from 'src/Schemas/merchant.schema';
 import { Merchant } from 'src/Schemas/merchant.schema';
 import { Tag } from 'src/Schemas/tag.schema';
@@ -80,7 +79,7 @@ export class MerchantService {
    * and 0 on faliure.
    */
   async deleteMerchant(id: string) {
-    let deleteCount: Number;
+    let deleteCount: number;
     try {
       deleteCount = (await this.merchantModel.deleteOne({ id: id })).n;
     } catch (error) {
