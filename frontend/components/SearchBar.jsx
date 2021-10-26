@@ -7,17 +7,17 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 import colors from "../constants/colors";
 
-function SearchBar({ navigation, screenName, serviceType }) {
-  const [searchKeys, setSearchKeys] = useState("");
+function SearchBar({ navigation, screenName, serviceType, prefill }) {
+  const [searchString, setSearchString] = useState(prefill);
   const onSubmitEditing = () => {
     navigation.push(screenName, {
       serviceType: serviceType.toLowerCase(),
-      searchKeys,
+      searchKeys: searchString,
     });
   };
 
   return (
-    <SafeAreaView style={styles.headerBackGround}>
+    <View style={styles.headerBackGround}>
       <View style={styles.searchBoxContainer}>
         <Icon name="search" style={styles.searchIcon} />
         <TextInput
@@ -25,11 +25,12 @@ function SearchBar({ navigation, screenName, serviceType }) {
           style={styles.textInput}
           onSubmitEditing={onSubmitEditing}
           onChangeText={(text) => {
-            setSearchKeys(text);
+            setSearchString(text);
           }}
+          defaultValue={prefill}
         />
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -37,12 +38,17 @@ SearchBar.propTypes = {
   navigation: PropTypes.object.isRequired,
   screenName: PropTypes.string.isRequired,
   serviceType: PropTypes.string.isRequired,
+  prefill: PropTypes.string,
+};
+
+SearchBar.defaultProps = {
+  prefill: "",
 };
 
 const styles = StyleSheet.create({
   headerBackGround: {
     backgroundColor: colors.themeMain,
-    height: 80,
+    height: 60,
     justifyContent: "center",
     paddingHorizontal: 20,
     paddingVertical: 20,

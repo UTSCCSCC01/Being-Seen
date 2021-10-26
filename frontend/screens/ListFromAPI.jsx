@@ -46,28 +46,6 @@ const capitalize = (s) => (s && s[0].toUpperCase() + s.slice(1)) || "";
  */
 function ListFromAPI({ query }) {
   const listName = `${capitalize(query)}List`;
-  const [searchBarFocused, setSearchBarFocused] = useState(false);
-
-  // Copied from https://stackoverflow.com/a/57502759/12826080
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      "keyboardDidShow",
-      () => {
-        setSearchBarFocused(true);
-      }
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      "keyboardDidHide",
-      () => {
-        setSearchBarFocused(false);
-      }
-    );
-
-    return () => {
-      keyboardDidHideListener.remove();
-      keyboardDidShowListener.remove();
-    };
-  }, []);
   return (
     <>
       <Stack.Navigator initialRouteName={listName}>
@@ -81,11 +59,7 @@ function ListFromAPI({ query }) {
         >
           {({ navigation }) => (
             <>
-              <SearchBar
-                navigation={navigation}
-                screenName="searchResult"
-                serviceType={query}
-              />
+              <ScreenHeader headerText={listName} />
               <ShelterList navigation={navigation} query={query} />
             </>
           )}
@@ -148,6 +122,13 @@ function ListFromAPI({ query }) {
     }
     return (
       <FlatList
+        ListHeaderComponent={
+          <SearchBar
+            navigation={navigation}
+            screenName="searchResult"
+            serviceType={query}
+          />
+        }
         data={information}
         refreshing={sheltersRefreshing}
         onRefresh={refreshSheltersFromApi}
@@ -165,9 +146,7 @@ function ListFromAPI({ query }) {
                 style={[
                   styles.box,
                   {
-                    backgroundColor: searchBarFocused
-                      ? colors.backgroundColorDimmed
-                      : colors.backgroundColor,
+                    backgroundColor: colors.backgroundColor,
                   },
                 ]}
               >
@@ -198,9 +177,7 @@ function ListFromAPI({ query }) {
         style={[
           styles.scrollBackground,
           {
-            backgroundColor: searchBarFocused
-              ? colors.backgroundColorDimmed
-              : colors.backgroundColor,
+            backgroundColor: colors.backgroundColor,
           },
         ]}
       />
@@ -687,6 +664,19 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
   },
   header: {},
+  headerLeftNode: {
+    flex: 1,
+  },
+  headerMiddleNode: {
+    flex: 3,
+  },
+  headerRightNode: {
+    flex: 1,
+  },
+  headerText: {
+    color: colors.themeMain,
+    fontSize: 24,
+  },
   icon: {
     flex: 0.25,
     height: "99%",
