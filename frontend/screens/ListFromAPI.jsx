@@ -45,8 +45,8 @@ import colors from "../constants/colors";
 import SearchScreen from "./SearchScreen";
 
 const Stack = createNativeStackNavigator();
-// const apiPath = "http://10.0.2.2:3000/";
-const apiPath = "http://192.168.0.13:3000/";
+const apiPath = "http://10.0.2.2:3000/";
+// const apiPath = "http://192.168.0.13:3000/";
 export const purpleThemeColour = "#662997";
 
 const capitalize = (s) => (s && s[0].toUpperCase() + s.slice(1)) || "";
