@@ -68,7 +68,6 @@ function ListFromAPI({ query }) {
   }, []);
   return (
     <>
-      <SearchBar />
       <Stack.Navigator initialRouteName={listName}>
         <Stack.Screen
           name={listName}
@@ -79,7 +78,10 @@ function ListFromAPI({ query }) {
           }}
         >
           {({ navigation }) => (
-            <ShelterList navigation={navigation} query={query} />
+            <>
+              <SearchBar navigation={navigation} screenName="searchResult" />
+              <ShelterList navigation={navigation} query={query} />
+            </>
           )}
         </Stack.Screen>
         <Stack.Screen
@@ -99,6 +101,11 @@ function ListFromAPI({ query }) {
             headerTintColor: purpleThemeColour,
             headerStyle: styles.header,
           }}
+        />
+        <Stack.Screen
+          name="searchResult"
+          component={View}
+          options={{ headerShown: true }}
         />
       </Stack.Navigator>
     </>

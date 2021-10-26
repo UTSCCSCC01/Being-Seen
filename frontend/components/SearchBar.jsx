@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import * as Animatable from "react-native-animatable";
@@ -6,16 +7,29 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 import colors from "../constants/colors";
 
-function SearchBar() {
+function SearchBar({ navigation, screenName }) {
+  const onSubmitEditing = () => {
+    navigation.navigate(screenName);
+  };
+
   return (
     <SafeAreaView style={styles.headerBackGround}>
       <View style={styles.searchBoxContainer}>
         <Icon name="search" style={styles.searchIcon} />
-        <TextInput placeholder="Search" style={styles.textInput} />
+        <TextInput
+          placeholder="Search"
+          style={styles.textInput}
+          onSubmitEditing={onSubmitEditing}
+        />
       </View>
     </SafeAreaView>
   );
 }
+
+SearchBar.propTypes = {
+  navigation: PropTypes.object.isRequired,
+  screenName: PropTypes.string.isRequired,
+};
 
 const styles = StyleSheet.create({
   headerBackGround: {
