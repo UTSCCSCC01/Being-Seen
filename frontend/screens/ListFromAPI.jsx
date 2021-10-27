@@ -10,6 +10,7 @@
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable consistent-return */
 /* eslint-disable react/prop-types */
+/* eslint-disable */
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SecureStore from "expo-secure-store";
 // eslint-disable-next-line camelcase
