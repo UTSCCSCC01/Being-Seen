@@ -168,6 +168,7 @@ function ShelterList({ navigation, query }) {
       onRefresh={refreshSheltersFromApi}
       renderItem={({ item, index, separators }) => {
         return (
+          <View style = {styles.marginColour}>
           <TouchableHighlight
             onPress={() => {
               navigation.navigate(`${capitalize(query)}Details`, {
@@ -180,7 +181,7 @@ function ShelterList({ navigation, query }) {
               {item.picture ? (
                 <Image style={styles.icon} source={{ uri: item.picture }} />
               ) : null}
-              <View style={{ flex: 1 }}>
+              <View style={styles.boxText}>
                 <Text style={styles.text} numberOfLines={1}>
                   Name: {item.name}
                 </Text>
@@ -198,6 +199,7 @@ function ShelterList({ navigation, query }) {
               </View>
             </View>
           </TouchableHighlight>
+          </View>
         );
       }}
       keyExtractor={(item, index) => index.toString()}
@@ -265,63 +267,65 @@ const DisplayShelter = ({ route, navigation }) => {
                 source={{ uri: info.picture }}
               />
             ) : null}
-            <Text style={styles.expandedText}>Name: {info.name}</Text>
-            {info.address ? (
+            <View style={styles.displayTextView}>
+              <Text style={styles.expandedText}>Name: {info.name}</Text>
+              {info.address ? (
+                <Text style={styles.expandedText}>
+                  Address: {info.address}
+                  {info.postalCode}
+                </Text>
+              ) : null}
+              {info.phoneNumber ? (
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.expandedText}>Phone Number: </Text>
+                  <TouchableHighlight
+                    underlayColor="white"
+                    onPress={() => {
+                      openPhone(info.phoneNumber);
+                    }}
+                  >
+                    <Text style={styles.expandedTextUnderlines} color="purple">
+                      {" "}
+                      {info.phoneNumber}
+                    </Text>
+                  </TouchableHighlight>
+                </View>
+              ) : null}
+              {info.email ? (
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.expandedText}>Email:</Text>
+                  <TouchableHighlight
+                    underlayColor="white"
+                    onPress={() => {
+                      Linking.openURL(`mailto:${info.email}?subject=&body=`);
+                    }}
+                  >
+                    <Text style={styles.expandedTextUnderlines} color="purple">
+                      {" "}
+                      {info.email}
+                    </Text>
+                  </TouchableHighlight>
+                </View>
+              ) : null}
               <Text style={styles.expandedText}>
-                Address: {info.address}
-                {info.postalCode}
+                Description: {info.description}
               </Text>
-            ) : null}
-            {info.phoneNumber ? (
-              <View style={{ flexDirection: "row" }}>
-                <Text style={styles.expandedText}> Phone Number: </Text>
-                <TouchableHighlight
-                  underlayColor="white"
-                  onPress={() => {
-                    openPhone(info.phoneNumber);
-                  }}
-                >
-                  <Text style={styles.expandedTextUnderlines} color="purple">
-                    {" "}
-                    {info.phoneNumber}
-                  </Text>
-                </TouchableHighlight>
-              </View>
-            ) : null}
-            {info.email ? (
-              <View style={{ flexDirection: "row" }}>
-                <Text style={styles.expandedText}>Email:</Text>
-                <TouchableHighlight
-                  underlayColor="white"
-                  onPress={() => {
-                    Linking.openURL(`mailto:${info.email}?subject=&body=`);
-                  }}
-                >
-                  <Text style={styles.expandedTextUnderlines} color="purple">
-                    {" "}
-                    {info.email}
-                  </Text>
-                </TouchableHighlight>
-              </View>
-            ) : null}
-            <Text style={styles.expandedText}>
-              Description: {info.description}
-            </Text>
-            {info.hours ? (
-              <Text style={styles.expandedText}>Hours: {info.hours}</Text>
-            ) : null}
-            {info.rating ? (
-              <View flexDirection="row">
-                <Text style={styles.expandedText}>Rating:</Text>
-                <Rating
-                  readonly="true"
-                  startingValue={info.rating}
-                  tintColor={purpleThemeColour}
-                  imageSize={40}
-                  jumpValue={0.5}
-                />
-              </View>
-            ) : null}
+              {info.hours ? (
+                <Text style={styles.expandedText}>Hours: {info.hours}</Text>
+              ) : null}
+              {info.rating ? (
+                <View flexDirection="row">
+                  <Text style={styles.expandedText}>Rating:</Text>
+                  <Rating
+                    readonly="true"
+                    startingValue={info.rating}
+                    tintColor={purpleThemeColour}
+                    imageSize={40}
+                    jumpValue={0.5}
+                  />
+                </View>
+              ) : null}
+            </View>
             <DisplayTags tags={info.tags} />
             {info.reviews ? (
               <Button
@@ -617,8 +621,16 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     flexDirection: "row",
     flexWrap: "wrap",
-    borderWidth: 1,
-    margin: 1,
+    borderWidth: 2,
+    margin: 3,
+    borderRadius: 8,
+  },
+  marginColour:{
+    backgroundColor: 'lightgrey',
+  },
+  boxText: {
+    flex: 1,
+    margin:2
   },
   displayBackground: {
     alignItems: "flex-start",
@@ -679,6 +691,9 @@ const styles = StyleSheet.create({
     // justifyContent:'center',
     backgroundColor: "white",
     flex: 1,
+  },
+  displayTextView:{
+    margin: 3
   },
   tagBox: {
     backgroundColor: "gainsboro",
