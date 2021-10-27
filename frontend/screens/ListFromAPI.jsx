@@ -143,7 +143,7 @@ function ShelterList({ navigation, query }) {
       data={information}
       refreshing={sheltersRefreshing}
       onRefresh={refreshSheltersFromApi}
-      renderItem={({ item, index, separators }) => {
+      renderItem={({ item }) => {
         return (
           <View style={styles.marginColour}>
             <TouchableHighlight
@@ -313,7 +313,7 @@ function DisplayShelter({ route, navigation }) {
           </>
         }
         data={info.reviews}
-        renderItem={({ item, index }) => (
+        renderItem={({ item }) => (
           <View style={styles.reviewBox} key={item}>
             <Text style={styles.reviewText}>"{item.content}"</Text>
             <View flexDirection="row">
@@ -330,7 +330,7 @@ function DisplayShelter({ route, navigation }) {
             </Text>
           </View>
         )}
-        keyExtractor={(item, index) => item.reviewer.toString()}
+        keyExtractor={(item) => item.reviewer.toString()}
       />
     </>
   );
@@ -597,7 +597,7 @@ export const DisplayTags = (props) => {
     <FlatList
       horizontal
       data={tags}
-      renderItem={({ item, index, separators }) => (
+      renderItem={({ item }) => (
         <View style={styles.tagBox}>
           <Text>{item.tagName}</Text>
         </View>
@@ -647,7 +647,6 @@ const styles = StyleSheet.create({
   box: {
     borderColor: colors.themeMain,
     borderStyle: "solid",
-    borderWidth: 1,
     flex: 1,
     flexDirection: "row",
     flexWrap: "wrap",
