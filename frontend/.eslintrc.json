@@ -31,12 +31,15 @@
     "rules": {
         "no-use-before-define": "off",
         "react/style-prop-object": "off",
-		"react/forbid-prop-types": 0,
+        "react/forbid-prop-types": 0,
         "import/no-unresolved": "off",
         "linebreak-style": "off",
-        "prettier/prettier": ["error", {
-            "endOfLine": "auto"
-        }],
+        "prettier/prettier": [
+            "error",
+            {
+                "endOfLine": "auto"
+            }
+        ],
         "simple-import-sort/imports": "error",
         "simple-import-sort/exports": "error",
         "import/extensions": "off",
