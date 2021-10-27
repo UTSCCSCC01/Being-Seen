@@ -31,7 +31,7 @@ UnderlinedLink.propTypes = {
 
 const styles = StyleSheet.create({
   text: {
-    ...tailwind("text-base text-primaryPurple text-opacity-75 underline"),
+    ...tailwind("text-base text-primary text-opacity-75 underline"),
   },
 });
 
