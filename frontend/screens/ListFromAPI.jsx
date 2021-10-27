@@ -96,420 +96,422 @@ function ListFromAPI({ query }) {
       </Stack.Navigator>
     </>
   );
-  /**
-   * @function ShelterList display list of shelters
-   * @module ShelterList ShelterList
-   * @description display list of shelters
-   * @param {*} navigation - screen navigator used to traverse between list of shelters and shelter details
-   *
-   */
-  function ShelterList({ navigation }) {
-    const [information, setInformation] = useState([
-      { name: `Error ${query} not loaded` },
-    ]);
-    const [sheltersRefreshing, setSheltersRefreshing] = useState(false);
+}
 
-    const onScreenLoad = () => {
-      // when load grab shelters from api and put them into the shelters state
-      getInfoFromApi(query)
-        .then((response) => response.json())
-        .then((json) => setInformation(json))
-        .catch((error) => console.error(error));
-    };
-    // essentially componentWillMount
-    useEffect(() => {
-      onScreenLoad();
-    }, []);
+/**
+ * @function ShelterList display list of shelters
+ * @module ShelterList ShelterList
+ * @description display list of shelters
+ * @param {*} navigation - screen navigator used to traverse between list of shelters and shelter details
+ *
+ */
+function ShelterList({ navigation, query }) {
+  const [information, setInformation] = useState([
+    { name: `Error ${query} not loaded` },
+  ]);
+  const [sheltersRefreshing, setSheltersRefreshing] = useState(false);
 
-    async function refreshSheltersFromApi() {
-      setSheltersRefreshing(true);
-      getInfoFromApi(query)
-        .then((response) => response.json())
-        .then((json) => setInformation(json))
-        .catch((error) => console.error(error));
-      setSheltersRefreshing(false);
-    }
-    return (
-      <FlatList
-        ListHeaderComponent={
-          <SearchBar
-            navigation={navigation}
-            screenName="searchResult"
-            serviceType={query}
-          />
-        }
-        data={information}
-        refreshing={sheltersRefreshing}
-        onRefresh={refreshSheltersFromApi}
-        renderItem={({ item, index, separators }) => {
-          return (
-            <TouchableHighlight
-              onPress={() => {
-                navigation.navigate(`${capitalize(query)}Details`, {
-                  item,
-                  query,
-                });
-              }}
-            >
-              <View
-                style={[
-                  styles.box,
-                  {
-                    backgroundColor: colors.backgroundColor,
-                  },
-                ]}
-              >
-                {item.picture ? (
-                  <Image style={styles.icon} source={{ uri: item.picture }} />
-                ) : null}
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.text} numberOfLines={1}>
-                    Name: {item.name}
-                  </Text>
-                  {item.address && (
-                    <Text style={styles.text} numberOfLines={1}>
-                      Address: {item.address}
-                    </Text>
-                  )}
-                  <Text style={styles.text} numberOfLines={1}>
-                    Phone: {item.phoneNumber}
-                  </Text>
-                  <Text style={styles.text} numberOfLines={1}>
-                    Tags: {item.tags ? getTags(item.tags) : "None"}
-                  </Text>
-                </View>
-              </View>
-            </TouchableHighlight>
-          );
-        }}
-        keyExtractor={(item, index) => index.toString()}
-        style={[
-          styles.scrollBackground,
-          {
-            backgroundColor: colors.backgroundColor,
-          },
-        ]}
-      />
-    );
+  const onScreenLoad = () => {
+    // when load grab shelters from api and put them into the shelters state
+    getInfoFromApi(query)
+      .then((response) => response.json())
+      .then((json) => setInformation(json))
+      .catch((error) => console.error(error));
+  };
+  // essentially componentWillMount
+  useEffect(() => {
+    onScreenLoad();
+  }, []);
+
+  async function refreshSheltersFromApi() {
+    setSheltersRefreshing(true);
+    getInfoFromApi(query)
+      .then((response) => response.json())
+      .then((json) => setInformation(json))
+      .catch((error) => console.error(error));
+    setSheltersRefreshing(false);
   }
-  /**
-   * @function DisplayShelter displays expanded details of a shelter
-   * @module DisplayShelter DisplayShelter
-   * @description displays expanded details of a shelter
-   * @param {*} param0 recieves object containg route and navigation from react navigation
-   *
-   */
-  function DisplayShelter({ route, navigation }) {
-    const [refreshing, setRefreshing] = useState(false);
-    const [info, setInfo] = useState(route.params.item);
-
-    async function refreshShelters() {
-      setRefreshing(true);
-      const res = await getInfoFromApiById(query, info._id);
-      if (res.status == 200) {
-        res.json().then((json) => setInfo(json));
+  return (
+    <FlatList
+      ListHeaderComponent={
+        <SearchBar
+          navigation={navigation}
+          screenName="searchResult"
+          serviceType={query}
+        />
       }
-      setRefreshing(false);
-    }
-
-    return (
-      <>
-        <FlatList
-          refreshing={refreshing}
-          onRefresh={refreshShelters}
-          ListHeaderComponent={
-            <>
-              {info.picture ? (
-                <ImageBackground
-                  style={styles.largePic}
-                  source={{ uri: info.picture }}
-                />
+      data={information}
+      refreshing={sheltersRefreshing}
+      onRefresh={refreshSheltersFromApi}
+      renderItem={({ item, index, separators }) => {
+        return (
+          <TouchableHighlight
+            onPress={() => {
+              navigation.navigate(`${capitalize(query)}Details`, {
+                item,
+                query,
+              });
+            }}
+          >
+            <View
+              style={[
+                styles.box,
+                {
+                  backgroundColor: colors.backgroundColor,
+                },
+              ]}
+            >
+              {item.picture ? (
+                <Image style={styles.icon} source={{ uri: item.picture }} />
               ) : null}
-              <Text style={styles.expandedText}>Name: {info.name}</Text>
-              {info.address ? (
-                <Text style={styles.expandedText}>
-                  Address: {info.address}
-                  {info.postalCode}
+              <View style={{ flex: 1 }}>
+                <Text style={styles.text} numberOfLines={1}>
+                  Name: {item.name}
                 </Text>
-              ) : null}
-              {info.phoneNumber ? (
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.expandedText}> Phone Number: </Text>
-                  <TouchableHighlight
-                    underlayColor="white"
-                    onPress={() => {
-                      openPhone(info.phoneNumber);
-                    }}
-                  >
-                    <Text style={styles.expandedTextUnderlines} color="purple">
-                      {" "}
-                      {info.phoneNumber}
-                    </Text>
-                  </TouchableHighlight>
-                </View>
-              ) : null}
-              {info.email ? (
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.expandedText}>Email:</Text>
-                  <TouchableHighlight
-                    underlayColor="white"
-                    onPress={() => {
-                      Linking.openURL(`mailto:${info.email}?subject=&body=`);
-                    }}
-                  >
-                    <Text style={styles.expandedTextUnderlines} color="purple">
-                      {" "}
-                      {info.email}
-                    </Text>
-                  </TouchableHighlight>
-                </View>
-              ) : null}
+                {item.address && (
+                  <Text style={styles.text} numberOfLines={1}>
+                    Address: {item.address}
+                  </Text>
+                )}
+                <Text style={styles.text} numberOfLines={1}>
+                  Phone: {item.phoneNumber}
+                </Text>
+                <Text style={styles.text} numberOfLines={1}>
+                  Tags: {item.tags ? getTags(item.tags) : "None"}
+                </Text>
+              </View>
+            </View>
+          </TouchableHighlight>
+        );
+      }}
+      keyExtractor={(item, index) => index.toString()}
+      style={[
+        styles.scrollBackground,
+        {
+          backgroundColor: colors.backgroundColor,
+        },
+      ]}
+    />
+  );
+}
+/**
+ * @function DisplayShelter displays expanded details of a shelter
+ * @module DisplayShelter DisplayShelter
+ * @description displays expanded details of a shelter
+ * @param {*} param0 recieves object containg route and navigation from react navigation
+ *
+ */
+function DisplayShelter({ route, navigation }) {
+  const [refreshing, setRefreshing] = useState(false);
+  const [info, setInfo] = useState(route.params.item);
+  const query = route.params;
+
+  async function refreshShelters() {
+    setRefreshing(true);
+    const res = await getInfoFromApiById(query, info._id);
+    if (res.status == 200) {
+      res.json().then((json) => setInfo(json));
+    }
+    setRefreshing(false);
+  }
+
+  return (
+    <>
+      <FlatList
+        refreshing={refreshing}
+        onRefresh={refreshShelters}
+        ListHeaderComponent={
+          <>
+            {info.picture ? (
+              <ImageBackground
+                style={styles.largePic}
+                source={{ uri: info.picture }}
+              />
+            ) : null}
+            <Text style={styles.expandedText}>Name: {info.name}</Text>
+            {info.address ? (
               <Text style={styles.expandedText}>
-                Description: {info.description}
+                Address: {info.address}
+                {info.postalCode}
               </Text>
-              {info.hours ? (
-                <Text style={styles.expandedText}>Hours: {info.hours}</Text>
-              ) : null}
-              {info.rating ? (
-                <View flexDirection="row">
-                  <Text style={styles.expandedText}>Rating:</Text>
-                  <Rating
-                    readonly="true"
-                    startingValue={info.rating}
-                    tintColor={purpleThemeColour}
-                    imageSize={40}
-                    jumpValue={0.5}
-                  />
-                </View>
-              ) : null}
-              <DisplayTags tags={info.tags} />
-              {info.reviews ? (
-                <Button
+            ) : null}
+            {info.phoneNumber ? (
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.expandedText}> Phone Number: </Text>
+                <TouchableHighlight
+                  underlayColor="white"
                   onPress={() => {
-                    navigation.navigate(`Review ${capitalize(query)}`, {
-                      infoId: info._id,
-                      query,
-                    });
+                    openPhone(info.phoneNumber);
                   }}
-                  title="Review This Shelter"
-                  color={purpleThemeColour}
-                />
-              ) : null}
-              {info.website ? (
-                <Button
-                  title="Go to website"
+                >
+                  <Text style={styles.expandedTextUnderlines} color="purple">
+                    {" "}
+                    {info.phoneNumber}
+                  </Text>
+                </TouchableHighlight>
+              </View>
+            ) : null}
+            {info.email ? (
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.expandedText}>Email:</Text>
+                <TouchableHighlight
+                  underlayColor="white"
                   onPress={() => {
-                    Linking.openURL(info.website);
+                    Linking.openURL(`mailto:${info.email}?subject=&body=`);
                   }}
-                />
-              ) : null}
-            </>
-          }
-          data={info.reviews}
-          renderItem={({ item, index }) => (
-            <View style={styles.reviewBox} key={item}>
-              <Text style={styles.reviewText}>"{item.content}"</Text>
+                >
+                  <Text style={styles.expandedTextUnderlines} color="purple">
+                    {" "}
+                    {info.email}
+                  </Text>
+                </TouchableHighlight>
+              </View>
+            ) : null}
+            <Text style={styles.expandedText}>
+              Description: {info.description}
+            </Text>
+            {info.hours ? (
+              <Text style={styles.expandedText}>Hours: {info.hours}</Text>
+            ) : null}
+            {info.rating ? (
               <View flexDirection="row">
-                <Text style={styles.reviewText}>Rating: </Text>
+                <Text style={styles.expandedText}>Rating:</Text>
                 <Rating
                   readonly="true"
-                  startingValue={item.rating}
+                  startingValue={info.rating}
                   tintColor={purpleThemeColour}
-                  imageSize={25}
+                  imageSize={40}
+                  jumpValue={0.5}
                 />
               </View>
-              <Text style={styles.reviewText}>
-                Written on {FormatDate(item.date)}
-              </Text>
-            </View>
-          )}
-          keyExtractor={(item, index) => item.reviewer.toString()}
-        />
-      </>
-    );
-  }
-  /**
-   * @function WriteReview
-   * @module WriteReview
-   * @description displays the page responsible for handling the creation/editing of reviews
-   * @param {*} param0 recieves object containing navigation and routing params
-   */
-  function WriteReview({ route, navigation }) {
-    const [review, setReview] = useState({
-      content: "",
-      rating: 0,
-      date: new Date(),
-    });
-    // local version of review rating since onFinishRating has unwanted effects on whole object
-    const [tempRev, setTempRev] = useState(0);
-    const [editReview, setEditReview] = useState(false);
-    const [readyToPublish, setReadyToPublish] = useState(false);
-    const [reviewer, setReviewer] = useState(null);
-    const reviewParams = route.params;
-
-    async function onScreenLoad() {
-      // when load grab shelters from api and put them into the shelters state
-      const profId = await getProfileIdFromToken();
-      setReviewer(profId);
-    }
-    // essentially componentWillMount
-    useEffect(() => {
-      onScreenLoad();
-    }, []);
-
-    useEffect(() => {
-      getReviewFromApi();
-    }, [reviewer]);
-
-    useEffect(() => {
-      if (readyToPublish) {
-        sendReviewToApi(
-          JSON.stringify({ content: review.content, rating: review.rating })
-        );
-        navigation.goBack();
-      }
-      setReadyToPublish(false);
-    }, [readyToPublish]);
-
-    useEffect(() => {
-      if (tempRev != -1) {
-        setReview({
-          content: review.content,
-          rating: tempRev,
-          date: new Date(),
-        });
-      }
-    }, [tempRev]);
-
-    async function getReviewFromApi() {
-      try {
-        const response = await fetch(
-          // ipv4 localhost since running emulator
-          // 10.0.2.2 is your machine's localhost when on an android emulator
-          `${apiPath + reviewParams.query}/${
-            reviewParams.infoId
-          }/review/${reviewer}`,
-          {
-            method: "Get",
-          }
-        );
-        if (response.status == 200) {
-          response.json().then((json) => setReview(json));
-          setEditReview(true);
+            ) : null}
+            <DisplayTags tags={info.tags} />
+            {info.reviews ? (
+              <Button
+                onPress={() => {
+                  navigation.navigate(`Review ${capitalize(query)}`, {
+                    infoId: info._id,
+                    query,
+                  });
+                }}
+                title="Review This Shelter"
+                color={purpleThemeColour}
+              />
+            ) : null}
+            {info.website ? (
+              <Button
+                title="Go to website"
+                onPress={() => {
+                  Linking.openURL(info.website);
+                }}
+              />
+            ) : null}
+          </>
         }
-        return;
-      } catch (error) {
-        console.error(error);
-      }
-    }
+        data={info.reviews}
+        renderItem={({ item, index }) => (
+          <View style={styles.reviewBox} key={item}>
+            <Text style={styles.reviewText}>"{item.content}"</Text>
+            <View flexDirection="row">
+              <Text style={styles.reviewText}>Rating: </Text>
+              <Rating
+                readonly="true"
+                startingValue={item.rating}
+                tintColor={purpleThemeColour}
+                imageSize={25}
+              />
+            </View>
+            <Text style={styles.reviewText}>
+              Written on {FormatDate(item.date)}
+            </Text>
+          </View>
+        )}
+        keyExtractor={(item, index) => item.reviewer.toString()}
+      />
+    </>
+  );
+}
+/**
+ * @function WriteReview
+ * @module WriteReview
+ * @description displays the page responsible for handling the creation/editing of reviews
+ * @param {*} param0 recieves object containing navigation and routing params
+ */
+function WriteReview({ route, navigation }) {
+  const [review, setReview] = useState({
+    content: "",
+    rating: 0,
+    date: new Date(),
+  });
+  // local version of review rating since onFinishRating has unwanted effects on whole object
+  const [tempRev, setTempRev] = useState(0);
+  const [editReview, setEditReview] = useState(false);
+  const [readyToPublish, setReadyToPublish] = useState(false);
+  const [reviewer, setReviewer] = useState(null);
+  const reviewParams = route.params;
 
-    async function DeleteReviewFromApi() {
-      try {
-        const response = await fetch(
-          // ipv4 localhost since running emulator
-          // 10.0.2.2 is your machine's localhost when on an android emulator
-          `${apiPath + reviewParams.query}/${
-            reviewParams.infoId
-          }/review/${reviewer}`,
-          {
-            method: "DELETE",
-          }
-        );
-        return;
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    async function DeleteReview() {
-      Alert.alert(
-        "Are you sure",
-        "Once you delete this review, you cannot get it back",
-        [
-          {
-            text: "Cancel",
-            onPress: () => {},
-            style: "cancel",
-          },
-          {
-            text: "OK",
-            onPress: () => {
-              DeleteReviewFromApi();
-              navigation.goBack();
-            },
-          },
-        ]
-      );
-      // DeleteReviewFromApi()
-      // navigation.goBack()
-    }
-
-    async function sendReviewToApi(body) {
-      try {
-        let method;
-        if (editReview) method = "PATCH";
-        else method = "POST";
-
-        const response = await fetch(
-          // ipv4 localhost since running emulator
-          // 10.0.2.2 is your machine's localhost when on an android emulator
-          `${apiPath + reviewParams.query}/${
-            reviewParams.infoId
-          }/review/${reviewer}`,
-          {
-            method,
-            headers: { "Content-Type": "application/json" },
-            body,
-          }
-        );
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    return (
-      <View>
-        <View alignItems="center">
-          <Text style={styles.writeReviewText}>Type Your Review Here</Text>
-        </View>
-
-        <View style={styles.writeReviewBox}>
-          <TextInput
-            multiline
-            defaultValue={review.content}
-            placeholder="Enter Review Here"
-            maxLength={400}
-            onChangeText={(content) =>
-              setReview({
-                content,
-                rating: review.rating,
-                date: review.date,
-              })
-            }
-          />
-        </View>
-        <View style={{ padding: "1%" }} />
-        <View
-          style={{ flex: 0.5, flexDirection: "row", justifyContent: "center" }}
-        >
-          <Rating
-            startingValue={review.rating}
-            tintColor={purpleThemeColour}
-            jumpValue={0.5}
-            onFinishRating={setTempRev}
-          />
-        </View>
-        <Button
-          title="publish review"
-          color={purpleThemeColour}
-          onPress={() => {
-            setReadyToPublish(true);
-          }}
-        />
-        <Button title="Delete Review" color="red" onPress={DeleteReview} />
-      </View>
-    );
+  async function onScreenLoad() {
+    // when load grab shelters from api and put them into the shelters state
+    const profId = await getProfileIdFromToken();
+    setReviewer(profId);
   }
+  // essentially componentWillMount
+  useEffect(() => {
+    onScreenLoad();
+  }, []);
+
+  useEffect(() => {
+    getReviewFromApi();
+  }, [reviewer]);
+
+  useEffect(() => {
+    if (readyToPublish) {
+      sendReviewToApi(
+        JSON.stringify({ content: review.content, rating: review.rating })
+      );
+      navigation.goBack();
+    }
+    setReadyToPublish(false);
+  }, [readyToPublish]);
+
+  useEffect(() => {
+    if (tempRev != -1) {
+      setReview({
+        content: review.content,
+        rating: tempRev,
+        date: new Date(),
+      });
+    }
+  }, [tempRev]);
+
+  async function getReviewFromApi() {
+    try {
+      const response = await fetch(
+        // ipv4 localhost since running emulator
+        // 10.0.2.2 is your machine's localhost when on an android emulator
+        `${apiPath + reviewParams.query}/${
+          reviewParams.infoId
+        }/review/${reviewer}`,
+        {
+          method: "Get",
+        }
+      );
+      if (response.status == 200) {
+        response.json().then((json) => setReview(json));
+        setEditReview(true);
+      }
+      return;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function DeleteReviewFromApi() {
+    try {
+      const response = await fetch(
+        // ipv4 localhost since running emulator
+        // 10.0.2.2 is your machine's localhost when on an android emulator
+        `${apiPath + reviewParams.query}/${
+          reviewParams.infoId
+        }/review/${reviewer}`,
+        {
+          method: "DELETE",
+        }
+      );
+      return;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function DeleteReview() {
+    Alert.alert(
+      "Are you sure",
+      "Once you delete this review, you cannot get it back",
+      [
+        {
+          text: "Cancel",
+          onPress: () => {},
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            DeleteReviewFromApi();
+            navigation.goBack();
+          },
+        },
+      ]
+    );
+    // DeleteReviewFromApi()
+    // navigation.goBack()
+  }
+
+  async function sendReviewToApi(body) {
+    try {
+      let method;
+      if (editReview) method = "PATCH";
+      else method = "POST";
+
+      const response = await fetch(
+        // ipv4 localhost since running emulator
+        // 10.0.2.2 is your machine's localhost when on an android emulator
+        `${apiPath + reviewParams.query}/${
+          reviewParams.infoId
+        }/review/${reviewer}`,
+        {
+          method,
+          headers: { "Content-Type": "application/json" },
+          body,
+        }
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  return (
+    <View>
+      <View alignItems="center">
+        <Text style={styles.writeReviewText}>Type Your Review Here</Text>
+      </View>
+
+      <View style={styles.writeReviewBox}>
+        <TextInput
+          multiline
+          defaultValue={review.content}
+          placeholder="Enter Review Here"
+          maxLength={400}
+          onChangeText={(content) =>
+            setReview({
+              content,
+              rating: review.rating,
+              date: review.date,
+            })
+          }
+        />
+      </View>
+      <View style={{ padding: "1%" }} />
+      <View
+        style={{ flex: 0.5, flexDirection: "row", justifyContent: "center" }}
+      >
+        <Rating
+          startingValue={review.rating}
+          tintColor={purpleThemeColour}
+          jumpValue={0.5}
+          onFinishRating={setTempRev}
+        />
+      </View>
+      <Button
+        title="publish review"
+        color={purpleThemeColour}
+        onPress={() => {
+          setReadyToPublish(true);
+        }}
+      />
+      <Button title="Delete Review" color="red" onPress={DeleteReview} />
+    </View>
+  );
 }
 
 async function getInfoFromApi(query) {
