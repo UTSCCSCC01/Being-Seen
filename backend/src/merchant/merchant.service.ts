@@ -1,15 +1,16 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import { MerchantDocument } from 'src/Schemas/merchant.schema';
 import { Merchant } from 'src/Schemas/merchant.schema';
-import { Tag } from 'src/Schemas/tag.schema';
+import { TagService } from 'src/tag/tag.service';
 
 @Injectable()
 export class MerchantService {
   constructor(
     @InjectModel('Merchant')
     private readonly merchantModel: Model<MerchantDocument>,
+    private readonly tagService: TagService,
   ) {}
 
   /**
@@ -57,15 +58,16 @@ export class MerchantService {
     address: string,
     hours: string,
     picture: string,
-    tags: Tag[],
+    tags: string[],
   ): Promise<string> {
+    const tagList = await this.tagService.createTagList(tags);
     const newMerchant = new this.merchantModel({
       name: name,
       description: description,
       address: address,
       hours: hours,
       pircture: picture,
-      tags: this.convertOidArr(tags),
+      tags: tagList,
     });
     newMerchant.save();
     return newMerchant.id;
@@ -91,14 +93,16 @@ export class MerchantService {
     return deleteCount;
   }
 
-  private convertOidArr(arr) {
-    try {
-      for (let i = 0; i < arr.length; i++) {
-        arr[i].id = Types.ObjectId(arr[i].id);
-      }
-      return arr;
-    } catch (error) {
-      return [];
-    }
+  /**
+   * returns a list of education resources that have all tags mentioned in tagList
+   * @param tagList list of tags to search by
+   * @returns returns a list of education resources that have all tags mentioned in tagList
+   */
+  async searchMerchantByTags(tagList: string[]) {
+    const merList = await this.tagService.searchForObjectsWithTags(
+      tagList,
+      this.merchantModel,
+    );
+    return merList;
   }
 }

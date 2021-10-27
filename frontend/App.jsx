@@ -5,12 +5,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SecureStore from "expo-secure-store";
-import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import React, { useEffect } from "react";
+import { Image, View } from "react-native";
 
 import icons from "./constants/icons";
-// import Shelter from "./screens/Shelter";
 import LandingPage from "./screens/landing_page";
 import ListFromAPI from "./screens/ListFromAPI";
 import Login from "./screens/Login";
@@ -30,7 +28,7 @@ const Home = () => (
   <Tab.Navigator
     screenOptions={({ route }) => ({
       headerShown: false,
-      tabBarIcon: ({}) => {
+      tabBarIcon: () => {
         let iconName;
 
         if (route.name === "Merchants") {
@@ -64,6 +62,7 @@ const Home = () => (
 );
 
 export default function App() {
+  // eslint-disable-next-line no-unused-vars
   let token;
 
   useEffect(() => {
@@ -76,7 +75,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Login"
+        // initialRouteName="Login"
+        initialRouteName="Home"
         screenOptions={{
           headerShown: false,
         }}
@@ -91,6 +91,5 @@ export default function App() {
         <Stack.Screen name="RecoverAccount" component={RecoverAccountScreen} />
       </Stack.Navigator>
     </NavigationContainer>
-    // <Login />
   );
 }
