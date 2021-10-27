@@ -1,15 +1,8 @@
-import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import {
-  Linking,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View,
-} from "react-native";
+import { Linking, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { tailwind } from "tailwind";
 
+import BackButton from "../components/BackButton";
 import Button from "../components/Button";
 import ScreenHeader from "../components/ScreenHeader";
 
@@ -19,23 +12,9 @@ import ScreenHeader from "../components/ScreenHeader";
  * @description Signup screen
  */
 const RegisterAccountScreen = () => {
-  const navigation = useNavigation();
-
   return (
-    <SafeAreaView>
-      <ScreenHeader
-        leftNode={
-          <View>
-            <TouchableHighlight
-              onPress={() => navigation.goBack()}
-              underlayColor="transparent"
-            >
-              <Text style={styles.backButton}>Back</Text>
-            </TouchableHighlight>
-          </View>
-        }
-        headerText="Register"
-      />
+    <SafeAreaView style={styles.registerPage}>
+      <ScreenHeader leftNode={<BackButton />} headerText="Register" />
       <View style={styles.body}>
         <Text style={styles.text}>
           Don&apos;t have an account? Email us today and we will create one for
@@ -62,17 +41,17 @@ const RegisterAccountScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  backButton: {
-    ...tailwind("text-primaryPurple text-opacity-90 text-xl"),
-  },
   body: {
     ...tailwind("px-4 py-6"),
   },
   buttonView: {
     ...tailwind("px-4 py-8"),
   },
+  registerPage: {
+    ...tailwind("flex-1"),
+  },
   text: {
-    ...tailwind("text-primaryPurple text-base"),
+    ...tailwind("text-black text-base"),
   },
 });
 

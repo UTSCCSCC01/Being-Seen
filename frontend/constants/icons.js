@@ -1,3 +1,4 @@
+import back_button from "../assets/icons/back_button.png";
 import education from "../assets/icons/education.png";
 import jobs from "../assets/icons/jobs.png";
 import merchants from "../assets/icons/merchants.png";
@@ -10,4 +11,5 @@ export default {
   merchants,
   profile,
   social_services,
+  back_button,
 };
