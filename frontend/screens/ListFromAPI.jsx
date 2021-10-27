@@ -145,44 +145,44 @@ function ShelterList({ navigation, query }) {
       onRefresh={refreshSheltersFromApi}
       renderItem={({ item, index, separators }) => {
         return (
-          <View style = {styles.marginColour}>
-          <TouchableHighlight
-            onPress={() => {
-              navigation.navigate(`${capitalize(query)}Details`, {
-                item,
-                query,
-              });
-            }}
-          >
-            <View
-              style={[
-                styles.box,
-                {
-                  backgroundColor: colors.backgroundColor,
-                },
-              ]}
+          <View style={styles.marginColour}>
+            <TouchableHighlight
+              onPress={() => {
+                navigation.navigate(`${capitalize(query)}Details`, {
+                  item,
+                  query,
+                });
+              }}
             >
-              {item.picture ? (
-                <Image style={styles.icon} source={{ uri: item.picture }} />
-              ) : null}
-              <View style={styles.boxText}>
-                <Text style={styles.text} numberOfLines={1}>
-                  Name: {item.name}
-                </Text>
-                {item.address && (
+              <View
+                style={[
+                  styles.box,
+                  {
+                    backgroundColor: colors.backgroundColor,
+                  },
+                ]}
+              >
+                {item.picture ? (
+                  <Image style={styles.icon} source={{ uri: item.picture }} />
+                ) : null}
+                <View style={styles.boxText}>
                   <Text style={styles.text} numberOfLines={1}>
-                    Address: {item.address}
+                    Name: {item.name}
                   </Text>
-                )}
-                <Text style={styles.text} numberOfLines={1}>
-                  Phone: {item.phoneNumber}
-                </Text>
-                <Text style={styles.text} numberOfLines={1}>
-                  Tags: {item.tags ? getTags(item.tags) : "None"}
-                </Text>
+                  {item.address && (
+                    <Text style={styles.text} numberOfLines={1}>
+                      Address: {item.address}
+                    </Text>
+                  )}
+                  <Text style={styles.text} numberOfLines={1}>
+                    Phone: {item.phoneNumber}
+                  </Text>
+                  <Text style={styles.text} numberOfLines={1}>
+                    Tags: {item.tags ? getTags(item.tags) : "None"}
+                  </Text>
+                </View>
               </View>
-            </View>
-          </TouchableHighlight>
+            </TouchableHighlight>
           </View>
         );
       }}
@@ -206,7 +206,7 @@ function ShelterList({ navigation, query }) {
 function DisplayShelter({ route, navigation }) {
   const [refreshing, setRefreshing] = useState(false);
   const [info, setInfo] = useState(route.params.item);
-  const query = route.params;
+  const { query } = route.params;
 
   async function refreshShelters() {
     setRefreshing(true);
@@ -655,12 +655,12 @@ const styles = StyleSheet.create({
     margin: 3,
     borderRadius: 8,
   },
-  marginColour:{
-    backgroundColor: 'lightgrey',
+  marginColour: {
+    backgroundColor: "lightgrey",
   },
   boxText: {
     flex: 1,
-    margin:2
+    margin: 2,
   },
   displayBackground: {
     alignItems: "flex-start",
@@ -734,8 +734,8 @@ const styles = StyleSheet.create({
     // justifyContent:'center',
     flex: 1,
   },
-  displayTextView:{
-    margin: 3
+  displayTextView: {
+    margin: 3,
   },
   tagBox: {
     backgroundColor: "gainsboro",
