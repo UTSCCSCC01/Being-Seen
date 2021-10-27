@@ -12,11 +12,9 @@
 /* eslint-disable react/prop-types */
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SecureStore from "expo-secure-store";
-import { StatusBar } from "expo-status-bar";
 // eslint-disable-next-line camelcase
 import jwt_decode from "jwt-decode";
 import React, { useEffect, useState } from "react";
-import { render } from "react-dom";
 import {
   Alert,
   Button,
@@ -24,22 +22,24 @@ import {
   FlatList,
   Image,
   ImageBackground,
-  KeyboardAvoidingView,
   Linking,
   Platform,
-  SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
-  Touchable,
   TouchableHighlight,
   View,
 } from "react-native";
 import { Rating } from "react-native-ratings";
 
+import ScreenHeader from "../components/ScreenHeader";
+import SearchBar from "../components/SearchBar";
+import colors from "../constants/colors";
+import SearchScreen from "./SearchScreen";
+
 const Stack = createNativeStackNavigator();
 const apiPath = "http://10.0.2.2:3000/";
+// const apiPath = "http://192.168.0.13:3000/";
 export const purpleThemeColour = "#662997";
 
 const capitalize = (s) => (s && s[0].toUpperCase() + s.slice(1)) || "";
@@ -53,83 +53,50 @@ const capitalize = (s) => (s && s[0].toUpperCase() + s.slice(1)) || "";
 function ListFromAPI({ query }) {
   const listName = `${capitalize(query)}List`;
   return (
-    <Stack.Navigator initialRouteName={listName}>
-      <Stack.Screen
-        name={listName}
-        options={{
-          headerShown: true,
-          headerTintColor: "#662997",
-          headerStyle: styles.header,
-        }}
-      >
-        {({ navigation }) => (
-          <ShelterList navigation={navigation} query={query} />
-        )}
-      </Stack.Screen>
-      <Stack.Screen
-        name={`${capitalize(query)}Details`}
-        component={DisplayShelter}
-        options={{
-          headerShown: true,
-          headerTintColor: "#662997",
-          headerStyle: styles.header,
-        }}
-      />
-      <Stack.Screen
-        name={`Review ${capitalize(query)}`}
-        component={WriteReview}
-        options={{
-          headerShown: true,
-          headerTintColor: purpleThemeColour,
-          headerStyle: styles.header,
-        }}
-      />
-    </Stack.Navigator>
+    <>
+      <Stack.Navigator initialRouteName={listName}>
+        <Stack.Screen
+          name={listName}
+          options={{
+            headerShown: false,
+            headerTintColor: "#662997",
+            headerStyle: styles.header,
+          }}
+        >
+          {({ navigation }) => (
+            <>
+              <ScreenHeader headerText={listName} />
+              <ShelterList navigation={navigation} query={query} />
+            </>
+          )}
+        </Stack.Screen>
+        <Stack.Screen
+          name={`${capitalize(query)}Details`}
+          component={DisplayShelter}
+          options={{
+            headerShown: true,
+            headerTintColor: "#662997",
+            headerStyle: styles.header,
+          }}
+        />
+        <Stack.Screen
+          name={`Review ${capitalize(query)}`}
+          component={WriteReview}
+          options={{
+            headerShown: true,
+            headerTintColor: purpleThemeColour,
+            headerStyle: styles.header,
+          }}
+        />
+        <Stack.Screen
+          name="searchResult"
+          component={SearchScreen}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+    </>
   );
 }
-
-async function getInfoFromApi(query) {
-  try {
-    const response = await fetch(
-      // ipv4 localhost since running emulator
-      // 10.0.2.2 is your machine's localhost when on an android emulator
-      apiPath + query,
-      // "http://192.168.2.49:3000/" + query,
-      {
-        method: "Get",
-      }
-    );
-    return response;
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-async function getInfoFromApiById(query, id) {
-  try {
-    const response = await fetch(
-      // ipv4 localhost since running emulator
-      // 10.0.2.2 is your machine's localhost when on an android emulator
-      `${apiPath + query}/${id}`,
-      // "http://192.168.2.49:3000/" + query,
-      {
-        method: "Get",
-      }
-    );
-    return response;
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-async function getProfileIdFromToken() {
-  const token = await SecureStore.getItemAsync("token");
-  const decoded = await jwt_decode(token);
-  return decoded.id;
-}
-/*
-
-      */
 
 /**
  * @function ShelterList display list of shelters
@@ -158,11 +125,21 @@ function ShelterList({ navigation, query }) {
 
   async function refreshSheltersFromApi() {
     setSheltersRefreshing(true);
-    getInfoFromApi(query);
+    getInfoFromApi(query)
+      .then((response) => response.json())
+      .then((json) => setInformation(json))
+      .catch((error) => console.error(error));
     setSheltersRefreshing(false);
   }
   return (
     <FlatList
+      ListHeaderComponent={
+        <SearchBar
+          navigation={navigation}
+          screenName="searchResult"
+          serviceType={query}
+        />
+      }
       data={information}
       refreshing={sheltersRefreshing}
       onRefresh={refreshSheltersFromApi}
@@ -177,7 +154,14 @@ function ShelterList({ navigation, query }) {
               });
             }}
           >
-            <View style={styles.box}>
+            <View
+              style={[
+                styles.box,
+                {
+                  backgroundColor: colors.backgroundColor,
+                },
+              ]}
+            >
               {item.picture ? (
                 <Image style={styles.icon} source={{ uri: item.picture }} />
               ) : null}
@@ -203,36 +187,15 @@ function ShelterList({ navigation, query }) {
         );
       }}
       keyExtractor={(item, index) => index.toString()}
-      style={styles.scrollBackground}
+      style={[
+        styles.scrollBackground,
+        {
+          backgroundColor: colors.backgroundColor,
+        },
+      ]}
     />
   );
 }
-/**
- * @function getTags function responsible for extracting and formatting names of tags for a shelter
- * @module getTags getTags
- * @description function responsible for extracting and formatting names of tags for a shelter
- * @param {Tag[]} tags array of tags for a shelter
- *
- */
-const getTags = (tags) => {
-  let toRet = "";
-  for (let i = 0; i < tags.length; i++) {
-    toRet += tags[i].tagName;
-    if (i != tags.length - 1) toRet += ", ";
-  }
-  return toRet;
-};
-
-export function openPhone(phone) {
-  let phoneNumber;
-  if (Platform.OS !== "android") {
-    phoneNumber = `telprompt:${phone}`;
-  } else {
-    phoneNumber = `tel:${phone}`;
-  }
-  return Linking.openURL(phoneNumber);
-}
-
 /**
  * @function DisplayShelter displays expanded details of a shelter
  * @module DisplayShelter DisplayShelter
@@ -240,10 +203,10 @@ export function openPhone(phone) {
  * @param {*} param0 recieves object containg route and navigation from react navigation
  *
  */
-const DisplayShelter = ({ route, navigation }) => {
+function DisplayShelter({ route, navigation }) {
   const [refreshing, setRefreshing] = useState(false);
   const [info, setInfo] = useState(route.params.item);
-  const { query } = route.params;
+  const query = route.params;
 
   async function refreshShelters() {
     setRefreshing(true);
@@ -371,7 +334,7 @@ const DisplayShelter = ({ route, navigation }) => {
       />
     </>
   );
-};
+}
 /**
  * @function WriteReview
  * @module WriteReview
@@ -417,7 +380,11 @@ function WriteReview({ route, navigation }) {
 
   useEffect(() => {
     if (tempRev != -1) {
-      setReview({ content: review.content, rating: tempRev, date: new Date() });
+      setReview({
+        content: review.content,
+        rating: tempRev,
+        date: new Date(),
+      });
     }
   }, [tempRev]);
 
@@ -551,6 +518,72 @@ function WriteReview({ route, navigation }) {
   );
 }
 
+async function getInfoFromApi(query) {
+  try {
+    const response = await fetch(
+      // ipv4 localhost since running emulator
+      // 10.0.2.2 is your machine's localhost when on an android emulator
+      apiPath + query,
+      // "http://192.168.2.49:3000/" + query,
+      {
+        method: "Get",
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function getInfoFromApiById(query, id) {
+  try {
+    const response = await fetch(
+      // ipv4 localhost since running emulator
+      // 10.0.2.2 is your machine's localhost when on an android emulator
+      `${apiPath + query}/${id}`,
+      // "http://192.168.2.49:3000/" + query,
+      {
+        method: "Get",
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function getProfileIdFromToken() {
+  const token = await SecureStore.getItemAsync("token");
+  const decoded = await jwt_decode(token);
+  return decoded.id;
+}
+
+/**
+ * @function getTags function responsible for extracting and formatting names of tags for a shelter
+ * @module getTags getTags
+ * @description function responsible for extracting and formatting names of tags for a shelter
+ * @param {Tag[]} tags array of tags for a shelter
+ *
+ */
+const getTags = (tags) => {
+  let toRet = "";
+  for (let i = 0; i < tags.length; i++) {
+    toRet += tags[i].tagName;
+    if (i != tags.length - 1) toRet += ", ";
+  }
+  return toRet;
+};
+
+export function openPhone(phone) {
+  let phoneNumber;
+  if (Platform.OS !== "android") {
+    phoneNumber = `telprompt:${phone}`;
+  } else {
+    phoneNumber = `tel:${phone}`;
+  }
+  return Linking.openURL(phoneNumber);
+}
+
 /**
  * @function DisplayTags
  * @module DisplayTags
@@ -612,13 +645,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   box: {
-    flex: 1,
-    // width: "120%",
-    // height: "15%",
-    backgroundColor: "white",
-    borderColor: purpleThemeColour,
+    borderColor: colors.themeMain,
     borderStyle: "solid",
-    justifyContent: "flex-start",
+    borderWidth: 1,
+    flex: 1,
     flexDirection: "row",
     flexWrap: "wrap",
     borderWidth: 2,
@@ -654,6 +684,19 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
   },
   header: {},
+  headerLeftNode: {
+    flex: 1,
+  },
+  headerMiddleNode: {
+    flex: 3,
+  },
+  headerRightNode: {
+    flex: 1,
+  },
+  headerText: {
+    color: colors.themeMain,
+    fontSize: 24,
+  },
   icon: {
     flex: 0.25,
     height: "99%",
@@ -689,7 +732,6 @@ const styles = StyleSheet.create({
     // flexDirection: 'row',
     // alignItems: 'flex-start',
     // justifyContent:'center',
-    backgroundColor: "white",
     flex: 1,
   },
   displayTextView:{
