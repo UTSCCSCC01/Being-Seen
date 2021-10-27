@@ -1,9 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import { MerchantDocument } from 'src/Schemas/merchant.schema';
 import { Merchant } from 'src/Schemas/merchant.schema';
-import { Tag } from 'src/Schemas/tag.schema';
 import { TagService } from 'src/tag/tag.service';
 
 @Injectable()
@@ -11,7 +10,7 @@ export class MerchantService {
   constructor(
     @InjectModel('Merchant')
     private readonly merchantModel: Model<MerchantDocument>,
-    private readonly tagService: TagService
+    private readonly tagService: TagService,
   ) {}
 
   /**
@@ -99,7 +98,7 @@ export class MerchantService {
    * @param tagList list of tags to search by
    * @returns returns a list of education resources that have all tags mentioned in tagList
    */
-   async searchMerchantByTags(tagList: string[]) {
+  async searchMerchantByTags(tagList: string[]) {
     const merList = await this.tagService.searchForObjectsWithTags(
       tagList,
       this.merchantModel,

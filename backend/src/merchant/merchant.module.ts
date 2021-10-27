@@ -11,7 +11,7 @@ import { MerchantService } from './merchant.service';
     MongooseModule.forFeature([
       { name: Merchant.name, schema: MerchantSchema },
     ]),
-    TagModule
+    TagModule,
   ],
   controllers: [MerchantController],
   providers: [MerchantService],

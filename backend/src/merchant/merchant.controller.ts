@@ -1,11 +1,11 @@
-import { 
-  Body, 
+import {
+  Body,
   Controller,
   Delete,
-  Get, 
-  Param, 
-  Post, 
-  Put 
+  Get,
+  Param,
+  Post,
+  Put,
 } from '@nestjs/common';
 import { Merchant } from 'src/Schemas/merchant.schema';
 
@@ -121,24 +121,24 @@ export class MerchantController {
 
   /**
    * NestJS handler. The request uri to this endpoint is:
-   * 
+   *
    *   PUT .../merchant
-   * 
-   * with the payload of this format: 
-   * 
+   *
+   * with the payload of this format:
+   *
    * NestJS handler. The request uri to this endpoint is:
    *
    *   POST .../merchant/
    *
    * with a body containing a json file of the format:
-   * 
+   *
    * {
    *   "tagList": [
    *        "tag1",
    *        "tag2"
    *    ]
    * }
-   * 
+   *
    * returns a list of merchants that have all tags mentioned in tagList
    * @param tagList list of tags to search by
    * @returns returns a list of education resources that have all tags mentioned in tagList
