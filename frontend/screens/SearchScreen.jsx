@@ -9,9 +9,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Icon from "react-native-vector-icons/AntDesign";
 
-import ScreenHeader from "../components/ScreenHeader";
 import SearchBar from "../components/SearchBar";
 import colors from "../constants/colors";
 
@@ -85,7 +83,7 @@ function SearchScreen({ route, navigation }) {
           refreshSearch();
         }}
         data={result}
-        renderItem={({ item, index, separators }) => {
+        renderItem={({ item }) => {
           return (
             <TouchableHighlight
               underlayColor="none"
