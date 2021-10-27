@@ -32,7 +32,7 @@ import {
   View,
 } from "react-native";
 import { Rating } from "react-native-ratings";
-import openMap from 'react-native-open-maps';
+import openMap from "react-native-open-maps";
 
 import ScreenHeader from "../components/ScreenHeader";
 import SearchBar from "../components/SearchBar";
@@ -414,7 +414,8 @@ function WriteReview({ route, navigation }) {
       const response = await fetch(
         // ipv4 localhost since running emulator
         // 10.0.2.2 is your machine's localhost when on an android emulator
-        `${apiPath + reviewParams.query}/${reviewParams.infoId
+        `${apiPath + reviewParams.query}/${
+          reviewParams.infoId
         }/review/${reviewer}`,
         {
           method: "Get",
@@ -435,7 +436,8 @@ function WriteReview({ route, navigation }) {
       const response = await fetch(
         // ipv4 localhost since running emulator
         // 10.0.2.2 is your machine's localhost when on an android emulator
-        `${apiPath + reviewParams.query}/${reviewParams.infoId
+        `${apiPath + reviewParams.query}/${
+          reviewParams.infoId
         }/review/${reviewer}`,
         {
           method: "DELETE",
@@ -454,7 +456,7 @@ function WriteReview({ route, navigation }) {
       [
         {
           text: "Cancel",
-          onPress: () => { },
+          onPress: () => {},
           style: "cancel",
         },
         {
@@ -479,7 +481,8 @@ function WriteReview({ route, navigation }) {
       const response = await fetch(
         // ipv4 localhost since running emulator
         // 10.0.2.2 is your machine's localhost when on an android emulator
-        `${apiPath + reviewParams.query}/${reviewParams.infoId
+        `${apiPath + reviewParams.query}/${
+          reviewParams.infoId
         }/review/${reviewer}`,
         {
           method,
@@ -650,8 +653,9 @@ export const FormatDate = (dateString) => {
     "November",
     "December",
   ];
-  return `${weekdays[date.getDay()]} ${months[date.getMonth()]
-    } ${date.getDate()}, ${date.getFullYear()}`;
+  return `${weekdays[date.getDay()]} ${
+    months[date.getMonth()]
+  } ${date.getDate()}, ${date.getFullYear()}`;
 };
 const styles = StyleSheet.create({
   background: {
