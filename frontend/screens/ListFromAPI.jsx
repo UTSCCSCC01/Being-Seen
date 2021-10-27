@@ -12,11 +12,9 @@
 /* eslint-disable react/prop-types */
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SecureStore from "expo-secure-store";
-import { StatusBar } from "expo-status-bar";
 // eslint-disable-next-line camelcase
 import jwt_decode from "jwt-decode";
 import React, { useEffect, useState } from "react";
-import { render } from "react-dom";
 import {
   Alert,
   Button,
@@ -24,16 +22,11 @@ import {
   FlatList,
   Image,
   ImageBackground,
-  Keyboard,
-  KeyboardAvoidingView,
   Linking,
   Platform,
-  SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
-  Touchable,
   TouchableHighlight,
   View,
 } from "react-native";
@@ -110,7 +103,7 @@ function ListFromAPI({ query }) {
    * @param {*} navigation - screen navigator used to traverse between list of shelters and shelter details
    *
    */
-  function ShelterList({ navigation, query }) {
+  function ShelterList({ navigation }) {
     const [information, setInformation] = useState([
       { name: `Error ${query} not loaded` },
     ]);
@@ -209,7 +202,6 @@ function ListFromAPI({ query }) {
   function DisplayShelter({ route, navigation }) {
     const [refreshing, setRefreshing] = useState(false);
     const [info, setInfo] = useState(route.params.item);
-    const { query } = route.params;
 
     async function refreshShelters() {
       setRefreshing(true);
@@ -641,7 +633,6 @@ export const FormatDate = (dateString) => {
 const styles = StyleSheet.create({
   background: {
     alignItems: "flex-start",
-    alignItems: "flex-start",
     backgroundColor: "#fff",
     flex: 1,
     flexDirection: "column",
@@ -658,7 +649,6 @@ const styles = StyleSheet.create({
     margin: 1,
   },
   displayBackground: {
-    alignItems: "flex-start",
     alignItems: "flex-start",
     backgroundColor: "#fffefc",
     flex: 1,

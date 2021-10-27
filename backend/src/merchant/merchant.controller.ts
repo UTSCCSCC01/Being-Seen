@@ -1,6 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { 
+  Body, 
+  Controller,
+  Delete,
+  Get, 
+  Param, 
+  Post, 
+  Put 
+} from '@nestjs/common';
 import { Merchant } from 'src/Schemas/merchant.schema';
-import { Tag } from 'src/Schemas/tag.schema';
 
 import { MerchantService } from './merchant.service';
 
@@ -136,9 +143,9 @@ export class MerchantController {
    * @param tagList list of tags to search by
    * @returns returns a list of education resources that have all tags mentioned in tagList
    */
-   @Put()
-   async searchEducation(@Body('tagList') tagList: string[]) {
-     const merList = await this.merchantService.searchMerchantByTags(tagList);
-     return merList;
-   }
+  @Put()
+  async searchEducation(@Body('tagList') tagList: string[]) {
+    const merList = await this.merchantService.searchMerchantByTags(tagList);
+    return merList;
+  }
 }

@@ -136,7 +136,7 @@ function SearchScreen({ route, navigation }) {
  */
 const getTags = (tags) => {
   let toRet = "";
-  for (let i = 0; i < tags.length; i++) {
+  for (let i = 0; i < tags.length; i += 1) {
     toRet += tags[i].tagName;
     if (i !== tags.length - 1) toRet += ", ";
   }

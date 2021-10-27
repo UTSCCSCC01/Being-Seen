@@ -1,14 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  TextInput,
-  TouchableHighlight,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import * as Animatable from "react-native-animatable";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import FeatherIcon from "react-native-vector-icons/Feather";
 import Icon from "react-native-vector-icons/Ionicons";
 
