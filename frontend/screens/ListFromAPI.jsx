@@ -40,8 +40,8 @@ import colors from "../constants/colors";
 import SearchScreen from "./SearchScreen";
 
 const Stack = createNativeStackNavigator();
-// const apiPath = "http://10.0.2.2:3000/";
-const apiPath = "http://192.168.2.49:3000/";
+const apiPath = "http://10.0.2.2:3000/";
+//const apiPath = "http://192.168.2.49:3000/";
 export const purpleThemeColour = "#662997";
 
 const capitalize = (s) => (s && s[0].toUpperCase() + s.slice(1)) || "";
@@ -545,7 +545,7 @@ async function getInfoFromApi(query) {
       // ipv4 localhost since running emulator
       // 10.0.2.2 is your machine's localhost when on an android emulator
       apiPath + query,
-      `http://192.168.2.49:3000/${query}`,
+      //`http://192.168.2.49:3000/${query}`,
       {
         method: "Get",
       }
@@ -562,7 +562,7 @@ async function getInfoFromApiById(query, id) {
       // ipv4 localhost since running emulator
       // 10.0.2.2 is your machine's localhost when on an android emulator
       `${apiPath + query}/${id}`,
-      `http://192.168.2.49:3000/${query}`,
+      //`http://192.168.2.49:3000/${query}`,
       {
         method: "Get",
       }
