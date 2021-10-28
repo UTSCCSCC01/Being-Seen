@@ -134,7 +134,7 @@ function ShelterList({ navigation, query }) {
     onScreenLoad();
   }, []);
 
-  async function refreshSheltersFromApi() {
+  async function refreshFromApi() {
     setSheltersRefreshing(true);
     getInfoFromApi(query)
       .then((response) => response.json())
@@ -153,7 +153,7 @@ function ShelterList({ navigation, query }) {
       }
       data={information}
       refreshing={sheltersRefreshing}
-      onRefresh={refreshSheltersFromApi}
+      onRefresh={refreshFromApi}
       renderItem={({ item }) => {
         return (
           <View style={styles.marginColour}>
@@ -162,6 +162,7 @@ function ShelterList({ navigation, query }) {
                 navigation.navigate(`${capitalize(query)}Details`, {
                   item,
                   query,
+                  parentRefresh: refreshFromApi
                 });
               }}
             >
@@ -218,13 +219,15 @@ function DisplayShelter({ route, navigation }) {
   const [refreshing, setRefreshing] = useState(false);
   const [info, setInfo] = useState(route.params.item);
   const { query } = route.params;
+  const {parentRefresh} = route.params;
 
-  async function refreshShelters() {
+  async function refreshFromApi() {
     setRefreshing(true);
     const res = await getInfoFromApiById(query, info._id);
     if (res.status == 200) {
       res.json().then((json) => setInfo(json));
     }
+    parentRefresh();
     setRefreshing(false);
   }
 
@@ -232,7 +235,7 @@ function DisplayShelter({ route, navigation }) {
     <>
       <FlatList
         refreshing={refreshing}
-        onRefresh={refreshShelters}
+        onRefresh={refreshFromApi}
         ListHeaderComponent={
           <>
             {info.picture ? (
