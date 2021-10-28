@@ -158,11 +158,12 @@ function ShelterList({ navigation, query }) {
         return (
           <View style={styles.marginColour}>
             <TouchableHighlight
-              onPress={() => {
+              onPress={ async () => {
+                let toDisplay = await getInfoFromApiById(query,item._id).then((response) => response.json())
                 navigation.navigate(`${capitalize(query)}Details`, {
-                  item,
+                  item:toDisplay,
                   query,
-                  parentRefresh: refreshFromApi
+                  //parentRefresh: refreshFromApi
                 });
               }}
             >
@@ -219,7 +220,7 @@ function DisplayShelter({ route, navigation }) {
   const [refreshing, setRefreshing] = useState(false);
   const [info, setInfo] = useState(route.params.item);
   const { query } = route.params;
-  const {parentRefresh} = route.params;
+  //const {parentRefresh} = route.params;
 
   async function refreshFromApi() {
     setRefreshing(true);
@@ -227,7 +228,7 @@ function DisplayShelter({ route, navigation }) {
     if (res.status == 200) {
       res.json().then((json) => setInfo(json));
     }
-    parentRefresh();
+    //parentRefresh();
     setRefreshing(false);
   }
 
