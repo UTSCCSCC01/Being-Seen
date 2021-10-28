@@ -158,10 +158,12 @@ function ShelterList({ navigation, query }) {
         return (
           <View style={styles.marginColour}>
             <TouchableHighlight
-              onPress={ async () => {
-                let toDisplay = await getInfoFromApiById(query,item._id).then((response) => response.json())
+              onPress={async () => {
+                let toDisplay = await getInfoFromApiById(query, item._id).then(
+                  (response) => response.json()
+                );
                 navigation.navigate(`${capitalize(query)}Details`, {
-                  item:toDisplay,
+                  item: toDisplay,
                   query,
                   //parentRefresh: refreshFromApi
                 });
