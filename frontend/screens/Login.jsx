@@ -35,7 +35,7 @@ const Login = () => {
 
   const submitLogin = async () => {
     try {
-      const response = await fetch(`http://${androidPath}auth/login`, {
+      const response = await fetch(`http://${otherPath}auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

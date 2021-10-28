@@ -10,6 +10,7 @@
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable consistent-return */
 /* eslint-disable react/prop-types */
+/* eslint-disable */
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SecureStore from "expo-secure-store";
 // eslint-disable-next-line camelcase
@@ -31,6 +32,7 @@ import {
   View,
 } from "react-native";
 import { Rating } from "react-native-ratings";
+import openMap from "react-native-open-maps";
 
 import ScreenHeader from "../components/ScreenHeader";
 import SearchBar from "../components/SearchBar";
@@ -38,8 +40,8 @@ import colors from "../constants/colors";
 import SearchScreen from "./SearchScreen";
 
 const Stack = createNativeStackNavigator();
-const apiPath = "http://10.0.2.2:3000/";
-// const apiPath = "http://192.168.0.13:3000/";
+// const apiPath = "http://10.0.2.2:3000/";
+const apiPath = "http://192.168.2.49:3000/";
 export const purpleThemeColour = "#662997";
 
 const capitalize = (s) => (s && s[0].toUpperCase() + s.slice(1)) || "";
@@ -82,6 +84,15 @@ function ListFromAPI({ query }) {
         <Stack.Screen
           name={`Review ${capitalize(query)}`}
           component={WriteReview}
+          options={{
+            headerShown: true,
+            headerTintColor: purpleThemeColour,
+            headerStyle: styles.header,
+          }}
+        />
+        <Stack.Screen
+          name={`Map ${capitalize(query)}`}
+          component={Map}
           options={{
             headerShown: true,
             headerTintColor: purpleThemeColour,
@@ -233,10 +244,20 @@ function DisplayShelter({ route, navigation }) {
             <View style={styles.displayTextView}>
               <Text style={styles.expandedText}>Name: {info.name}</Text>
               {info.address ? (
-                <Text style={styles.expandedText}>
-                  Address: {info.address}
-                  {info.postalCode}
-                </Text>
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.expandedText}>Address: </Text>
+                  <TouchableHighlight
+                    underlayColor="white"
+                    onPress={() => {
+                      openMap({ query: info.address });
+                    }}
+                  >
+                    <Text style={styles.expandedTextUnderlines} color="purple">
+                      {" "}
+                      {info.address}
+                    </Text>
+                  </TouchableHighlight>
+                </View>
               ) : null}
               {info.phoneNumber ? (
                 <View style={{ flexDirection: "row" }}>
@@ -524,7 +545,7 @@ async function getInfoFromApi(query) {
       // ipv4 localhost since running emulator
       // 10.0.2.2 is your machine's localhost when on an android emulator
       apiPath + query,
-      // "http://192.168.2.49:3000/" + query,
+      `http://192.168.2.49:3000/${query}`,
       {
         method: "Get",
       }
@@ -541,7 +562,7 @@ async function getInfoFromApiById(query, id) {
       // ipv4 localhost since running emulator
       // 10.0.2.2 is your machine's localhost when on an android emulator
       `${apiPath + query}/${id}`,
-      // "http://192.168.2.49:3000/" + query,
+      `http://192.168.2.49:3000/${query}`,
       {
         method: "Get",
       }
