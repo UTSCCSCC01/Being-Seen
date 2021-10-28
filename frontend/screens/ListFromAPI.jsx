@@ -325,7 +325,7 @@ function DisplayShelter({ route, navigation }) {
                     query,
                   });
                 }}
-                title="Wrie/Edit a Review For This Shelter"
+                title="Write/Edit a Review For This Shelter"
                 color={purpleThemeColour}
               />
             ) : null}
