@@ -28,19 +28,21 @@ const Home = () => (
   <Tab.Navigator
     screenOptions={({ route }) => ({
       headerShown: false,
-      tabBarIcon: () => {
+      tabBarIcon: ({ focused }) => {
         let iconName;
 
         if (route.name === "Merchants") {
-          iconName = icons.merchants;
+          iconName = focused ? icons.merchants_filled : icons.merchants;
         } else if (route.name === "Jobs") {
-          iconName = icons.jobs;
+          iconName = focused ? icons.jobs_filled : icons.jobs;
         } else if (route.name === "Profile") {
-          iconName = icons.profile;
+          iconName = focused ? icons.profile_filled : icons.profile;
         } else if (route.name === "Social Services") {
-          iconName = icons.social_services;
+          iconName = focused
+            ? icons.social_services_filled
+            : icons.social_services;
         } else if (route.name === "Education") {
-          iconName = icons.education;
+          iconName = focused ? icons.education_filled : icons.education;
         }
 
         return <Image source={iconName} style={{ width: 30, height: 30 }} />;
