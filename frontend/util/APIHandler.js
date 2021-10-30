@@ -1,7 +1,3 @@
-import * as SecureStore from "expo-secure-store";
-// eslint-disable-next-line camelcase
-import jwt_decode from "jwt-decode";
-
 // const apiAddress = "http://10.0.2.2:3000/";
 const apiAddress = "http://192.168.0.13:3000/";
 
@@ -117,16 +113,6 @@ export default {
         method: "DELETE",
       }
     );
-  },
-
-  /**
-   * Gets the jwt token.
-   * @returns The jwt token.
-   */
-  async getProfileIdFromToken() {
-    const token = await SecureStore.getItemAsync("token");
-    const decoded = await jwt_decode(token);
-    return decoded.id;
   },
 
   /**

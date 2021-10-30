@@ -1,3 +1,6 @@
+import * as SecureStore from "expo-secure-store";
+// eslint-disable-next-line camelcase
+import jwt_decode from "jwt-decode";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
@@ -16,21 +19,35 @@ import apiHandler from "../util/APIHandler";
  * @prop {object} [navigation] The navigation object provided by react navigation library.
  */
 export default function WriteReview({ route, navigation }) {
+  const [oldReview, setOldReview] = useState({
+    content: "",
+    rating: 0,
+    date: new Date(),
+  });
   const [review, setReview] = useState({
     content: "",
     rating: 0,
     date: new Date(),
   });
-  const [editReview, setEditReview] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [readyToPublish, setReadyToPublish] = useState(false);
   const [reviewer, setReviewer] = useState(null);
+  // A classic moment of "when I remove this line the whole rating system collapses"
+  // For some reason onFinishRating can't read review. This is the only workaround.
+  const [rating, setRating] = useState(-1);
   const { query, infoId } = route.params;
 
+  async function getProfileIdFromToken() {
+    const token = await SecureStore.getItemAsync("token");
+    const decoded = await jwt_decode(token);
+    return decoded.id;
+  }
+
   useEffect(() => {
-    apiHandler
-      .getProfileIdFromToken()
-      .then((profileId) => setReviewer(profileId))
-      .catch((error) => console.log(error));
+    getProfileIdFromToken().then((profile) => setReviewer(profile));
+  }, []);
+
+  useEffect(() => {
     apiHandler
       .getReviewFromApi(infoId, reviewer, query)
       .then((res) => {
@@ -41,51 +58,34 @@ export default function WriteReview({ route, navigation }) {
       })
       .then((json) => {
         if (json !== null) {
+          setOldReview(json);
           setReview(json);
-          setEditReview(true);
+          setIsEditing(true);
         }
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [reviewer]);
 
   useEffect(() => {
     if (readyToPublish) {
-      if (editReview) {
+      console.log(`content: ${review.content}`);
+      if (isEditing) {
+        console.log(`content: ${review.content}`);
         apiHandler
-          .postReviewToApi(
-            infoId,
-            reviewer,
-            query,
-            review.content,
-            review.rating
-          )
+          .patchReviewToApi(infoId, reviewer, query, review.content, rating)
           .catch((error) => console.log(error));
       } else {
         apiHandler
-          .patchReviewToApi(
-            infoId,
-            reviewer,
-            query,
-            review.content,
-            review.rating
-          )
+          .postReviewToApi(infoId, reviewer, query, review.content, rating)
           .catch((error) => console.log(error));
       }
       navigation.goBack();
+      return;
     }
     setReadyToPublish(false);
-  }, [
-    editReview,
-    infoId,
-    navigation,
-    query,
-    readyToPublish,
-    review.content,
-    review.rating,
-    reviewer,
-  ]);
+  }, [readyToPublish]);
 
   async function DeleteReview() {
     Alert.alert(
@@ -110,33 +110,32 @@ export default function WriteReview({ route, navigation }) {
 
   return (
     <View style={styles.pageContainer}>
+      <View style={styles.writeReviewBox}>
+        <TextInput
+          multiline
+          defaultValue={oldReview.content}
+          placeholder="Enter Review Here"
+          maxLength={400}
+          onChangeText={(content) => {
+            setReview({
+              content,
+              rating: review.rating,
+              date: review.date,
+            });
+          }}
+        />
+      </View>
+      <View style={styles.horizontalRuler} />
       <Rating
-        startingValue={review.rating}
+        startingValue={oldReview.rating}
         // tintColor={purpleThemeColour}
         jumpValue={0.5}
         imageSize={28}
-        onFinishRating={(rating) => {
-          setReview({ ...review, rating });
-        }}
+        onFinishRating={setRating}
         style={styles.ratingStars}
       />
       <View alignItems="center">
         <Text style={styles.ratingHint}>Slide on The Stars to Rate</Text>
-      </View>
-      <View style={styles.horizontalRuler} />
-      <View style={styles.writeReviewBox}>
-        <TextInput
-          multiline
-          defaultValue={review.content}
-          placeholder="Enter Review Here"
-          maxLength={400}
-          onChangeText={(content) =>
-            setReview({
-              ...review,
-              content,
-            })
-          }
-        />
       </View>
       <Button
         title="publish review"
@@ -154,7 +153,6 @@ const styles = StyleSheet.create({
   horizontalRuler: {
     ...tailwind("border-gray-400"),
     borderBottomWidth: 1,
-    margin: 3,
   },
   pageContainer: {
     flex: 1,
@@ -165,7 +163,7 @@ const styles = StyleSheet.create({
   },
   ratingStars: {
     ...tailwind("bg-transparent"),
-    marginTop: 8,
+    marginVertical: 3,
   },
   writeReviewBox: {
     ...tailwind("bg-white border-primary"),
@@ -173,6 +171,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     height: "40%",
     marginHorizontal: 5,
+    marginVertical: 3,
     padding: 5,
   },
 });
