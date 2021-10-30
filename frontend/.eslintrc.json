@@ -46,10 +46,6 @@
         "no-unused-vars": "warn",
         "react-native/no-unused-styles": "off",
         "camelcase": "warn",
-		"no-underscore-dangle": {
-			"allow": [
-				"_id"
-			]
-		}
+		"no-underscore-dangle": ["error", {"allow": ["_id"]}]
     }
 }
