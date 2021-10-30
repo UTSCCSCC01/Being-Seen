@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import { tailwind } from "tailwind";
 
-import colors from "../../constants/colors";
 import { capitalize, getTags } from "../../util/FormatHelper";
 
 /**
@@ -95,12 +94,7 @@ export default function ServiceList({
         );
       }}
       keyExtractor={(item, index) => index.toString()}
-      style={[
-        styles.scrollBackground,
-        {
-          backgroundColor: colors.backgroundColor,
-        },
-      ]}
+      style={styles.scrollBackground}
     />
   );
 }
@@ -130,6 +124,9 @@ const styles = StyleSheet.create({
   },
   listItemContainer: {
     ...tailwind("bg-gray-200"),
+  },
+  scrollBackground: {
+    flex: 1,
   },
   text: {
     flex: 1,
