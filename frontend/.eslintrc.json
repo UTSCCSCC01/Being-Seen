@@ -45,6 +45,7 @@
         "import/extensions": "off",
         "no-unused-vars": "warn",
         "react-native/no-unused-styles": "off",
-        "camelcase": "warn"
+        "camelcase": "warn",
+		"no-underscore-dangle": ["error", {"allow": ["_id"]}]
     }
 }
