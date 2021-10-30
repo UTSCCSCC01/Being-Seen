@@ -5718,6 +5718,12 @@
 		"borderBottomColor": "rgba(97, 219, 251, 1)",
 		"borderLeftColor": "rgba(97, 219, 251, 1)"
 	},
+	"border-background": {
+		"borderTopColor": "rgba(255, 255, 255, 1)",
+		"borderRightColor": "rgba(255, 255, 255, 1)",
+		"borderBottomColor": "rgba(255, 255, 255, 1)",
+		"borderLeftColor": "rgba(255, 255, 255, 1)"
+	},
 	"border-grey": {
 		"borderTopColor": "rgba(144, 144, 144, 1)",
 		"borderRightColor": "rgba(144, 144, 144, 1)",
@@ -6110,6 +6116,9 @@
 	},
 	"bg-secondary": {
 		"backgroundColor": "rgba(97, 219, 251, 1)"
+	},
+	"bg-background": {
+		"backgroundColor": "rgba(255, 255, 255, 1)"
 	},
 	"bg-grey": {
 		"backgroundColor": "rgba(144, 144, 144, 1)"
@@ -7581,6 +7590,9 @@
 	"text-secondary": {
 		"color": "rgba(97, 219, 251, 1)"
 	},
+	"text-background": {
+		"color": "rgba(255, 255, 255, 1)"
+	},
 	"text-grey": {
 		"color": "rgba(144, 144, 144, 1)"
 	},
@@ -8120,6 +8132,9 @@
 	"ring-secondary": {
 		"--tw-ring-color": "rgba(97, 219, 251, 1)"
 	},
+	"ring-background": {
+		"--tw-ring-color": "rgba(255, 255, 255, 1)"
+	},
 	"ring-grey": {
 		"--tw-ring-color": "rgba(144, 144, 144, 1)"
 	},
@@ -8440,6 +8455,9 @@
 	},
 	"ring-offset-secondary": {
 		"--tw-ring-offset-color": "rgba(97, 219, 251, 1)"
+	},
+	"ring-offset-background": {
+		"--tw-ring-offset-color": "rgba(255, 255, 255, 1)"
 	},
 	"ring-offset-grey": {
 		"--tw-ring-offset-color": "rgba(144, 144, 144, 1)"

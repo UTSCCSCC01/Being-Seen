@@ -29,7 +29,7 @@ import {
   Text,
   TextInput,
   TouchableHighlight,
-  View,
+  View
 } from "react-native";
 import openMap from "react-native-open-maps";
 import { Rating } from "react-native-ratings";
@@ -37,14 +37,13 @@ import { Rating } from "react-native-ratings";
 import ScreenHeader from "../components/ScreenHeader";
 import SearchBar from "../components/SearchBar";
 import colors from "../constants/colors";
+import ServiceList from "../components/screen_components/ServiceList";
 import SearchScreen from "./SearchScreen";
+import { capitalize, formatDate, getTags } from "../util/FormatHelper";
+import apiHandler from "../util/APIHandler";
 
 const Stack = createNativeStackNavigator();
-const apiPath = "http://10.0.2.2:3000/";
-//const apiPath = "http://192.168.2.49:3000/";
 export const purpleThemeColour = "#662997";
-
-const capitalize = (s) => (s && s[0].toUpperCase() + s.slice(1)) || "";
 
 /**
  *
@@ -62,13 +61,13 @@ function ListFromAPI({ query }) {
           options={{
             headerShown: false,
             headerTintColor: "#662997",
-            headerStyle: styles.header,
+            headerStyle: styles.header
           }}
         >
           {({ navigation }) => (
             <>
               <ScreenHeader headerText={listName} />
-              <ShelterList navigation={navigation} query={query} />
+              <ServiceList navigation={navigation} query={query} />
             </>
           )}
         </Stack.Screen>
@@ -78,7 +77,7 @@ function ListFromAPI({ query }) {
           options={{
             headerShown: true,
             headerTintColor: "#662997",
-            headerStyle: styles.header,
+            headerStyle: styles.header
           }}
         />
         <Stack.Screen
@@ -87,7 +86,7 @@ function ListFromAPI({ query }) {
           options={{
             headerShown: true,
             headerTintColor: purpleThemeColour,
-            headerStyle: styles.header,
+            headerStyle: styles.header
           }}
         />
         <Stack.Screen
@@ -96,7 +95,7 @@ function ListFromAPI({ query }) {
           options={{
             headerShown: true,
             headerTintColor: purpleThemeColour,
-            headerStyle: styles.header,
+            headerStyle: styles.header
           }}
         />
         <Stack.Screen
@@ -110,104 +109,6 @@ function ListFromAPI({ query }) {
 }
 
 /**
- * @function ShelterList display list of shelters
- * @module ShelterList ShelterList
- * @description display list of shelters
- * @param {*} navigation - screen navigator used to traverse between list of shelters and shelter details
- *
- */
-function ShelterList({ navigation, query }) {
-  const [information, setInformation] = useState([
-    { name: `Error ${query} not loaded` },
-  ]);
-  const [sheltersRefreshing, setSheltersRefreshing] = useState(false);
-
-  const onScreenLoad = () => {
-    // when load grab shelters from api and put them into the shelters state
-    getInfoFromApi(query)
-      .then((response) => response.json())
-      .then((json) => setInformation(json))
-      .catch((error) => console.error(error));
-  };
-  // essentially componentWillMount
-  useEffect(() => {
-    onScreenLoad();
-  }, []);
-
-  async function refreshFromApi() {
-    setSheltersRefreshing(true);
-    getInfoFromApi(query)
-      .then((response) => response.json())
-      .then((json) => setInformation(json))
-      .catch((error) => console.error(error));
-    setSheltersRefreshing(false);
-  }
-  return (
-    <FlatList
-      ListHeaderComponent={
-        <SearchBar
-          navigation={navigation}
-          screenName="searchResult"
-          serviceType={query}
-        />
-      }
-      data={information}
-      refreshing={sheltersRefreshing}
-      onRefresh={refreshFromApi}
-      renderItem={({ item }) => {
-        return (
-          <View style={styles.marginColour}>
-            <TouchableHighlight
-              onPress={() => {
-                navigation.navigate(`${capitalize(query)}Details`, {
-                  itemId: item._id,
-                  query,
-                });
-              }}
-            >
-              <View
-                style={[
-                  styles.box,
-                  {
-                    backgroundColor: colors.backgroundColor,
-                  },
-                ]}
-              >
-                {item.picture ? (
-                  <Image style={styles.icon} source={{ uri: item.picture }} />
-                ) : null}
-                <View style={styles.boxText}>
-                  <Text style={styles.text} numberOfLines={1}>
-                    Name: {item.name}
-                  </Text>
-                  {item.address && (
-                    <Text style={styles.text} numberOfLines={1}>
-                      Address: {item.address}
-                    </Text>
-                  )}
-                  <Text style={styles.text} numberOfLines={1}>
-                    Phone: {item.phoneNumber}
-                  </Text>
-                  <Text style={styles.text} numberOfLines={1}>
-                    Tags: {item.tags ? getTags(item.tags) : "None"}
-                  </Text>
-                </View>
-              </View>
-            </TouchableHighlight>
-          </View>
-        );
-      }}
-      keyExtractor={(item, index) => index.toString()}
-      style={[
-        styles.scrollBackground,
-        {
-          backgroundColor: colors.backgroundColor,
-        },
-      ]}
-    />
-  );
-}
-/**
  * @function DisplayShelter displays expanded details of a shelter
  * @module DisplayShelter DisplayShelter
  * @description displays expanded details of a shelter
@@ -220,7 +121,8 @@ function DisplayShelter({ route, navigation }) {
   const [info, setInfo] = useState(null);
 
   useEffect(() => {
-    getInfoFromApiById(query, itemId)
+    apiHandler
+      .getInfoFromApiById(query, itemId)
       .then((res) => res.json())
       .then((json) => setInfo(json))
       .catch((error) => console.log(error));
@@ -228,7 +130,7 @@ function DisplayShelter({ route, navigation }) {
 
   async function refreshFromApi() {
     setRefreshing(true);
-    const res = await getInfoFromApiById(query, info._id);
+    const res = await apiHandler.getInfoFromApiById(query, info._id);
     if (res.status === 200) {
       res.json().then((json) => setInfo(json));
     }
@@ -335,7 +237,7 @@ function DisplayShelter({ route, navigation }) {
                   onPress={() => {
                     navigation.navigate(`Review ${capitalize(query)}`, {
                       infoId: info._id,
-                      query,
+                      query
                     });
                   }}
                   title="Write/Edit a Review For This Shelter"
@@ -366,7 +268,7 @@ function DisplayShelter({ route, navigation }) {
                 />
               </View>
               <Text style={styles.reviewText}>
-                Written on {FormatDate(item.date)}
+                Written on {formatDate(item.date)}
               </Text>
             </View>
           )}
@@ -386,7 +288,7 @@ function WriteReview({ route, navigation }) {
   const [review, setReview] = useState({
     content: "",
     rating: 0,
-    date: new Date(),
+    date: new Date()
   });
   // local version of review rating since onFinishRating has unwanted effects on whole object
   const [tempRev, setTempRev] = useState(0);
@@ -424,7 +326,7 @@ function WriteReview({ route, navigation }) {
       setReview({
         content: review.content,
         rating: tempRev,
-        date: new Date(),
+        date: new Date()
       });
     }
   }, [tempRev]);
@@ -438,7 +340,7 @@ function WriteReview({ route, navigation }) {
           reviewParams.infoId
         }/review/${reviewer}`,
         {
-          method: "Get",
+          method: "Get"
         }
       );
       if (response.status === 200) {
@@ -460,7 +362,7 @@ function WriteReview({ route, navigation }) {
           reviewParams.infoId
         }/review/${reviewer}`,
         {
-          method: "DELETE",
+          method: "DELETE"
         }
       );
       return;
@@ -477,15 +379,15 @@ function WriteReview({ route, navigation }) {
         {
           text: "Cancel",
           onPress: () => {},
-          style: "cancel",
+          style: "cancel"
         },
         {
           text: "OK",
           onPress: () => {
             DeleteReviewFromApi();
             navigation.goBack();
-          },
-        },
+          }
+        }
       ]
     );
     // DeleteReviewFromApi()
@@ -507,7 +409,7 @@ function WriteReview({ route, navigation }) {
         {
           method,
           headers: { "Content-Type": "application/json" },
-          body,
+          body
         }
       );
     } catch (error) {
@@ -531,7 +433,7 @@ function WriteReview({ route, navigation }) {
             setReview({
               content,
               rating: review.rating,
-              date: review.date,
+              date: review.date
             })
           }
         />
@@ -559,63 +461,11 @@ function WriteReview({ route, navigation }) {
   );
 }
 
-async function getInfoFromApi(query) {
-  try {
-    const response = await fetch(
-      // ipv4 localhost since running emulator
-      // 10.0.2.2 is your machine's localhost when on an android emulator
-      apiPath + query,
-      // `http://192.168.2.49:3000/${query}`,
-      {
-        method: "Get",
-      }
-    );
-    return response;
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
-}
-
-async function getInfoFromApiById(query, id) {
-  try {
-    const response = await fetch(
-      // ipv4 localhost since running emulator
-      // 10.0.2.2 is your machine's localhost when on an android emulator
-      `${apiPath + query}/${id}`,
-      // `http://192.168.2.49:3000/${query}`,
-      {
-        method: "Get",
-      }
-    );
-    return response;
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
-}
-
 async function getProfileIdFromToken() {
   const token = await SecureStore.getItemAsync("token");
   const decoded = await jwt_decode(token);
   return decoded.id;
 }
-
-/**
- * @function getTags function responsible for extracting and formatting names of tags for a shelter
- * @module getTags getTags
- * @description function responsible for extracting and formatting names of tags for a shelter
- * @param {Tag[]} tags array of tags for a shelter
- *
- */
-const getTags = (tags) => {
-  let toRet = "";
-  for (let i = 0; i < tags.length; i++) {
-    toRet += tags[i].tagName;
-    if (i !== tags.length - 1) toRet += ", ";
-  }
-  return toRet;
-};
 
 export function openPhone(phone) {
   let phoneNumber;
@@ -650,42 +500,13 @@ export const DisplayTags = (props) => {
   );
 };
 
-export const FormatDate = (dateString) => {
-  const date = new Date(dateString);
-  const weekdays = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-  return `${weekdays[date.getDay()]} ${
-    months[date.getMonth()]
-  } ${date.getDate()}, ${date.getFullYear()}`;
-};
 const styles = StyleSheet.create({
   background: {
     alignItems: "flex-start",
     backgroundColor: "#fff",
     flex: 1,
     flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   box: {
     borderColor: colors.themeMain,
@@ -695,71 +516,71 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     flexWrap: "wrap",
-    margin: 3,
+    margin: 3
   },
   boxText: {
     flex: 1,
-    margin: 2,
+    margin: 2
   },
   displayBackground: {
     alignItems: "flex-start",
     backgroundColor: "#fffefc",
     flex: 1,
     flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "center"
   },
   displayTextView: {
-    margin: 3,
+    margin: 3
   },
   expandedText: {
     // flex: 1,
     // flexWrap:'wrap',
     margin: 2,
     fontSize: 16,
-    color: purpleThemeColour,
+    color: purpleThemeColour
   },
   expandedTextUnderlines: {
     color: purpleThemeColour,
     fontSize: 16,
     margin: 2,
     textDecorationColor: purpleThemeColour,
-    textDecorationLine: "underline",
+    textDecorationLine: "underline"
   },
   header: {},
   headerLeftNode: {
-    flex: 1,
+    flex: 1
   },
   headerMiddleNode: {
-    flex: 3,
+    flex: 3
   },
   headerRightNode: {
-    flex: 1,
+    flex: 1
   },
   headerText: {
     color: colors.themeMain,
-    fontSize: 24,
+    fontSize: 24
   },
   icon: {
     flex: 0.25,
     height: "99%",
-    width: "25%",
+    width: "25%"
   },
   largePic: {
     height: Dimensions.get("window").height / 4,
     resizeMode: "cover",
-    width: Dimensions.get("window").width,
+    width: Dimensions.get("window").width
   },
   marginColour: {
-    backgroundColor: "lightgrey",
+    backgroundColor: "lightgrey"
   },
   reviewBox: {
     // flexWrap: "wrap",
     backgroundColor: "white",
     borderColor: purpleThemeColour,
-    borderWidth: 1,
+    borderWidth: 1
   },
   reviewButton: {
-    color: "purple",
+    color: "purple"
   },
   reviewText: {
     // flex: 1,
@@ -767,7 +588,7 @@ const styles = StyleSheet.create({
     margin: 2,
     fontSize: 16,
     color: purpleThemeColour,
-    flexWrap: "wrap",
+    flexWrap: "wrap"
   },
   scrollBackground: {
     // flex: 1,
@@ -777,21 +598,21 @@ const styles = StyleSheet.create({
     // flexDirection: 'row',
     // alignItems: 'flex-start',
     // justifyContent:'center',
-    flex: 1,
+    flex: 1
   },
   tagBox: {
     backgroundColor: "gainsboro",
     borderColor: purpleThemeColour,
     borderRadius: 5,
-    margin: 2,
+    margin: 2
   },
   tagText: {
     color: purpleThemeColour,
-    fontSize: 12,
+    fontSize: 12
   },
   text: {
     flex: 1,
-    flexWrap: "wrap",
+    flexWrap: "wrap"
   },
   writeReviewBox: {
     backgroundColor: "white",
@@ -799,12 +620,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flex: 0,
     height: "40%",
-    width: "100%",
+    width: "100%"
   },
   writeReviewText: {
     color: purpleThemeColour,
-    fontSize: 16,
-  },
+    fontSize: 16
+  }
 });
 
 export default ListFromAPI;

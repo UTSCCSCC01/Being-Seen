@@ -44,7 +44,7 @@
         "simple-import-sort/exports": "error",
         "import/extensions": "off",
         "no-unused-vars": "warn",
-        "react-native/no-unused-styles": "off",
+        "react-native/no-unused-styles": "warn",
         "camelcase": "warn",
 		"no-underscore-dangle": ["error", {"allow": ["_id"]}]
     }
