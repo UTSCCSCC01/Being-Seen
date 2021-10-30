@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { FlatList, StyleSheet, Text, View, ViewPropTypes } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import { tailwind } from "tailwind";
 
 /**
@@ -42,8 +42,8 @@ const defaultStyles = StyleSheet.create({
 
 TagRow.propTypes = {
   tagList: PropTypes.array.isRequired,
-  boxStyle: ViewPropTypes.style,
-  textStyle: ViewPropTypes.style,
+  boxStyle: PropTypes.object, // TODO: Was `ViewPropTypes.style`, but weird error occurred.
+  textStyle: PropTypes.object, // Not sure if this hack is very broky.
 };
 
 TagRow.defaultProps = {

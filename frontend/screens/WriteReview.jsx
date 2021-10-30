@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { Rating } from "react-native-ratings";
@@ -8,8 +9,11 @@ import apiHandler from "../util/APIHandler";
 /**
  * @function WriteReview
  * @module WriteReview
- * @description displays the page responsible for handling the creation/editing of reviews
- * @param {*} param0 recieves object containing navigation and routing params
+ * @description Displays a page responsible for handling the creation/editing of reviews
+ * @prop {object} [route] Must contain {query, infoId} in route.params, where query is the
+ *                        type of the service being displayed and infoId is the objectId of
+ *                        this one service being reviewed.
+ * @prop {object} [navigation] The navigation object provided by react navigation library.
  */
 export default function WriteReview({ route, navigation }) {
   const [review, setReview] = useState({
@@ -105,11 +109,21 @@ export default function WriteReview({ route, navigation }) {
   }
 
   return (
-    <View>
+    <View style={styles.pageContainer}>
+      <Rating
+        startingValue={review.rating}
+        // tintColor={purpleThemeColour}
+        jumpValue={0.5}
+        imageSize={28}
+        onFinishRating={(rating) => {
+          setReview({ ...review, rating });
+        }}
+        style={styles.ratingStars}
+      />
       <View alignItems="center">
-        <Text style={styles.writeReviewText}>Type Your Review Here</Text>
+        <Text style={styles.ratingHint}>Slide on The Stars to Rate</Text>
       </View>
-
+      <View style={styles.horizontalRuler} />
       <View style={styles.writeReviewBox}>
         <TextInput
           multiline
@@ -122,19 +136,6 @@ export default function WriteReview({ route, navigation }) {
               content,
             })
           }
-        />
-      </View>
-      <View style={{ padding: "1%" }} />
-      <View
-        style={{ flex: 0.5, flexDirection: "row", justifyContent: "center" }}
-      >
-        <Rating
-          startingValue={review.rating}
-          // tintColor={purpleThemeColour}
-          jumpValue={0.5}
-          onFinishRating={(rating) => {
-            setReview({ ...review, rating });
-          }}
         />
       </View>
       <Button
@@ -150,15 +151,33 @@ export default function WriteReview({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
+  horizontalRuler: {
+    ...tailwind("border-gray-400"),
+    borderBottomWidth: 1,
+    margin: 3,
+  },
+  pageContainer: {
+    flex: 1,
+  },
+  ratingHint: {
+    ...tailwind("text-gray-400"),
+    fontSize: 12,
+  },
+  ratingStars: {
+    ...tailwind("bg-transparent"),
+    marginTop: 8,
+  },
   writeReviewBox: {
     ...tailwind("bg-white border-primary"),
-    borderWidth: 1,
-    flex: 0,
+    borderRadius: 8,
+    borderWidth: 2,
     height: "40%",
-    width: "100%",
-  },
-  writeReviewText: {
-    ...tailwind("text-black"),
-    fontSize: 16,
+    marginHorizontal: 5,
+    padding: 5,
   },
 });
+
+WriteReview.propTypes = {
+  route: PropTypes.object.isRequired,
+  navigation: PropTypes.object.isRequired,
+};

@@ -23,7 +23,7 @@ import { capitalize, formatDate, openPhone } from "../util/FormatHelper";
  * @function ServiceDetails displays expanded details of a service
  * @module ServiceDetails
  * @description This is a screen that displays the details of one single service.
- * @prop {object} [route] Must contain {query, itemId}, where query is the name of
+ * @prop {object} [route] Must contain {query, itemId} in route.params, where query is the name of
  *                         the endpoint to which this component will send http requests
  *                         and itemId is the id of the service of interest.
  * @prop {object} [navigation] The navigation object provided by react navigation library.

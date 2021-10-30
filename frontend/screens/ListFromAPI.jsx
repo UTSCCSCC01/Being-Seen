@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import PropTypes from "prop-types";
 // eslint-disable-next-line camelcase
 import React from "react";
 import { StyleSheet } from "react-native";
@@ -19,6 +20,8 @@ const Stack = createNativeStackNavigator();
  * @function ListFromAPI
  * @module ListFromAPI
  * @description full page of to display list of shelters and their details
+ * @prop {string} [query] The type of service this page is going to display. This prop determines
+ *                        to which api endpoint every sub-component's http request will be sent.
  */
 function ListFromAPI({ query }) {
   const listName = `${capitalize(query)}List`;
@@ -83,6 +86,10 @@ function ListFromAPI({ query }) {
     </>
   );
 }
+
+ListFromAPI.propTypes = {
+  query: PropTypes.string.isRequired,
+};
 
 const styles = StyleSheet.create({});
 
