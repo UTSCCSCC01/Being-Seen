@@ -8,7 +8,7 @@ import {
   Linking,
   StyleSheet,
   Text,
-  TouchableHighlight,
+  TouchableOpacity,
   View,
 } from "react-native";
 import openMap from "react-native-open-maps";
@@ -63,83 +63,72 @@ export default function ServiceDetails({ route, navigation }) {
             <>
               {info.picture ? (
                 <ImageBackground
-                  style={styles.largePic}
+                  style={styles.headlinePicture}
                   source={{ uri: info.picture }}
                 />
               ) : null}
-              <View style={styles.displayTextView}>
-                <Text style={styles.expandedText}>Name: {info.name}</Text>
+              <View style={styles.infoContainer}>
+                <Text style={styles.infoNormalText}>Name: {info.name}</Text>
                 {info.address ? (
-                  <View style={{ flexDirection: "row" }}>
-                    <Text style={styles.expandedText}>Address: </Text>
-                    <TouchableHighlight
-                      underlayColor="white"
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoNormalText}>Address: </Text>
+                    <TouchableOpacity
                       onPress={() => {
                         openMap({ query: info.address });
                       }}
                     >
-                      <Text
-                        style={styles.expandedTextUnderlines}
-                        color="purple"
-                      >
+                      <Text style={styles.infoUnderlinedText}>
                         {" "}
                         {info.address}
                       </Text>
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                   </View>
                 ) : null}
                 {info.phoneNumber ? (
-                  <View style={{ flexDirection: "row" }}>
-                    <Text style={styles.expandedText}>Phone Number: </Text>
-                    <TouchableHighlight
-                      underlayColor="white"
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoNormalText}>Phone Number: </Text>
+                    <TouchableOpacity
                       onPress={() => {
                         openPhone(info.phoneNumber);
                       }}
                     >
-                      <Text
-                        style={styles.expandedTextUnderlines}
-                        color="purple"
-                      >
+                      <Text style={styles.infoUnderlinedText} color="purple">
                         {" "}
                         {info.phoneNumber}
                       </Text>
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                   </View>
                 ) : null}
                 {info.email ? (
-                  <View style={{ flexDirection: "row" }}>
-                    <Text style={styles.expandedText}>Email:</Text>
-                    <TouchableHighlight
-                      underlayColor="white"
+                  <View style={styles.infoRow}>
+                    <Text style={styles.infoNormalText}>Email:</Text>
+                    <TouchableOpacity
                       onPress={() => {
                         Linking.openURL(`mailto:${info.email}?subject=&body=`);
                       }}
                     >
-                      <Text
-                        style={styles.expandedTextUnderlines}
-                        color="purple"
-                      >
+                      <Text style={styles.infoUnderlinedText} color="purple">
                         {" "}
                         {info.email}
                       </Text>
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                   </View>
                 ) : null}
-                <Text style={styles.expandedText}>
-                  Description: {info.description}
+                <Text style={styles.infoNormalText}>
+                  <Text style={styles.infoNormalText}>Description:</Text>
+                  <Text style={styles.infoNormalText}>{info.description}</Text>
                 </Text>
                 {info.hours ? (
-                  <Text style={styles.expandedText}>Hours: {info.hours}</Text>
+                  <Text style={styles.infoNormalText}>Hours: {info.hours}</Text>
                 ) : null}
                 {info.rating ? (
                   <View flexDirection="row">
-                    <Text style={styles.expandedText}>Rating:</Text>
+                    <Text style={styles.infoNormalText}>Rating:</Text>
                     <Rating
                       readonly="true"
                       startingValue={info.rating}
-                      // tintColor={purpleThemeColour}
-                      imageSize={40}
+                      // tintColor={purpleThemeColour} <-- TODO: Fix this styling
+                      imageSize={28}
                       jumpValue={0.5}
                     />
                   </View>
@@ -155,7 +144,6 @@ export default function ServiceDetails({ route, navigation }) {
                     });
                   }}
                   title="Write/Edit a Review For This Shelter"
-                  // color={purpleThemeColour}
                 />
               ) : null}
               {info.website ? (
@@ -171,13 +159,13 @@ export default function ServiceDetails({ route, navigation }) {
           data={info.reviews}
           renderItem={({ item }) => (
             <View style={styles.reviewBox} key={item}>
-              <Text style={styles.reviewText}>"{item.content}"</Text>
+              <Text style={styles.reviewText}>&quot;{item.content}&quot;</Text>
               <View flexDirection="row">
                 <Text style={styles.reviewText}>Rating: </Text>
                 <Rating
                   readonly="true"
                   startingValue={item.rating}
-                  // tintColor={purpleThemeColour}
+                  // tintColor={purpleThemeColour} <-- TODO: Fix this styling
                   imageSize={25}
                 />
               </View>
@@ -199,25 +187,38 @@ ServiceDetails.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  displayTextView: {
-    margin: 3,
+  headlinePicture: {
+    height: Dimensions.get("window").height / 4,
+    resizeMode: "cover",
+    width: Dimensions.get("window").width,
   },
-  expandedText: {
+  infoContainer: {
+    ...tailwind("bg-gray-100"),
+    // borderRadius: 10,
+    paddingHorizontal: 5,
+    paddingVertical: 5,
+  },
+  infoNormalText: {
     ...tailwind("text-black"),
     fontSize: 16,
     margin: 2,
   },
-  expandedTextUnderlines: {
+  infoRow: {
+    flexDirection: "row",
+  },
+  infoUnderlinedText: {
     ...tailwind("text-black"),
     fontSize: 16,
     margin: 2,
     // textDecorationColor: purpleThemeColour,
     textDecorationLine: "underline",
   },
-  largePic: {
-    height: Dimensions.get("window").height / 4,
-    resizeMode: "cover",
-    width: Dimensions.get("window").width,
+  reviewBox: {
+    ...tailwind("bg-white border-primary"),
+    borderRadius: 10,
+    borderWidth: 2,
+    margin: 5,
+    padding: 5,
   },
   reviewText: {
     ...tailwind("text-black"),

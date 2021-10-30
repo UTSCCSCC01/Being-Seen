@@ -376,31 +376,16 @@ const styles = StyleSheet.create({
   marginColour: {
     backgroundColor: "lightgrey"
   },
-  reviewBox: {
-    // flexWrap: "wrap",
-    backgroundColor: "white",
-    borderColor: purpleThemeColour,
-    borderWidth: 1
-  },
   reviewButton: {
     color: "purple"
   },
   reviewText: {
-    // flex: 1,
-    // flexWrap:'wrap',
     margin: 2,
     fontSize: 16,
     color: purpleThemeColour,
     flexWrap: "wrap"
   },
   scrollBackground: {
-    // flex: 1,
-    // backgroundColor: '#fff',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-    // flexDirection: 'row',
-    // alignItems: 'flex-start',
-    // justifyContent:'center',
     flex: 1
   },
   tagBox: {
