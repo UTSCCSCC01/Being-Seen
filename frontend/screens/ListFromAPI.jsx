@@ -67,7 +67,20 @@ function ListFromAPI({ query }) {
           {({ navigation }) => (
             <>
               <ScreenHeader headerText={listName} />
-              <ServiceList navigation={navigation} query={query} />
+              <ServiceList
+                navigation={navigation}
+                query={query}
+                infoGetter={() => {
+                  return apiHandler.getInfoFromApi(query);
+                }}
+                listHeader={
+                  <SearchBar
+                    navigation={navigation}
+                    resultScreenName={"searchResult"}
+                    serviceType={query}
+                  />
+                }
+              />
             </>
           )}
         </Stack.Screen>

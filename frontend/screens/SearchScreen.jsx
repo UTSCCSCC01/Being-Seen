@@ -1,187 +1,48 @@
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
-import {
-  FlatList,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View,
-} from "react-native";
+import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import ServiceList from "../components/screen_components/ServiceList";
 import SearchBar from "../components/SearchBar";
-import colors from "../constants/colors";
+import apiHandler from "../util/APIHandler";
 
-// const apiPath = "http://10.0.2.2:3000/";
-const apiPath = "http://192.168.2.49:3000/";
-
-const capitalize = (s) => (s && s[0].toUpperCase() + s.slice(1)) || "";
-
+/**
+ * @function SearchScreen
+ * @module SearchScreen
+ * @description The screen used to display the result of a search activity
+ * @prop {object} [route] Must contain [searchKeys, serviceType]. searchKeys is a plain string the user
+ *                        typed and serviceType corresponds to the api end point to which this component
+ *                        will make http requests.
+ * @prop {object} [navigation] The navigation object provided by react navigation library.
+ */
 function SearchScreen({ route, navigation }) {
-  const [result, setResult] = useState([]);
-  const [isRefreshing, setIsRefreshing] = useState(false);
   const { searchKeys, serviceType } = route.params;
-
-  function getInfoFromAPI(payload) {
-    fetch(`${apiPath}${serviceType}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: payload,
-    })
-      .then((response) => {
-        const r = response.json();
-        return r;
-      })
-      .then((resJson) => {
-        setResult(resJson);
-      });
-  }
-
-  async function refreshSearch() {
-    setIsRefreshing(true);
-    const payload = JSON.stringify({
-      tagList: searchKeys.split(" "),
-    });
-    getInfoFromAPI(payload);
-    setIsRefreshing(false);
-  }
-
-  useEffect(() => {
-    const payload = JSON.stringify({
-      tagList: searchKeys.split(" "),
-    });
-    try {
-      getInfoFromAPI(payload);
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
 
   return (
     <>
-      {/* <ScreenHeader
-        headerText="Test"
-        leftNode={<Icon name="arrowleft" style={styles.backButton} />}
-        leftContainerStyle={styles.backButtonContainer}
-        handleOnPressLeftNode={() => {
-          navigation.pop();
-        }}
-      /> */}
-      <SafeAreaView style={styles.safeHeader}>
+      <SafeAreaView>
         <SearchBar
           navigation={navigation}
-          screenName="searchResult"
+          resultScreenName="searchResult"
           serviceType={serviceType}
           prefill={searchKeys}
           isSecondary
         />
       </SafeAreaView>
-      <FlatList
-        refreshing={isRefreshing}
-        onRefresh={() => {
-          refreshSearch();
+      <ServiceList
+        navigation={navigation}
+        query={serviceType}
+        infoGetter={() => {
+          return apiHandler.getSearchResult(searchKeys.split(","), serviceType);
         }}
-        data={result}
-        renderItem={({ item }) => {
-          return (
-            <TouchableHighlight
-              underlayColor="none"
-              onPress={() => {
-                navigation.push(`${capitalize(serviceType)}Details`, {
-                  itemId: item._id,
-                  query: serviceType,
-                });
-              }}
-            >
-              <View style={styles.box}>
-                {item.picture ? (
-                  <Image style={styles.icon} source={{ uri: item.picture }} />
-                ) : null}
-                <View style={styles.description}>
-                  <Text style={styles.text} numberOfLines={1}>
-                    Name: {item.name}
-                  </Text>
-                  {item.address && (
-                    <Text style={styles.text} numberOfLines={1}>
-                      Address: {item.address}
-                    </Text>
-                  )}
-                  <Text style={styles.text} numberOfLines={1}>
-                    Phone: {item.phoneNumber}
-                  </Text>
-                  <Text style={styles.text} numberOfLines={1}>
-                    Tags: {item.tags ? getTags(item.tags) : "None"}
-                  </Text>
-                </View>
-              </View>
-            </TouchableHighlight>
-          );
-        }}
-        keyExtractor={(item, index) => index.toString()}
-        style={styles.scrollBackground}
       />
     </>
   );
 }
 
-/**
- * @function getTags function responsible for extracting and formatting names of tags for a shelter
- * @module getTags getTags
- * @description function responsible for extracting and formatting names of tags for a shelter
- * @param {Tag[]} tags array of tags for a shelter
- *
- */
-const getTags = (tags) => {
-  let toRet = "";
-  for (let i = 0; i < tags.length; i += 1) {
-    toRet += tags[i].tagName;
-    if (i !== tags.length - 1) toRet += ", ";
-  }
-  return toRet;
-};
-
 SearchScreen.propTypes = {
   route: PropTypes.object.isRequired,
   navigation: PropTypes.object.isRequired,
 };
-
-const styles = StyleSheet.create({
-  backButton: {
-    color: colors.themeMain,
-    fontSize: 30,
-  },
-  backButtonContainer: {
-    height: 30,
-    margin: 10,
-    width: 30,
-  },
-  box: {
-    borderColor: colors.themeMain,
-    borderStyle: "solid",
-    borderWidth: 1,
-    flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "flex-start",
-    margin: 1,
-  },
-  description: {
-    flex: 4,
-  },
-  icon: {
-    flex: 1,
-  },
-  safeHeader: {
-    backgroundColor: colors.themeMain,
-  },
-  scrollBackground: {
-    flex: 1,
-  },
-  text: {
-    flex: 1,
-    flexWrap: "wrap",
-  },
-});
 
 export default SearchScreen;

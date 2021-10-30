@@ -2,21 +2,19 @@
 const apiAddress = "http://192.168.0.13:3000/";
 
 export default {
-  async getInfoFromApi(query) {
-    const response = await fetch(apiAddress + query, {
+  getInfoFromApi(serviceType) {
+    return fetch(apiAddress + serviceType, {
       method: "Get",
     });
-    return response;
   },
 
-  async getInfoFromApiById(query, id) {
-    const response = await fetch(`${apiAddress + query}/${id}`, {
+  getInfoFromApiById(serviceType, id) {
+    return fetch(`${apiAddress + serviceType}/${id}`, {
       method: "Get",
     });
-    return response;
   },
 
-  async submitLogin(username, password) {
+  submitLogin(username, password) {
     return fetch(`${apiAddress}auth/login`, {
       method: "POST",
       headers: {
@@ -26,6 +24,17 @@ export default {
         username,
         password,
       }),
+    });
+  },
+
+  getSearchResult(tagList, serviceType) {
+    const payload = JSON.stringify({
+      tagList,
+    });
+    return fetch(`${apiAddress}${serviceType}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: payload,
     });
   },
 };

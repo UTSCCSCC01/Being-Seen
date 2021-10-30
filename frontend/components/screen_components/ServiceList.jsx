@@ -11,38 +11,38 @@ import {
 import { tailwind } from "tailwind";
 
 import colors from "../../constants/colors";
-import apiHandler from "../../util/APIHandler";
 import { capitalize, getTags } from "../../util/FormatHelper";
-import SearchBar from "../SearchBar";
-
-/* eslint-disable react-native/no-color-literals */
 
 /**
  * @function ShelterList display list of shelters
  * @module ShelterList ShelterList
  * @description display list of shelters
  * @prop {Object} [navigation] - The navigation provided by react navigaition library.
- * @param {string} [query] - The type of the service displayed in this list
- *
+ * @prop {string} [query] - The type of the service displayed in this list
+ * @prop {funcion} [infoGetter] - A function with which this component uses to get data
+ * @prop {element} [listHeader] - A react component as the list header, usually a search bar
  */
-export default function ServiceList({ navigation, query }) {
+export default function ServiceList({
+  navigation,
+  query,
+  infoGetter,
+  listHeader,
+}) {
   const [information, setInformation] = useState([
     { name: `Error ${query} not loaded` },
   ]);
   const [sheltersRefreshing, setSheltersRefreshing] = useState(false);
 
   useEffect(() => {
-    apiHandler
-      .getInfoFromApi(query)
+    infoGetter()
       .then((response) => response.json())
       .then((json) => setInformation(json))
       .catch((error) => console.error(error));
-  }, [query]);
+  }, [infoGetter]);
 
   async function refreshFromApi() {
     setSheltersRefreshing(true);
-    apiHandler
-      .getInfoFromApi(query)
+    infoGetter()
       .then((response) => response.json())
       .then((json) => setInformation(json))
       .catch((error) => console.error(error));
@@ -50,13 +50,7 @@ export default function ServiceList({ navigation, query }) {
   }
   return (
     <FlatList
-      ListHeaderComponent={
-        <SearchBar
-          navigation={navigation}
-          screenName="searchResult"
-          serviceType={query}
-        />
-      }
+      ListHeaderComponent={listHeader}
       data={information}
       refreshing={sheltersRefreshing}
       onRefresh={refreshFromApi}
@@ -114,6 +108,12 @@ export default function ServiceList({ navigation, query }) {
 ServiceList.propTypes = {
   navigation: PropTypes.object.isRequired,
   query: PropTypes.string.isRequired,
+  infoGetter: PropTypes.func.isRequired,
+  listHeader: PropTypes.element,
+};
+
+ServiceList.defaultProps = {
+  listHeader: null,
 };
 
 const styles = StyleSheet.create({
