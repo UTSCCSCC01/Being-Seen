@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import FeatherIcon from "react-native-vector-icons/Feather";
 import Icon from "react-native-vector-icons/Ionicons";
+import { tailwind } from "tailwind";
 
 import colors from "../constants/colors";
 
@@ -81,7 +82,6 @@ const styles = StyleSheet.create({
   },
   backIconContainer: {
     alignItems: "center",
-    // backgroundColor: "blue",
     flexDirection: "row",
     justifyContent: "center",
     marginLeft: 5,
@@ -89,16 +89,16 @@ const styles = StyleSheet.create({
     width: 40,
   },
   headerBackGround: {
+    ...tailwind("bg-primary"),
     alignItems: "center",
-    backgroundColor: colors.themeMain,
     flexDirection: "row",
     height: 60,
     justifyContent: "center",
     paddingHorizontal: 20,
   },
   searchBoxContainer: {
+    ...tailwind("bg-white"),
     alignItems: "center",
-    backgroundColor: colors.backgroundColor,
     borderRadius: 20,
     flex: 1,
     flexDirection: "row",
