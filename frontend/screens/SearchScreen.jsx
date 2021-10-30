@@ -89,7 +89,7 @@ function SearchScreen({ route, navigation }) {
               underlayColor="none"
               onPress={() => {
                 navigation.push(`${capitalize(serviceType)}Details`, {
-                  item,
+                  itemId: item._id,
                   query: serviceType,
                 });
               }}
