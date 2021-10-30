@@ -1,3 +1,5 @@
+import { Linking, Platform } from "react-native";
+
 export function capitalize(str) {
   return (str && str[0].toUpperCase() + str.slice(1)) || "";
 }
@@ -46,4 +48,14 @@ export function formatDate(dateString) {
   return `${weekdays[date.getDay()]} ${
     months[date.getMonth()]
   } ${date.getDate()}, ${date.getFullYear()}`;
+}
+
+export function openPhone(phone) {
+  let phoneNumber;
+  if (Platform.OS !== "android") {
+    phoneNumber = `telprompt:${phone}`;
+  } else {
+    phoneNumber = `tel:${phone}`;
+  }
+  return Linking.openURL(phoneNumber);
 }

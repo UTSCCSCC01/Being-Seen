@@ -21,17 +21,13 @@ import {
   Button,
   Dimensions,
   FlatList,
-  Image,
-  ImageBackground,
   Linking,
   Platform,
   StyleSheet,
   Text,
   TextInput,
-  TouchableHighlight,
   View
 } from "react-native";
-import openMap from "react-native-open-maps";
 import { Rating } from "react-native-ratings";
 
 import ScreenHeader from "../components/ScreenHeader";
@@ -39,8 +35,9 @@ import SearchBar from "../components/SearchBar";
 import colors from "../constants/colors";
 import ServiceList from "../components/screen_components/ServiceList";
 import SearchScreen from "./SearchScreen";
-import { capitalize, formatDate, getTags } from "../util/FormatHelper";
+import { capitalize } from "../util/FormatHelper";
 import apiHandler from "../util/APIHandler";
+import ServiceDetails from "./ServiceDetails";
 
 const Stack = createNativeStackNavigator();
 export const purpleThemeColour = "#662997";
@@ -86,7 +83,7 @@ function ListFromAPI({ query }) {
         </Stack.Screen>
         <Stack.Screen
           name={`${capitalize(query)}Details`}
-          component={DisplayShelter}
+          component={ServiceDetails}
           options={{
             headerShown: true,
             headerTintColor: "#662997",
@@ -121,176 +118,6 @@ function ListFromAPI({ query }) {
   );
 }
 
-/**
- * @function DisplayShelter displays expanded details of a shelter
- * @module DisplayShelter DisplayShelter
- * @description displays expanded details of a shelter
- * @param {*} param0 recieves object containg route and navigation from react navigation
- *
- */
-function DisplayShelter({ route, navigation }) {
-  const { query, itemId } = route.params;
-  const [refreshing, setRefreshing] = useState(false);
-  const [info, setInfo] = useState(null);
-
-  useEffect(() => {
-    apiHandler
-      .getInfoFromApiById(query, itemId)
-      .then((res) => res.json())
-      .then((json) => setInfo(json))
-      .catch((error) => console.log(error));
-  }, []);
-
-  async function refreshFromApi() {
-    setRefreshing(true);
-    const res = await apiHandler.getInfoFromApiById(query, info._id);
-    if (res.status === 200) {
-      res.json().then((json) => setInfo(json));
-    }
-    setRefreshing(false);
-  }
-
-  return (
-    <>
-      {!info ? (
-        <Text>Loading...</Text>
-      ) : (
-        <FlatList
-          refreshing={refreshing}
-          onRefresh={refreshFromApi}
-          ListHeaderComponent={
-            <>
-              {info.picture ? (
-                <ImageBackground
-                  style={styles.largePic}
-                  source={{ uri: info.picture }}
-                />
-              ) : null}
-              <View style={styles.displayTextView}>
-                <Text style={styles.expandedText}>Name: {info.name}</Text>
-                {info.address ? (
-                  <View style={{ flexDirection: "row" }}>
-                    <Text style={styles.expandedText}>Address: </Text>
-                    <TouchableHighlight
-                      underlayColor="white"
-                      onPress={() => {
-                        openMap({ query: info.address });
-                      }}
-                    >
-                      <Text
-                        style={styles.expandedTextUnderlines}
-                        color="purple"
-                      >
-                        {" "}
-                        {info.address}
-                      </Text>
-                    </TouchableHighlight>
-                  </View>
-                ) : null}
-                {info.phoneNumber ? (
-                  <View style={{ flexDirection: "row" }}>
-                    <Text style={styles.expandedText}>Phone Number: </Text>
-                    <TouchableHighlight
-                      underlayColor="white"
-                      onPress={() => {
-                        openPhone(info.phoneNumber);
-                      }}
-                    >
-                      <Text
-                        style={styles.expandedTextUnderlines}
-                        color="purple"
-                      >
-                        {" "}
-                        {info.phoneNumber}
-                      </Text>
-                    </TouchableHighlight>
-                  </View>
-                ) : null}
-                {info.email ? (
-                  <View style={{ flexDirection: "row" }}>
-                    <Text style={styles.expandedText}>Email:</Text>
-                    <TouchableHighlight
-                      underlayColor="white"
-                      onPress={() => {
-                        Linking.openURL(`mailto:${info.email}?subject=&body=`);
-                      }}
-                    >
-                      <Text
-                        style={styles.expandedTextUnderlines}
-                        color="purple"
-                      >
-                        {" "}
-                        {info.email}
-                      </Text>
-                    </TouchableHighlight>
-                  </View>
-                ) : null}
-                <Text style={styles.expandedText}>
-                  Description: {info.description}
-                </Text>
-                {info.hours ? (
-                  <Text style={styles.expandedText}>Hours: {info.hours}</Text>
-                ) : null}
-                {info.rating ? (
-                  <View flexDirection="row">
-                    <Text style={styles.expandedText}>Rating:</Text>
-                    <Rating
-                      readonly="true"
-                      startingValue={info.rating}
-                      tintColor={purpleThemeColour}
-                      imageSize={40}
-                      jumpValue={0.5}
-                    />
-                  </View>
-                ) : null}
-              </View>
-              <DisplayTags tags={info.tags} />
-              {info.reviews ? (
-                <Button
-                  onPress={() => {
-                    navigation.navigate(`Review ${capitalize(query)}`, {
-                      infoId: info._id,
-                      query
-                    });
-                  }}
-                  title="Write/Edit a Review For This Shelter"
-                  color={purpleThemeColour}
-                />
-              ) : null}
-              {info.website ? (
-                <Button
-                  title="Go to website"
-                  onPress={() => {
-                    Linking.openURL(info.website);
-                  }}
-                />
-              ) : null}
-            </>
-          }
-          data={info.reviews}
-          renderItem={({ item }) => (
-            <View style={styles.reviewBox} key={item}>
-              <Text style={styles.reviewText}>"{item.content}"</Text>
-              <View flexDirection="row">
-                <Text style={styles.reviewText}>Rating: </Text>
-                <Rating
-                  readonly="true"
-                  startingValue={item.rating}
-                  tintColor={purpleThemeColour}
-                  imageSize={25}
-                />
-              </View>
-              <Text style={styles.reviewText}>
-                Written on {formatDate(item.date)}
-              </Text>
-            </View>
-          )}
-          keyExtractor={(item) => item.reviewer.toString()}
-        />
-      )}
-    </>
-  );
-}
 /**
  * @function WriteReview
  * @module WriteReview
@@ -403,8 +230,6 @@ function WriteReview({ route, navigation }) {
         }
       ]
     );
-    // DeleteReviewFromApi()
-    // navigation.goBack()
   }
 
   async function sendReviewToApi(body) {
@@ -414,8 +239,6 @@ function WriteReview({ route, navigation }) {
       else method = "POST";
 
       await fetch(
-        // ipv4 localhost since running emulator
-        // 10.0.2.2 is your machine's localhost when on an android emulator
         `${apiPath + reviewParams.query}/${
           reviewParams.infoId
         }/review/${reviewer}`,
@@ -479,39 +302,6 @@ async function getProfileIdFromToken() {
   const decoded = await jwt_decode(token);
   return decoded.id;
 }
-
-export function openPhone(phone) {
-  let phoneNumber;
-  if (Platform.OS !== "android") {
-    phoneNumber = `telprompt:${phone}`;
-  } else {
-    phoneNumber = `tel:${phone}`;
-  }
-  return Linking.openURL(phoneNumber);
-}
-
-/**
- * @function DisplayTags
- * @module DisplayTags
- * @description displays given tags within a flatlist of boxes
- * @param {*} props propety object which contains tags
- *
- */
-export const DisplayTags = (props) => {
-  const { tags } = props;
-  return (
-    <FlatList
-      horizontal
-      data={tags}
-      renderItem={({ item }) => (
-        <View style={styles.tagBox}>
-          <Text>{item.tagName}</Text>
-        </View>
-      )}
-      keyExtractor={(item, index) => index.toString()}
-    />
-  );
-};
 
 const styles = StyleSheet.create({
   background: {
