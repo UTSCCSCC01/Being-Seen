@@ -9,15 +9,16 @@ import { tailwind } from "tailwind";
  * @module UnderlinedLink
  * @description An underlined text link
  * @prop {string} text - The text to display
- * @prop {string} to
+ * @prop {string} [to] - Destination link
+ * @prop {boolean} [back] - go to the previous screen
  */
-const UnderlinedLink = ({ text, to }) => {
+const UnderlinedLink = ({ text, to, back }) => {
   const navigation = useNavigation();
 
   return (
     <TouchableHighlight
-      onPress={() => navigation.push(to)}
-      underlayColor="gray"
+      onPress={() => (back ? navigation.goBack() : navigation.navigate(to))}
+      underlayColor="grey"
     >
       <Text style={styles.text}>{text}</Text>
     </TouchableHighlight>
@@ -26,7 +27,13 @@ const UnderlinedLink = ({ text, to }) => {
 
 UnderlinedLink.propTypes = {
   text: PropTypes.string.isRequired,
-  to: PropTypes.string.isRequired,
+  to: PropTypes.string,
+  back: PropTypes.bool,
+};
+
+UnderlinedLink.defaultProps = {
+  to: "",
+  back: false,
 };
 
 const styles = StyleSheet.create({
