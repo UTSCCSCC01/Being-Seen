@@ -14,6 +14,7 @@ import ListFromAPI from "./screens/ListFromAPI";
 import Login from "./screens/Login";
 import RecoverAccountScreen from "./screens/RecoverAccountScreen";
 import RegisterAccountScreen from "./screens/RegisterAccountScreen";
+import TutorialScreen from "./screens/TutorialScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -91,6 +92,7 @@ export default function App() {
           component={RegisterAccountScreen}
         />
         <Stack.Screen name="RecoverAccount" component={RecoverAccountScreen} />
+        <Stack.Screen name="Tutorial" component={TutorialScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
