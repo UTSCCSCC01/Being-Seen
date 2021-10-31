@@ -71,7 +71,7 @@ ScreenHeader.defaultProps = {
 const styles = StyleSheet.create({
   headerItem: {
     ...tailwind("py-1 items-center"),
-    flex: 4,
+    flex: 5,
   },
   leftItem: tailwind("flex-1 pl-4"),
   pageHeaderContainer: {

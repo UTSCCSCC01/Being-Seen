@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useState } from "react";
 import {
   Dimensions,
@@ -34,6 +35,19 @@ const TutorialScreen = () => {
   };
 
   const { currentPage: pageIndex } = sliderState;
+
+  const checkIfFirstLaunch = async () => {
+    try {
+      const hasLaunched = await AsyncStorage.getItem("hasLaunched");
+      if (hasLaunched === null) {
+        AsyncStorage.setItem("hasLaunched", "true");
+        return true;
+      }
+      return false;
+    } catch (error) {
+      return false;
+    }
+  };
 
   return (
     <View>
@@ -130,7 +144,11 @@ const TutorialScreen = () => {
             <View style={styles({ pageIndex, index }).sliderDot} key={key} />
           ))}
           <View style={styles({}).exit}>
-            <UnderlinedLink text="Exit Tutorial" back />
+            {checkIfFirstLaunch() ? (
+              <UnderlinedLink text="Exit Tutorial" to="Login" />
+            ) : (
+              <UnderlinedLink text="Exit Tutorial" back />
+            )}
           </View>
         </View>
       </SafeAreaView>
