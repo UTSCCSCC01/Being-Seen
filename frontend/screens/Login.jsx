@@ -9,6 +9,7 @@ import DisplayNotif from "../components/DisplayNotif";
 import { PrimaryHeader } from "../components/Headers";
 import TextField from "../components/TextField";
 import UnderlinedLink from "../components/UnderlinedLink";
+import apiHandler from "../util/APIHandler";
 
 /**
  * @function Login
@@ -16,8 +17,6 @@ import UnderlinedLink from "../components/UnderlinedLink";
  * @description Login screen
  */
 const Login = () => {
-  const androidPath = "10.0.2.2:3000/";
-  const otherPath = "192.168.2.49:3000/";
   const failedLoginMessage = "Error: Incorrect Username Or Password";
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -35,16 +34,7 @@ const Login = () => {
 
   const submitLogin = async () => {
     try {
-      const response = await fetch(`http://${androidPath}auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username,
-          password,
-        }),
-      });
+      const response = await apiHandler.submitLogin(username, password);
       const data = await response.json();
       if (data.access_token) {
         saveToken(data.access_token);

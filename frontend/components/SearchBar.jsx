@@ -3,19 +3,34 @@ import React, { useState } from "react";
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import FeatherIcon from "react-native-vector-icons/Feather";
 import Icon from "react-native-vector-icons/Ionicons";
+import { tailwind } from "tailwind";
 
 import colors from "../constants/colors";
 
+/**
+ * @function SearchBar
+ * @module SearchBar
+ * @description This components accepts a user input and navigates the user to a dedicated
+ *              search result screen (SearchScreen) when the user submits.
+ * @prop {object} [navigation] The navigation object provided by the react navigation library.
+ * @prop {string} [resultScreenName] The name of the screen to which this component will
+ *                                    navigate the user.
+ * @prop {string} [serviceType] The name of the api endpoint to which the search screen will
+ *                               send http requests.
+ * @prop {string} [prefill] The prefill text in the search bar. Default: ""
+ * @prop {bool} [isSecondary] Whether there will be a back button on the right side of the
+ *                             text input. Default: false
+ */
 function SearchBar({
   navigation,
-  screenName,
+  resultScreenName,
   serviceType,
   prefill,
   isSecondary,
 }) {
   const [searchString, setSearchString] = useState(prefill);
   const onSubmitEditing = () => {
-    navigation.push(screenName, {
+    navigation.push(resultScreenName, {
       serviceType: serviceType.toLowerCase(),
       searchKeys: searchString,
     });
@@ -49,7 +64,7 @@ function SearchBar({
 
 SearchBar.propTypes = {
   navigation: PropTypes.object.isRequired,
-  screenName: PropTypes.string.isRequired,
+  resultScreenName: PropTypes.string.isRequired,
   serviceType: PropTypes.string.isRequired,
   prefill: PropTypes.string,
   isSecondary: PropTypes.bool,
@@ -67,7 +82,6 @@ const styles = StyleSheet.create({
   },
   backIconContainer: {
     alignItems: "center",
-    // backgroundColor: "blue",
     flexDirection: "row",
     justifyContent: "center",
     marginLeft: 5,
@@ -75,16 +89,16 @@ const styles = StyleSheet.create({
     width: 40,
   },
   headerBackGround: {
+    ...tailwind("bg-primary"),
     alignItems: "center",
-    backgroundColor: colors.themeMain,
     flexDirection: "row",
     height: 60,
     justifyContent: "center",
     paddingHorizontal: 20,
   },
   searchBoxContainer: {
+    ...tailwind("bg-white"),
     alignItems: "center",
-    backgroundColor: colors.backgroundColor,
     borderRadius: 20,
     flex: 1,
     flexDirection: "row",
