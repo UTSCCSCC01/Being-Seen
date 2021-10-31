@@ -6,7 +6,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SecureStore from "expo-secure-store";
 import React, { useEffect } from "react";
-import { Image, View } from "react-native";
+import { Image, Platform, StatusBar, View } from "react-native";
 
 import icons from "./constants/icons";
 import LandingPage from "./screens/landing_page";
@@ -76,24 +76,38 @@ export default function App() {
   }, []);
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Login"
-        // initialRouteName="Home"
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Landing" component={LandingPage} />
-        <Stack.Screen
-          name="RegisterAccount"
-          component={RegisterAccountScreen}
-        />
-        <Stack.Screen name="RecoverAccount" component={RecoverAccountScreen} />
-        <Stack.Screen name="Tutorial" component={TutorialScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <>
+      <StatusBar
+        barStyle={
+          Platform.OS === "android"
+            ? "light-content"
+            : "ios"
+            ? "dark-content"
+            : "default"
+        }
+      />
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="Login"
+          // initialRouteName="Home"
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Landing" component={LandingPage} />
+          <Stack.Screen
+            name="RegisterAccount"
+            component={RegisterAccountScreen}
+          />
+          <Stack.Screen
+            name="RecoverAccount"
+            component={RecoverAccountScreen}
+          />
+          <Stack.Screen name="Tutorial" component={TutorialScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
   );
 }

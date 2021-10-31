@@ -37,7 +37,6 @@ const TutorialScreen = () => {
 
   return (
     <View>
-      <StatusBar barStyle="dark-content" />
       <SafeAreaView style={styles({}).tutorialView}>
         <ScrollView
           style={styles({}).slideshowView}
@@ -130,9 +129,9 @@ const TutorialScreen = () => {
           {Array.from(Array(8).keys()).map((key, index) => (
             <View style={styles({ pageIndex, index }).sliderDot} key={key} />
           ))}
-        </View>
-        <View style={styles({}).exit}>
-          <UnderlinedLink text="Exit Tutorial" back />
+          <View style={styles({}).exit}>
+            <UnderlinedLink text="Exit Tutorial" back />
+          </View>
         </View>
       </SafeAreaView>
     </View>
@@ -146,7 +145,6 @@ const styles = ({ width, height, pageIndex, index }) =>
     },
     exit: {
       ...tailwind("absolute inset-x-0 justify-center items-end"),
-      bottom: 15,
       right: 20,
     },
     image: {
@@ -158,12 +156,12 @@ const styles = ({ width, height, pageIndex, index }) =>
       width,
     },
     sliderDot: {
-      ...tailwind("w-4 h-4 mx-2 bg-gray-800 rounded-full"),
+      ...tailwind("w-2 h-2 mx-1 bg-gray-800 rounded-full"),
       opacity: pageIndex === index ? 1 : 0.2,
     },
     sliderView: {
       ...tailwind("absolute flex-row inset-x-0 justify-center items-center"),
-      bottom: 50,
+      bottom: 75,
     },
     slideshowView: {
       ...tailwind(""),
