@@ -46,6 +46,13 @@
         "no-unused-vars": "warn",
         "react-native/no-unused-styles": "warn",
         "camelcase": "warn",
-		"no-underscore-dangle": ["error", {"allow": ["_id"]}]
+		"no-underscore-dangle": ["error", {"allow": ["_id"]}],
+        "react/jsx-no-bind": ["warn", {
+            "ignoreDOMComponents": false,
+            "ignoreRefs": false,
+            "allowArrowFunctions": false,
+            "allowFunctions": false,
+            "allowBind": false
+          }]
     }
 }

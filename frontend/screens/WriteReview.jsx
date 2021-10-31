@@ -87,7 +87,7 @@ export default function WriteReview({ route, navigation }) {
     setReadyToPublish(false);
   }, [readyToPublish]);
 
-  async function DeleteReview() {
+  function DeleteReview() {
     Alert.alert(
       "Are you sure",
       "Once you delete this review, you cannot get it back",
@@ -99,8 +99,8 @@ export default function WriteReview({ route, navigation }) {
         },
         {
           text: "OK",
-          onPress: () => {
-            apiHandler.deleteReviewFromApi(infoId, reviewer, query);
+          onPress: async () => {
+            await apiHandler.deleteReviewFromApi(infoId, reviewer, query);
             navigation.goBack();
           },
         },

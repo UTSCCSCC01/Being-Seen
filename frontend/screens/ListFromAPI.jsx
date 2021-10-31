@@ -1,6 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import PropTypes from "prop-types";
-// eslint-disable-next-line camelcase
 import React from "react";
 import { StyleSheet } from "react-native";
 
