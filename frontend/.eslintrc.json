@@ -53,6 +53,7 @@
             "allowArrowFunctions": false,
             "allowFunctions": false,
             "allowBind": false
-          }]
+          }],
+        "no-nested-ternary": "warn"
     }
 }

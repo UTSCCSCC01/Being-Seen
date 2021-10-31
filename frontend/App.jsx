@@ -1,12 +1,10 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable no-empty-pattern */
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
+import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SecureStore from "expo-secure-store";
 import React, { useEffect } from "react";
-import { Image, View } from "react-native";
+import { Image, Platform, StatusBar, StyleSheet, View } from "react-native";
 
 import icons from "./constants/icons";
 import LandingPage from "./screens/landing_page";
@@ -46,7 +44,7 @@ const Home = () => (
           iconName = focused ? icons.education_filled : icons.education;
         }
 
-        return <Image source={iconName} style={{ width: 30, height: 30 }} />;
+        return <Image source={iconName} style={styles.tabIcon} />;
       },
     })}
   >
@@ -65,35 +63,78 @@ const Home = () => (
 );
 
 export default function App() {
-  // eslint-disable-next-line no-unused-vars
   let token;
 
+  const getToken = async () => {
+    token = await SecureStore.getItemAsync("token");
+  };
+
+  const checkIfFirstLaunch = async () => {
+    try {
+      const hasLaunched = await AsyncStorage.getItem("hasLaunched");
+      if (hasLaunched === null) {
+        AsyncStorage.setItem("hasLaunched", "true");
+        return true;
+      }
+      return false;
+    } catch (error) {
+      return false;
+    }
+  };
+
+  const theme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      background: "white",
+    },
+  };
+
   useEffect(() => {
-    const getToken = async () => {
-      token = await SecureStore.getItemAsync("token");
-    };
     getToken();
-  }, []);
+  });
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Login"
-        // initialRouteName="Home"
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Landing" component={LandingPage} />
-        <Stack.Screen
-          name="RegisterAccount"
-          component={RegisterAccountScreen}
-        />
-        <Stack.Screen name="RecoverAccount" component={RecoverAccountScreen} />
-        <Stack.Screen name="Tutorial" component={TutorialScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <>
+      <StatusBar
+        barStyle={
+          Platform.OS === "android"
+            ? "dark-content"
+            : "ios"
+            ? "dark-content"
+            : "default"
+        }
+        backgroundColor="white"
+      />
+      <NavigationContainer theme={theme}>
+        <Stack.Navigator
+          initialRouteName={checkIfFirstLaunch() ? "Tutorial" : "Login"}
+          screenOptions={{
+            headerShown: false,
+            cardStyle: { backgroundColor: "white" },
+          }}
+        >
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Landing" component={LandingPage} />
+          <Stack.Screen
+            name="RegisterAccount"
+            component={RegisterAccountScreen}
+          />
+          <Stack.Screen
+            name="RecoverAccount"
+            component={RecoverAccountScreen}
+          />
+          <Stack.Screen name="Tutorial" component={TutorialScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
   );
 }
+
+const styles = StyleSheet.create({
+  tabIcon: {
+    height: 30,
+    width: 30,
+  },
+});
