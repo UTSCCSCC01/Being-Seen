@@ -12,6 +12,7 @@ import {
 import { tailwind } from "tailwind";
 
 import { PrimaryHeader } from "../components/Headers";
+import UnderlinedLink from "../components/UnderlinedLink";
 import images from "../constants/images";
 
 const TutorialScreen = () => {
@@ -130,6 +131,9 @@ const TutorialScreen = () => {
             <View style={styles({ pageIndex, index }).sliderDot} key={key} />
           ))}
         </View>
+        <View style={styles({}).exit}>
+          <UnderlinedLink text="Exit Tutorial" back />
+        </View>
       </SafeAreaView>
     </View>
   );
@@ -139,6 +143,11 @@ const styles = ({ width, height, pageIndex, index }) =>
   StyleSheet.create({
     description: {
       ...tailwind("text-base text-center m-2"),
+    },
+    exit: {
+      ...tailwind("absolute inset-x-0 justify-center items-end"),
+      bottom: 15,
+      right: 20,
     },
     image: {
       height: 450,
