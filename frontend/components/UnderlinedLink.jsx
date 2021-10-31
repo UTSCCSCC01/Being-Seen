@@ -18,7 +18,7 @@ const UnderlinedLink = ({ text, to, back }) => {
   return (
     <TouchableHighlight
       onPress={() => (back ? navigation.goBack() : navigation.navigate(to))}
-      underlayColor="grey"
+      underlayColor="#E8E7E7"
     >
       <Text style={styles.text}>{text}</Text>
     </TouchableHighlight>

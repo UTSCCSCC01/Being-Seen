@@ -5,7 +5,6 @@ import {
   Image,
   SafeAreaView,
   ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
   View,
@@ -62,94 +61,131 @@ const TutorialScreen = () => {
         }}
       >
         <View style={styles({ width, height }).slide}>
-          <Image source={images.landing_page_bg_1} style={styles({}).image} />
+          <Image
+            source={images.landing_page_bg_1}
+            style={styles({ width, height }).image}
+          />
           <View style={styles({}).textBox}>
             <PrimaryHeader text="Welcome" />
-            <Text style={styles({}).description}>
-              Being Seen aims to help you easily access resources relevant to
-              the homeless community.
-            </Text>
-          </View>
-        </View>
-        <View style={styles({ width, height }).slide}>
-          <Image source={images.landing_page_bg_1} style={styles({}).image} />
-          <View style={styles({}).textBox}>
-            <PrimaryHeader text="Newsreel" />
-            <Text style={styles({}).description}>
-              Check out recently posted services and events.
-            </Text>
-          </View>
-        </View>
-        <View style={styles({ width, height }).slide}>
-          <Image source={images.landing_page_bg_1} style={styles({}).image} />
-          <View style={styles({}).textBox}>
-            <PrimaryHeader text="Profile" />
-            <Text style={styles({}).description}>
-              View your profile and edit your information.
-            </Text>
-          </View>
-        </View>
-        <View style={styles({ width, height }).slide}>
-          <Image source={images.landing_page_bg_1} style={styles({}).image} />
-          <View style={styles({}).textBox}>
-            <PrimaryHeader text="Search" />
-            <Text style={styles({}).description}>
-              Search for services by tag name.
-            </Text>
-          </View>
-        </View>
-        <View style={styles({ width, height }).slide}>
-          <Image source={images.landing_page_bg_1} style={styles({}).image} />
-          <View style={styles({}).textBox}>
-            <PrimaryHeader text="Merchants" />
-            <Text style={styles({}).description}>
-              Check out partnered stores for discounts and coupons.
-            </Text>
-          </View>
-        </View>
-        <View style={styles({ width, height }).slide}>
-          <Image source={images.landing_page_bg_1} style={styles({}).image} />
-          <View style={styles({}).textBox}>
-            <PrimaryHeader text="Jobs" />
-            <Text style={styles({}).description}>
-              Browse through job postings and easily apply for jobs you are
-              interested in.
-            </Text>
+            <ScrollView style={styles({ width, height }).textScroll}>
+              <Text style={styles({}).description}>
+                Being Seen aims to help you easily access resources relevant to
+                the homeless community.
+              </Text>
+            </ScrollView>
           </View>
         </View>
         <View style={styles({ width, height }).slide}>
           <Image
             source={images.landing_page_bg_1}
-            style={styles({ height }).image}
+            style={styles({ width, height }).image}
           />
           <View style={styles({}).textBox}>
-            <PrimaryHeader text="Social Services" />
-            <Text style={styles({}).description}>
-              Get a list of relevant social services, such as shelters, food
-              banks, and safe injection sites. You can also read and leave user
-              reviews.
-            </Text>
+            <PrimaryHeader text="Newsreel" />
+            <ScrollView style={styles({ width, height }).textScroll}>
+              <Text style={styles({}).description}>
+                Check out recently posted services and events.
+              </Text>
+            </ScrollView>
           </View>
         </View>
         <View style={styles({ width, height }).slide}>
-          <Image source={images.landing_page_bg_1} style={styles({}).image} />
+          <Image
+            source={images.landing_page_bg_1}
+            style={styles({ width, height }).image}
+          />
+          <View style={styles({}).textBox}>
+            <PrimaryHeader text="Profile" />
+            <ScrollView style={styles({ width, height }).textScroll}>
+              <Text style={styles({}).description}>
+                View your profile and edit your information.
+              </Text>
+            </ScrollView>
+          </View>
+        </View>
+        <View style={styles({ width, height }).slide}>
+          <Image
+            source={images.landing_page_bg_1}
+            style={styles({ width, height }).image}
+          />
+          <View style={styles({}).textBox}>
+            <PrimaryHeader text="Search" />
+            <ScrollView style={styles({ width, height }).textScroll}>
+              <Text style={styles({}).description}>
+                Search for services by tag name.
+              </Text>
+            </ScrollView>
+          </View>
+        </View>
+        <View style={styles({ width, height }).slide}>
+          <Image
+            source={images.landing_page_bg_1}
+            style={styles({ width, height }).image}
+          />
+          <View style={styles({}).textBox}>
+            <PrimaryHeader text="Merchants" />
+            <ScrollView style={styles({ width, height }).textScroll}>
+              <Text style={styles({}).description}>
+                Check out partnered stores for discounts and coupons.
+              </Text>
+            </ScrollView>
+          </View>
+        </View>
+        <View style={styles({ width, height }).slide}>
+          <Image
+            source={images.landing_page_bg_1}
+            style={styles({ width, height }).image}
+          />
+          <View style={styles({}).textBox}>
+            <PrimaryHeader text="Jobs" />
+            <ScrollView style={styles({ width, height }).textScroll}>
+              <Text style={styles({}).description}>
+                Browse through job postings and easily apply for jobs you are
+                interested in.
+              </Text>
+            </ScrollView>
+          </View>
+        </View>
+        <View style={styles({ width, height }).slide}>
+          <Image
+            source={images.landing_page_bg_1}
+            style={styles({ width, height }).image}
+          />
+          <View style={styles({}).textBox}>
+            <PrimaryHeader text="Social Services" />
+            <ScrollView style={styles({ width, height }).textScroll}>
+              <Text style={styles({}).description}>
+                Get a list of relevant social services, such as shelters, food
+                banks, and safe injection sites. You can also read and leave
+                user reviews.
+              </Text>
+            </ScrollView>
+          </View>
+        </View>
+        <View style={styles({ width, height }).slide}>
+          <Image
+            source={images.landing_page_bg_1}
+            style={styles({ width, height }).image}
+          />
           <View style={styles({}).textBox}>
             <PrimaryHeader text="Education" />
-            <Text style={styles({}).description}>
-              View upcoming education and mentorship opportunities.
-            </Text>
+            <ScrollView style={styles({ width, height }).textScroll}>
+              <Text style={styles({}).description}>
+                View upcoming education and mentorship opportunities.
+              </Text>
+            </ScrollView>
           </View>
         </View>
       </ScrollView>
-      <View style={styles({}).sliderView}>
+      <View style={styles({ width, height }).sliderView}>
         {Array.from(Array(8).keys()).map((key, index) => (
           <View style={styles({ pageIndex, index }).sliderDot} key={key} />
         ))}
-        <View style={styles({}).exit}>
+        <View style={styles({ width, height }).exit}>
           {checkIfFirstLaunch() ? (
             <UnderlinedLink text="Exit Tutorial" to="Login" />
           ) : (
-            <UnderlinedLink text="Exit Tutorial" back />
+            <UnderlinedLink text="Exit" back />
           )}
         </View>
       </View>
@@ -164,11 +200,11 @@ const styles = ({ width, height, pageIndex, index }) =>
     },
     exit: {
       ...tailwind("absolute inset-x-0 justify-center items-end"),
-      right: 20,
+      right: width * 0.03,
     },
     image: {
-      height: 450,
-      width: "100%",
+      height: height * 0.6,
+      width: "auto",
     },
     slide: {
       height,
@@ -179,14 +215,15 @@ const styles = ({ width, height, pageIndex, index }) =>
       opacity: pageIndex === index ? 1 : 0.2,
     },
     sliderView: {
-      ...tailwind("flex-row items-center justify-center"),
-      bottom: 75,
+      ...tailwind("absolute flex-row inset-x-0 justify-center items-center"),
+      bottom: height * 0.05,
     },
-    slideshowView: {
-      ...tailwind(""),
-    },
+    slideshowView: {},
     textBox: {
-      ...tailwind("justify-center items-center my-8"),
+      ...tailwind("justify-center items-center my-3"),
+    },
+    textScroll: {
+      height: height * 0.2,
     },
     tutorialView: {
       ...tailwind("flex-col"),
