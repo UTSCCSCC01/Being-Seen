@@ -38,7 +38,7 @@ Button.propTypes = {
 const styles = ({ opacity }) =>
   StyleSheet.create({
     button: {
-      ...tailwind("bg-primaryPurple text-white p-3 rounded-lg"),
+      ...tailwind("bg-primary text-white p-3 rounded-lg"),
       opacity,
     },
     label: {

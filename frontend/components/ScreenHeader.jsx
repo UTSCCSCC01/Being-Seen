@@ -1,8 +1,10 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { Pressable, StyleSheet, Text, View, ViewPropTypes } from "react-native";
+import { Pressable, StyleSheet, View, ViewPropTypes } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { tailwind } from "tailwind";
+
+import { PrimaryHeader } from "./Headers";
 
 /**
  * @function ScreenHeader
@@ -34,7 +36,7 @@ const ScreenHeader = ({
         {leftNode}
       </Pressable>
       <View style={styles.headerItem}>
-        <Text style={styles.headerText}>{headerText}</Text>
+        <PrimaryHeader text={headerText} />
       </View>
       <Pressable
         onPress={handleOnPressRightNode}
@@ -68,14 +70,15 @@ ScreenHeader.defaultProps = {
 
 const styles = StyleSheet.create({
   headerItem: {
-    ...tailwind("py-4 items-center"),
-    flex: 3,
+    ...tailwind("py-1 items-center"),
+    flex: 4,
   },
-  headerText: tailwind("text-primaryPurple font-bold text-2xl"),
-  leftItem: tailwind("flex-1 pl-4 py-4"),
-  pageHeaderContainer: tailwind(
-    "flex flex-row items-center justify-between border-b border-gray-200"
-  ),
+  leftItem: tailwind("flex-1 pl-4"),
+  pageHeaderContainer: {
+    ...tailwind(
+      "flex-row items-center justify-between border-b border-gray-200 pb-2"
+    ),
+  },
   rightItem: tailwind("flex-1 pr-4 items-end py-4"),
 });
 

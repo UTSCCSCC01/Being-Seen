@@ -5,12 +5,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SecureStore from "expo-secure-store";
-import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import React, { useEffect } from "react";
+import { Image, View } from "react-native";
 
 import icons from "./constants/icons";
-// import Shelter from "./screens/Shelter";
 import LandingPage from "./screens/landing_page";
 import ListFromAPI from "./screens/ListFromAPI";
 import Login from "./screens/Login";
@@ -31,19 +29,21 @@ const Home = () => (
   <Tab.Navigator
     screenOptions={({ route }) => ({
       headerShown: false,
-      tabBarIcon: ({}) => {
+      tabBarIcon: ({ focused }) => {
         let iconName;
 
         if (route.name === "Merchants") {
-          iconName = icons.merchants;
+          iconName = focused ? icons.merchants_filled : icons.merchants;
         } else if (route.name === "Jobs") {
-          iconName = icons.jobs;
+          iconName = focused ? icons.jobs_filled : icons.jobs;
         } else if (route.name === "Profile") {
-          iconName = icons.profile;
+          iconName = focused ? icons.profile_filled : icons.profile;
         } else if (route.name === "Social Services") {
-          iconName = icons.social_services;
+          iconName = focused
+            ? icons.social_services_filled
+            : icons.social_services;
         } else if (route.name === "Education") {
-          iconName = icons.education;
+          iconName = focused ? icons.education_filled : icons.education;
         }
 
         return <Image source={iconName} style={{ width: 30, height: 30 }} />;
@@ -65,6 +65,7 @@ const Home = () => (
 );
 
 export default function App() {
+  // eslint-disable-next-line no-unused-vars
   let token;
 
   useEffect(() => {
@@ -78,6 +79,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="Login"
+        // initialRouteName="Home"
         screenOptions={{
           headerShown: false,
         }}
@@ -93,6 +95,5 @@ export default function App() {
         <Stack.Screen name="Tutorial" component={TutorialScreen} />
       </Stack.Navigator>
     </NavigationContainer>
-    // <Login />
   );
 }

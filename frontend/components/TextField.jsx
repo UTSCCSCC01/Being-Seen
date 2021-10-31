@@ -62,7 +62,7 @@ TextField.defaultProps = {
 
 const styles = StyleSheet.create({
   textBox: {
-    ...tailwind("text-lg h-12 my-2 p-1 border-b-2 border-primaryPurple"),
+    ...tailwind("text-lg h-12 my-2 p-1 border-b-2 border-secondary"),
   },
 });
 

@@ -1,15 +1,8 @@
-import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import {
-  Linking,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View,
-} from "react-native";
+import { Linking, SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { tailwind } from "tailwind";
 
+import BackButton from "../components/BackButton";
 import Button from "../components/Button";
 import ScreenHeader from "../components/ScreenHeader";
 
@@ -19,23 +12,9 @@ import ScreenHeader from "../components/ScreenHeader";
  * @description Account recovery screen
  */
 const RecoverAccountScreen = () => {
-  const navigation = useNavigation();
-
   return (
-    <SafeAreaView>
-      <ScreenHeader
-        leftNode={
-          <View>
-            <TouchableHighlight
-              onPress={() => navigation.goBack()}
-              underlayColor="transparent"
-            >
-              <Text style={styles.backButton}>Back</Text>
-            </TouchableHighlight>
-          </View>
-        }
-        headerText="Recover Account"
-      />
+    <SafeAreaView style={styles.recoverAccountPage}>
+      <ScreenHeader leftNode={<BackButton />} headerText="Recover Account" />
       <View style={styles.body}>
         <Text style={styles.text}>
           Can&apos;t log in? Don&apos;t worry! Email us and we will help you go
@@ -62,7 +41,7 @@ const RecoverAccountScreen = () => {
 
 const styles = StyleSheet.create({
   backButton: {
-    ...tailwind("text-primaryPurple text-opacity-90 text-xl"),
+    ...tailwind("text-primary text-opacity-90 text-xl"),
   },
   body: {
     ...tailwind("px-4 py-6"),
@@ -70,8 +49,11 @@ const styles = StyleSheet.create({
   buttonView: {
     ...tailwind("px-4 py-8"),
   },
+  recoverAccountPage: {
+    ...tailwind("flex-1"),
+  },
   text: {
-    ...tailwind("text-primaryPurple text-base"),
+    ...tailwind("text-black text-base"),
   },
 });
 
