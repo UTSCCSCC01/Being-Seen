@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Patch } from '@nestjs/common';
 
 import { ProfileService } from './profile.service';
 
@@ -57,8 +57,12 @@ export class ProfileController {
    * @param story
    * @returns
    */
-  @Put('/:id')
-  async putStory(@Param('id') id: string, @Body('story') story: string) {
+  @Patch('/:id')
+  async putStory(
+    @Param('id') id: string, 
+    @Body('story') story: string
+  ) {
+    console.log(story);
     const profile = await this.profilesService.putStory(id, story);
     console.log(profile);
     return profile;

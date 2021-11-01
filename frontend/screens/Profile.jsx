@@ -111,12 +111,13 @@ function EditProfile({ route, navigation }) {
     var bodyData = {
       story: story
     }
+    console.log(JSON.stringify(bodyData));
     try {
       const URI = "http://10.0.2.2:3000/profiles/615a3f8470e6e721d8ee26d4";
       const response = await fetch(
         URI,
         {
-          method: 'POST',
+          method: 'PATCH',
           body: JSON.stringify(bodyData)
         }
       );
@@ -124,11 +125,7 @@ function EditProfile({ route, navigation }) {
     } catch (error) {
       console.error(error);
     }
-    navigation.navigate({
-      name: 'MainProfile',
-      params: { story: story },
-      merge: true,
-    });
+    
   }
 
   return (
@@ -143,9 +140,17 @@ function EditProfile({ route, navigation }) {
       />
       <Button
         title = "Submit"
-        onPress = { () => {
-          update();
-        } }
+        onPress = { 
+          async() => {
+            var response = await update();
+            console.log(await response.json());
+            navigation.navigate({
+              name: 'MainProfile',
+              params: { story: story },
+              merge: true,
+            });
+          } 
+        }
       />
 
     </View>
