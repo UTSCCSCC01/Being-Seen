@@ -9,12 +9,19 @@ export class NewsService {
     @InjectModel('NewsReal')
     private readonly newsModel: Model<NewsRealDocument>,
   ) {}
-
+  /**
+   * gets all news reels from db
+   * @returns all news reels from db
+   */
   async getAllReels() {
     const news = await this.newsModel.find().exec();
     return news as NewsReal[];
   }
-
+  /**
+   * gets n most recent news reels from db
+   * @param n the number of most recent newsreels wanted
+   * @returns n most recent news reels from db
+   */
   async getNMostRecent(n: number) {
     const news = await this.newsModel
       .find()
@@ -22,7 +29,13 @@ export class NewsService {
       .limit(Number(n));
     return news as NewsReal[];
   }
-
+  /**
+   * creates new newsreel with given info
+   * @param headline headline of newsreel
+   * @param content content of newsreel
+   * @param picture picture associated with newsreel
+   * @returns new newsreel as an object
+   */
   async createNewsReel(headline: string, content: string, picture: string) {
     const newReel = new this.newsModel({
       headline,
@@ -33,7 +46,15 @@ export class NewsService {
     await newReel.save();
     return newReel;
   }
-
+  /**
+   * updates newsreel with id of newsId to have given info
+   * @param newsId id of newsreel in db
+   * @param headline new headline of newsreel
+   * @param content new content of newsreel
+   * @param picture new picture of newsreel
+   * @param date new date of newsreel
+   * @returns updated newsreel
+   */
   async updateNewsReel(
     newsId: string,
     headline: string,
