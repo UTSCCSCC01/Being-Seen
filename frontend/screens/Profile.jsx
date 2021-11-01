@@ -14,6 +14,7 @@ import {
   Dimensions,
   Button,
   ImageBackground,
+  TextInput,
 } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
@@ -27,6 +28,11 @@ function Profile() {
         name = "MainProfile"
         options = {{ headerShown: true, headerTintColor: "#662997" }}
         component = {MainProfile}
+        initialParams = {{
+          name: '',
+          story: '',
+          balance: ''
+        }}
       >
       </Stack.Screen>
       <Stack.Screen
@@ -67,7 +73,7 @@ function MainProfile( { route, navigation} ) {
       console.error(error);
     }
   }
-
+  // TODO may need to implement initialParams
   useEffect(() => {
     getProfile()
       .then((response) => response.json()) // handles parsing
@@ -77,7 +83,7 @@ function MainProfile( { route, navigation} ) {
         setBalance(responseJSON.balance);
       })
       .catch((error) => console.error(error));
-  }, []);
+  }, [route.params.name, route.params.story, route.params.balance]);
 
   // TODO RETURN component
   return (
@@ -100,9 +106,48 @@ function MainProfile( { route, navigation} ) {
 function EditProfile({ route, navigation }) {
   const [name, setName] = useState(route.params.name);
   const [story, setStory] = useState(route.params.story);
+
+  async function update() {
+    var bodyData = {
+      story: story
+    }
+    try {
+      const URI = "http://10.0.2.2:3000/profiles/615a3f8470e6e721d8ee26d4";
+      const response = await fetch(
+        URI,
+        {
+          method: 'POST',
+          body: JSON.stringify(bodyData)
+        }
+      );
+      return response;
+    } catch (error) {
+      console.error(error);
+    }
+    navigation.navigate({
+      name: 'MainProfile',
+      params: { story: story },
+      merge: true,
+    });
+  }
+
   return (
     <View>
       <Text>{name} {story}</Text>
+      <TextInput 
+        multiline
+        numberOfLines = {5}
+        value = {story}
+        onChangeText = {setStory}
+        placeholder = {route.params.story}
+      />
+      <Button
+        title = "Submit"
+        onPress = { () => {
+          update();
+        } }
+      />
+
     </View>
   )
 }
