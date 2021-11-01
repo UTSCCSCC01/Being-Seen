@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ShelterService } from 'src/shelter/shelter.service';
-import { MerchantSchema, Merchant } from '../Schemas/merchant.schema';
+import { TagModule } from 'src/tag/tag.module';
+
+import { Merchant, MerchantSchema } from '../Schemas/merchant.schema';
 import { MerchantController } from './merchant.controller';
 import { MerchantService } from './merchant.service';
 
@@ -10,6 +11,7 @@ import { MerchantService } from './merchant.service';
     MongooseModule.forFeature([
       { name: Merchant.name, schema: MerchantSchema },
     ]),
+    TagModule,
   ],
   controllers: [MerchantController],
   providers: [MerchantService],

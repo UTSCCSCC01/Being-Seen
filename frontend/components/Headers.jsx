@@ -1,8 +1,8 @@
 /** @module Headers */
-import React from 'react';
-import PropTypes from 'prop-types';
-import { StyleSheet, Text } from 'react-native';
-import { tailwind } from 'tailwind';
+import PropTypes from "prop-types";
+import React from "react";
+import { StyleSheet, Text } from "react-native";
+import { tailwind } from "tailwind";
 
 /**
  * @function PrimaryHeader
@@ -10,9 +10,7 @@ import { tailwind } from 'tailwind';
  * @prop {string} text - Text to display
  */
 export const PrimaryHeader = ({ text }) => (
-  <Text style={styles.primaryHeader}>
-    {text}
-  </Text>
+  <Text style={styles.primaryHeader}>{text}</Text>
 );
 
 PrimaryHeader.propTypes = {
@@ -25,9 +23,7 @@ PrimaryHeader.propTypes = {
  * @prop {string} text - Text to display
  */
 export const SecondaryHeader = ({ text }) => (
-  <Text style={styles.secondaryHeader}>
-    {text}
-  </Text>
+  <Text style={styles.secondaryHeader}>{text}</Text>
 );
 
 SecondaryHeader.propTypes = {
@@ -40,9 +36,7 @@ SecondaryHeader.propTypes = {
  * @prop {string} text - Text to display
  */
 export const TertiaryHeader = ({ text }) => (
-  <Text style={styles.tertiaryHeader}>
-    {text}
-  </Text>
+  <Text style={styles.tertiaryHeader}>{text}</Text>
 );
 
 TertiaryHeader.propTypes = {
@@ -51,12 +45,15 @@ TertiaryHeader.propTypes = {
 
 const styles = StyleSheet.create({
   primaryHeader: {
-    ...tailwind('text-primaryPurple font-bold text-4xl'),
+    ...tailwind("text-primary font-bold"),
+    fontSize: 30,
   },
   secondaryHeader: {
-    ...tailwind('text-primaryPurple text-opacity-75 text-3xl'),
+    ...tailwind("text-primary text-opacity-75"),
+    fontSize: 25,
   },
   tertiaryHeader: {
-    ...tailwind('text-primaryPurple text-opacity-50 text-2xl'),
+    ...tailwind("text-primary text-opacity-50"),
+    fontSize: 20,
   },
 });

@@ -1,15 +1,11 @@
-import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose";
-import * as mongoose from "mongoose"
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
+export type TagDocument = Tag & Document;
 @Schema()
-export class Tag extends mongoose.Document{
-    @Prop()
-    id:string
-    @Prop({required:true})
-    tagName:string
+export class Tag {
+  @Prop()
+  id: string;
+  @Prop({ required: true })
+  tagName: string;
 }
-
 export const TagSchema = SchemaFactory.createForClass(Tag);
-
-
-

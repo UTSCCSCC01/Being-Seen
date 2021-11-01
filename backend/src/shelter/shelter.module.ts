@@ -1,14 +1,18 @@
-
 import { Module } from '@nestjs/common';
-import { ShelterController } from './shelter.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ShelterSchema, Shelter } from '../Schemas/shelter.schema';
-import { ShelterService } from './shelter.service';
+import { TagModule } from 'src/tag/tag.module';
+
+import { Shelter, ShelterSchema } from '../Schemas/shelter.schema';
 import { ReviewController } from './review/review.controller';
+import { ShelterController } from './shelter.controller';
+import { ShelterService } from './shelter.service';
 
 @Module({
-    imports: [MongooseModule.forFeature([{name: Shelter.name, schema:ShelterSchema}])],
-    controllers: [ShelterController, ReviewController, ReviewController],
-    providers: [ShelterService]
+  imports: [
+    MongooseModule.forFeature([{ name: Shelter.name, schema: ShelterSchema }]),
+    TagModule,
+  ],
+  controllers: [ShelterController, ReviewController, ReviewController],
+  providers: [ShelterService],
 })
 export class ShelterModule {}

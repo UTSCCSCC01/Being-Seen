@@ -1,26 +1,33 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { StyleSheet, Pressable, Text } from 'react-native';
-import { tailwind } from 'tailwind';
+/* eslint-disable react/prop-types */
+/* eslint-disable no-param-reassign */
+import PropTypes from "prop-types";
+import React from "react";
+import { StyleSheet, Text } from "react-native";
+import { tailwind } from "tailwind";
 /**
- * @function DisplayNotif 
+ * @function DisplayNotif
  * @module DisplayNotif
- * @Description component that displays text if display is true
- * @prop {boolean} display
- * @prop {string} notification
- * 
+ * @Description Component that displays text if display is true
+ * @prop {boolean} display - boolean to display or not
+ * @prop {string} notification - text to display on error
+ *
  */
-const DisplayNotif = ({display, notification, color}) =>{
-    if(!color) color = 'red'
-    if(display){
-        return(<Text style={{color:color}}>{notification}</Text>)
-    }
-    return null
-}
+const DisplayNotif = ({ display, notification }) => {
+  if (display) {
+    return <Text style={styles.text}>{notification}</Text>;
+  }
+  return null;
+};
 
 DisplayNotif.propTypes = {
-    display: PropTypes.bool.isRequired,
-    notification: PropTypes.string.isRequired
-  };
+  display: PropTypes.bool.isRequired,
+  notification: PropTypes.string.isRequired,
+};
 
-export default DisplayNotif
+const styles = StyleSheet.create({
+  text: {
+    ...tailwind("text-error"),
+  },
+});
+
+export default DisplayNotif;
