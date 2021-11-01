@@ -100,7 +100,9 @@ export class TagService {
       return listOfTags;
     }
     listOfTags = await this.getListOfTags(this.cleanTagList(tagList));
-    const listOfModels = await model.find({ tags: { $all: listOfTags } }).exec();
+    const listOfModels = await model
+      .find({ tags: { $all: listOfTags } })
+      .exec();
     return this.prepListOfModels(listOfModels);
   }
 
