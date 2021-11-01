@@ -44,14 +44,14 @@
         "simple-import-sort/exports": "error",
         "import/extensions": "off",
         "no-unused-vars": "warn",
-        "react-native/no-unused-styles": "warn",
+        "react-native/no-unused-styles": "off",
         "camelcase": "warn",
 		"no-underscore-dangle": ["error", {"allow": ["_id"]}],
         "react/jsx-no-bind": ["warn", {
             "ignoreDOMComponents": false,
             "ignoreRefs": false,
-            "allowArrowFunctions": false,
-            "allowFunctions": false,
+            "allowArrowFunctions": true,
+            "allowFunctions": true,
             "allowBind": false
           }],
         "no-nested-ternary": "warn"

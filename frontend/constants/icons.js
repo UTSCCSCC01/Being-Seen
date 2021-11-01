@@ -7,6 +7,7 @@ import merchants from "../assets/icons/merchants.png";
 import merchants_filled from "../assets/icons/merchants_filled.png";
 import profile from "../assets/icons/profile.png";
 import profile_filled from "../assets/icons/profile_filled.png";
+import settings from "../assets/icons/settings.png";
 import social_services from "../assets/icons/social_services.png";
 import social_services_filled from "../assets/icons/social_services_filled.png";
 
@@ -22,4 +23,5 @@ export default {
   merchants_filled,
   profile_filled,
   social_services_filled,
+  settings,
 };

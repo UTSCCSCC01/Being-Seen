@@ -12,6 +12,7 @@ import ListFromAPI from "./screens/ListFromAPI";
 import Login from "./screens/Login";
 import RecoverAccountScreen from "./screens/RecoverAccountScreen";
 import RegisterAccountScreen from "./screens/RegisterAccountScreen";
+import SettingsScreen from "./screens/SettingsScreen";
 import TutorialScreen from "./screens/TutorialScreen";
 
 const Stack = createNativeStackNavigator();
@@ -52,7 +53,7 @@ const Home = () => (
       {() => <ListFromAPI query="Merchant" />}
     </Tab.Screen>
     <Tab.Screen name="Jobs">{() => <ListFromAPI query="Job" />}</Tab.Screen>
-    <Tab.Screen name="Profile" component={View} />
+    <Tab.Screen name="Profile" component={SettingsScreen} />
     <Tab.Screen name="Social Services">
       {() => <ListFromAPI query="Shelter" />}
     </Tab.Screen>
@@ -126,6 +127,7 @@ export default function App() {
             component={RecoverAccountScreen}
           />
           <Stack.Screen name="Tutorial" component={TutorialScreen} />
+          <Stack.Screen name="Settings" component={SettingsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
