@@ -8,11 +8,11 @@ import { AuthModule } from './auth/auth.module';
 import { EducationModule } from './education/education.module';
 import { JobModule } from './jobresource/jobresource.module';
 import { MerchantModule } from './merchant/merchant.module';
+import { NewsModule } from './news/news.module';
 import { ProfileModule } from './profile/profile.module';
 import { ShelterModule } from './shelter/shelter.module';
 import { TagModule } from './tag/tag.module';
 import { UsersModule } from './users/users.module';
-import { NewsModule } from './news/news.module';
 
 @Module({
   imports: [

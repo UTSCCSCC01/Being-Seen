@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { NewsReal, NewsSchema } from 'src/Schemas/newsreal.schema';
+
 import { NewsController } from './news.controller';
 import { NewsService } from './news.service';
 
