@@ -14,7 +14,7 @@ export class TagService {
    * @returns Tag with name tagName
    */
   async getTagByName(tagName: string) {
-    const name = this.cleanTag(tagName)
+    const name = this.cleanTag(tagName);
     //const tag = await this.tagModel.findById(tagName)
     try {
       //finding by tagName returns an array: we return first element since tagName SHOULD be a primary key
@@ -47,7 +47,7 @@ export class TagService {
    * @returns created tag or tag that already exists with tagName of tagName
    */
   async createTag(tagName: string) {
-    const name = this.cleanTag(tagName)
+    const name = this.cleanTag(tagName);
     const tagFound = await this.getTagByName(name);
     if (tagFound) {
       return tagFound;
@@ -77,7 +77,7 @@ export class TagService {
    * @param tagName new name of tag
    */
   async editTagById(id: string, tagName: string) {
-    const name = this.cleanTag(tagName)
+    const name = this.cleanTag(tagName);
     try {
       const tag = await this.tagModel.findById(id);
       tag.tagName = name;
@@ -100,58 +100,55 @@ export class TagService {
       return listOfTags;
     }
     listOfTags = await this.getListOfTags(this.cleanTagList(tagList));
-    let listOfModels = await model
-      .find({ tags: { $all: listOfTags } })
-      .exec();
+    let listOfModels = await model.find({ tags: { $all: listOfTags } }).exec();
     return this.prepListOfModels(listOfModels);
   }
 
   /**
    * Helper functions below this line
    */
-  private cleanTagList(tagList: string[]){
-    let cleanedTags = []
-    for(let i = 0; i < tagList.length; i++){
-      cleanedTags.push(this.cleanTag(tagList[i]))
+  private cleanTagList(tagList: string[]) {
+    let cleanedTags = [];
+    for (let i = 0; i < tagList.length; i++) {
+      cleanedTags.push(this.cleanTag(tagList[i]));
     }
-    return cleanedTags
+    return cleanedTags;
   }
 
-  private cleanTag(tag: string){
-    
+  private cleanTag(tag: string) {
     //clean leading/trailing whitespace
-    let cleanTag = tag.trim()
+    let cleanTag = tag.trim();
     //store everything as fully uppercase
     cleanTag = cleanTag.toUpperCase();
     return cleanTag;
   }
 
-  private prepTagList(tagList: Tag[]){
-    console.log(tagList)
-    for(let i = 0; i < tagList.length; i++){
-      if(tagList[i] != null){
-        tagList[i] = this.prepTag(tagList[i])
+  private prepTagList(tagList: Tag[]) {
+    console.log(tagList);
+    for (let i = 0; i < tagList.length; i++) {
+      if (tagList[i] != null) {
+        tagList[i] = this.prepTag(tagList[i]);
       }
     }
-    return tagList
+    return tagList;
   }
 
-  private prepTag(tag: Tag){
-    if(tag == null || tag == undefined) return;
+  private prepTag(tag: Tag) {
+    if (tag == null || tag == undefined) return;
     let preppedTag = this.capitalize(tag.tagName);
-    preppedTag = preppedTag.replace("_", " ")
-    
-    tag.tagName = preppedTag
-    return tag
+    preppedTag = preppedTag.replace('_', ' ');
+
+    tag.tagName = preppedTag;
+    return tag;
   }
   private capitalize(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
   }
 
-  private prepListOfModels(modelList){
-    for(let i = 0; i < modelList.length; i++){
-      modelList[i].tags = this.prepTagList(modelList[i].tags)
+  private prepListOfModels(modelList) {
+    for (let i = 0; i < modelList.length; i++) {
+      modelList[i].tags = this.prepTagList(modelList[i].tags);
     }
-    return modelList
+    return modelList;
   }
 }
