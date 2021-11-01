@@ -12,6 +12,7 @@ import { ProfileModule } from './profile/profile.module';
 import { ShelterModule } from './shelter/shelter.module';
 import { TagModule } from './tag/tag.module';
 import { UsersModule } from './users/users.module';
+import { NewsModule } from './news/news.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { UsersModule } from './users/users.module';
     EducationModule,
     JobModule,
     TagModule,
+    NewsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
