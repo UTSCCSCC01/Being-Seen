@@ -111,14 +111,16 @@ function EditProfile({ route, navigation }) {
     var bodyData = {
       story: story
     }
-    console.log(JSON.stringify(bodyData));
+    const bodyDataJSON = JSON.stringify(bodyData);
+    console.log(bodyDataJSON);
     try {
       const URI = "http://10.0.2.2:3000/profiles/615a3f8470e6e721d8ee26d4";
       const response = await fetch(
         URI,
         {
           method: 'PATCH',
-          body: JSON.stringify(bodyData)
+          headers: { "Content-Type": "application/json" },
+          body: bodyDataJSON,
         }
       );
       return response;
@@ -143,6 +145,7 @@ function EditProfile({ route, navigation }) {
         onPress = { 
           async() => {
             var response = await update();
+            console.log(story);
             console.log(await response.json());
             navigation.navigate({
               name: 'MainProfile',
