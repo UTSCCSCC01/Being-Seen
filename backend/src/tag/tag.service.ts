@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { TagDocument } from 'src/Schemas/tag.schema';
+import { model, Model } from 'mongoose';
+import { Tag, TagDocument } from 'src/Schemas/tag.schema';
 
 @Injectable()
 export class TagService {
@@ -14,13 +14,12 @@ export class TagService {
    * @returns Tag with name tagName
    */
   async getTagByName(tagName: string) {
-    const name = tagName.replace(' ', '_');
+    const name = this.cleanTag(tagName)
     //const tag = await this.tagModel.findById(tagName)
     try {
       //finding by tagName returns an array: we return first element since tagName SHOULD be a primary key
-      const tag = await this.tagModel.find().where('tagName').equals(name);
-      //return first element in array, which should be only element
-      return tag[0];
+      const tag = await this.tagModel.findOne().where('tagName').equals(name);
+      return tag;
     } catch (error) {
       throw new NotFoundException('Could not find tag with that name');
     }
@@ -40,7 +39,7 @@ export class TagService {
         console.error(error);
       }
     }
-    return listOfTags;
+    return this.prepTagList(listOfTags);
   }
   /**
    * creates Tag object in database with tagName name, if no such tag already exists
@@ -48,7 +47,7 @@ export class TagService {
    * @returns created tag or tag that already exists with tagName of tagName
    */
   async createTag(tagName: string) {
-    const name = tagName.replace(' ', '_');
+    const name = this.cleanTag(tagName)
     const tagFound = await this.getTagByName(name);
     if (tagFound) {
       return tagFound;
@@ -57,7 +56,7 @@ export class TagService {
       tagName: name,
     });
     const result = await TagJob.save();
-    return result;
+    return this.prepTag(result);
   }
   /**
    * creates a tag Object within for each entry in tagList (if it doesn't already exist) and returns list of said tag objects
@@ -70,7 +69,7 @@ export class TagService {
       const result = await this.createTag(tagList[i]);
       retList.push(result);
     }
-    return retList;
+    return this.prepTagList(retList);
   }
   /**
    * Edits Tag with id of id to have tagName of name
@@ -78,12 +77,12 @@ export class TagService {
    * @param tagName new name of tag
    */
   async editTagById(id: string, tagName: string) {
-    const name = tagName.replace(' ', '_');
+    const name = this.cleanTag(tagName)
     try {
       const tag = await this.tagModel.findById(id);
       tag.tagName = name;
       const result = await tag.save();
-      return result;
+      return this.prepTag(result);
     } catch (error) {
       throw new NotFoundException('could not find tag');
     }
@@ -100,10 +99,59 @@ export class TagService {
       listOfTags = await model.find().exec();
       return listOfTags;
     }
-    listOfTags = await this.getListOfTags(tagList);
-    const listOfModels = await model
+    listOfTags = await this.getListOfTags(this.cleanTagList(tagList));
+    let listOfModels = await model
       .find({ tags: { $all: listOfTags } })
       .exec();
-    return listOfModels;
+    return this.prepListOfModels(listOfModels);
+  }
+
+  /**
+   * Helper functions below this line
+   */
+  private cleanTagList(tagList: string[]){
+    let cleanedTags = []
+    for(let i = 0; i < tagList.length; i++){
+      cleanedTags.push(this.cleanTag(tagList[i]))
+    }
+    return cleanedTags
+  }
+
+  private cleanTag(tag: string){
+    
+    //clean leading/trailing whitespace
+    let cleanTag = tag.trim()
+    //store everything as fully uppercase
+    cleanTag = cleanTag.toUpperCase();
+    return cleanTag;
+  }
+
+  private prepTagList(tagList: Tag[]){
+    console.log(tagList)
+    for(let i = 0; i < tagList.length; i++){
+      if(tagList[i] != null){
+        tagList[i] = this.prepTag(tagList[i])
+      }
+    }
+    return tagList
+  }
+
+  private prepTag(tag: Tag){
+    if(tag == null || tag == undefined) return;
+    let preppedTag = this.capitalize(tag.tagName);
+    preppedTag = preppedTag.replace("_", " ")
+    
+    tag.tagName = preppedTag
+    return tag
+  }
+  private capitalize(string: string) {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  }
+
+  private prepListOfModels(modelList){
+    for(let i = 0; i < modelList.length; i++){
+      modelList[i].tags = this.prepTagList(modelList[i].tags)
+    }
+    return modelList
   }
 }
