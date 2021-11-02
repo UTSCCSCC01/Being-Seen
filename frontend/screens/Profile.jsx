@@ -1,7 +1,10 @@
+/* eslint-disable react/jsx-no-bind */
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
-import { Button, Text, TextInput, View } from "react-native";
+import { Button, Image, StyleSheet, Text, TextInput, View } from "react-native";
+import Icon from "react-native-vector-icons/Entypo";
 
+import ScreenHeader from "../components/ScreenHeader";
 import apiHandler from "../util/APIHandler";
 
 const Stack = createNativeStackNavigator();
@@ -11,7 +14,7 @@ function Profile() {
     <Stack.Navigator initialRouteName={MainProfile}>
       <Stack.Screen
         name="MainProfile"
-        options={{ headerShown: true, headerTintColor: "#662997" }}
+        options={{ headerShown: false }}
         component={MainProfile}
         initialParams={{
           name: "",
@@ -58,20 +61,33 @@ function MainProfile({ route, navigation }) {
 
   // TODO RETURN component
   return (
-    <View>
-      <Text>
-        {name} {story} {balance}
-      </Text>
-      <Button
-        title="Edit Profile"
-        onPress={() => {
+    <>
+      <ScreenHeader
+        headerText="My Profile"
+        rightNode={<Icon name="pencil" style={styles.editIcon} />}
+        rightContainerStyle={styles.editIconContainer}
+        handleOnPressRightNode={() => {
           navigation.navigate("EditProfile", {
             name,
             story,
           });
         }}
       />
-    </View>
+      <View style={styles.profileBlockContainer}>
+        <View style={styles.profilePictureContainer}>
+          <Image
+            source={require("../assets/rickroll.jpg")}
+            style={styles.profilePicture}
+          />
+        </View>
+        <View style={styles.profileInfoContainer}>
+          <Text style={styles.usernameText}>{name}</Text>
+          <Text>Balance: {balance}</Text>
+          <Text>Story: </Text>
+          <Text>{story}</Text>
+        </View>
+      </View>
+    </>
   );
 }
 
@@ -80,7 +96,7 @@ function EditProfile({ route, navigation }) {
   const [story, setStory] = useState(route.params.story);
 
   return (
-    <View>
+    <>
       <Text>
         {name} {story}
       </Text>
@@ -113,8 +129,49 @@ function EditProfile({ route, navigation }) {
           }
         }}
       />
-    </View>
+    </>
   );
 }
+
+const styles = StyleSheet.create({
+  editIcon: {
+    fontSize: 30,
+  },
+  editIconContainer: {
+    alignItems: "center",
+    // backgroundColor: "#abc",
+    flex: 1,
+    height: 40,
+    justifyContent: "center",
+    marginLeft: -10,
+    paddingRight: 10,
+  },
+  profileBlockContainer: {
+    // backgroundColor: "#a73",
+    flexDirection: "row",
+  },
+  profileInfoContainer: {
+    // backgroundColor: "#c80",
+    flexDirection: "column",
+    flex: 1,
+    paddingVertical: 10,
+  },
+  profilePicture: {
+    height: 100,
+    resizeMode: "stretch",
+    width: 100,
+  },
+  profilePictureContainer: {
+    borderRadius: 50,
+    height: 100,
+    margin: 10,
+    overflow: "hidden",
+    width: 100,
+  },
+  usernameText: {
+    fontSize: 18,
+    // fontWeight: "bold",
+  },
+});
 
 export default Profile;
