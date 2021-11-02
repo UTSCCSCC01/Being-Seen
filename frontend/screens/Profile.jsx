@@ -1,10 +1,19 @@
 /* eslint-disable react/jsx-no-bind */
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
-import { Button, Image, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Button,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import Icon from "react-native-vector-icons/Entypo";
 import { tailwind } from "tailwind";
 
+import QuotationBlock from "../components/QuotationBlock";
 import ScreenHeader from "../components/ScreenHeader";
 import apiHandler from "../util/APIHandler";
 
@@ -62,7 +71,7 @@ function MainProfile({ route, navigation }) {
 
   // TODO RETURN component
   return (
-    <>
+    <ScrollView>
       <ScreenHeader
         headerText="My Profile"
         rightNode={<Icon name="pencil" style={styles.editIcon} />}
@@ -89,7 +98,13 @@ function MainProfile({ route, navigation }) {
         </View>
       </View>
       <View style={styles.horizontalRuler} />
-    </>
+      <Text style={styles.storySectionTitle}>About me</Text>
+      <QuotationBlock
+        text={story}
+        fontSize={16}
+        style={styles.quotationBlock}
+      />
+    </ScrollView>
   );
 }
 
@@ -173,6 +188,14 @@ const styles = StyleSheet.create({
     margin: 10,
     overflow: "hidden",
     width: 100,
+  },
+  quotationBlock: {
+    marginHorizontal: 22,
+  },
+  storySectionTitle: {
+    fontSize: 28,
+    marginLeft: 20,
+    marginTop: 10,
   },
   storyText: {
     // backgroundColor: "#abc",
