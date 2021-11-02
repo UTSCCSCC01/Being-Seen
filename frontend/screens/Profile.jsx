@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
 import { Button, Image, StyleSheet, Text, TextInput, View } from "react-native";
 import Icon from "react-native-vector-icons/Entypo";
+import { tailwind } from "tailwind";
 
 import ScreenHeader from "../components/ScreenHeader";
 import apiHandler from "../util/APIHandler";
@@ -24,7 +25,7 @@ function Profile() {
       />
       <Stack.Screen
         name="EditProfile"
-        options={{ headerShown: true, headerTintColor: "#662997" }}
+        options={{ headerShown: true }}
         component={EditProfile}
       />
     </Stack.Navigator>
@@ -84,29 +85,30 @@ function MainProfile({ route, navigation }) {
           <Text style={styles.usernameText}>{name}</Text>
           <Text>Balance: {balance}</Text>
           <Text>Story: </Text>
-          <Text>{story}</Text>
+          <Text style={styles.storyText}>{story}</Text>
         </View>
       </View>
+      <View style={styles.horizontalRuler} />
     </>
   );
 }
 
 function EditProfile({ route, navigation }) {
-  const [name, setName] = useState(route.params.name);
   const [story, setStory] = useState(route.params.story);
 
   return (
     <>
-      <Text>
-        {name} {story}
-      </Text>
-      <TextInput
-        multiline
-        numberOfLines={5}
-        value={story}
-        onChangeText={setStory}
-        placeholder={route.params.story}
-      />
+      <View style={editStyles.textInputContainer}>
+        <TextInput
+          multiline
+          textAlignVertical="top"
+          numberOfLines={5}
+          value={story}
+          onChangeText={setStory}
+          placeholder={route.params.story}
+          style={editStyles.textInput}
+        />
+      </View>
       <Button
         title="Submit"
         onPress={async () => {
@@ -146,6 +148,10 @@ const styles = StyleSheet.create({
     marginLeft: -10,
     paddingRight: 10,
   },
+  horizontalRuler: {
+    ...tailwind("border-gray-400"),
+    borderBottomWidth: 1,
+  },
   profileBlockContainer: {
     // backgroundColor: "#a73",
     flexDirection: "row",
@@ -168,9 +174,21 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     width: 100,
   },
+  storyText: {
+    // backgroundColor: "#abc",
+    fontSize: 12,
+    padding: 4,
+  },
   usernameText: {
     fontSize: 18,
     // fontWeight: "bold",
+  },
+});
+
+const editStyles = StyleSheet.create({
+  textInput: {},
+  textInputContainer: {
+    padding: 10,
   },
 });
 
