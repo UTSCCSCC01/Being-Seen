@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
-export type NewsRealDocument = NewsReal & Document;
+export type NewsReelDocument = NewsReel & Document;
 @Schema()
-export class NewsReal {
+export class NewsReel {
   @Prop()
   id: string;
   @Prop({ required: true })
@@ -15,4 +15,4 @@ export class NewsReal {
   date: Date;
 }
 
-export const NewsSchema = SchemaFactory.createForClass(NewsReal);
+export const NewsSchema = SchemaFactory.createForClass(NewsReel);

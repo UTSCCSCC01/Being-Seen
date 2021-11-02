@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { NewsReal, NewsRealDocument } from 'src/Schemas/newsreal.schema';
+import { NewsReel, NewsReelDocument } from 'src/Schemas/newsreel.schema';
 
 @Injectable()
 export class NewsService {
   constructor(
-    @InjectModel('NewsReal')
-    private readonly newsModel: Model<NewsRealDocument>,
+    @InjectModel('NewsReel')
+    private readonly newsModel: Model<NewsReelDocument>,
   ) {}
   /**
    * gets all news reels from db
@@ -15,7 +15,7 @@ export class NewsService {
    */
   async getAllReels() {
     const news = await this.newsModel.find().exec();
-    return news as NewsReal[];
+    return news as NewsReel[];
   }
   /**
    * gets n most recent news reels from db
@@ -27,7 +27,7 @@ export class NewsService {
       .find()
       .sort({ date: -1 })
       .limit(Number(n));
-    return news as NewsReal[];
+    return news as NewsReel[];
   }
   /**
    * creates new newsreel with given info
