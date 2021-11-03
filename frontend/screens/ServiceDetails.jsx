@@ -34,7 +34,8 @@ export default function ServiceDetails({ route, navigation }) {
   const [refreshing, setRefreshing] = useState(false);
   const [info, setInfo] = useState(null);
 
-  let listType = (capitalize(query) == 'Shelter') ? 'Social Service' : capitalize(query)
+  let listType =
+    capitalize(query) == "Shelter" ? "Social Service" : capitalize(query);
   useEffect(() => {
     apiHandler
       .getInfoFromApiById(query, itemId)
