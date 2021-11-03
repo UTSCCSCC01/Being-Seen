@@ -34,8 +34,6 @@ export default function ServiceDetails({ route, navigation }) {
   const [refreshing, setRefreshing] = useState(false);
   const [info, setInfo] = useState(null);
 
-  const listType =
-    capitalize(query) === "Shelter" ? "Social Service" : capitalize(query);
   useEffect(() => {
     apiHandler
       .getInfoFromApiById(query, itemId)
@@ -140,7 +138,7 @@ export default function ServiceDetails({ route, navigation }) {
               {info.reviews ? (
                 <Button
                   onPress={() => {
-                    navigation.navigate(`Review ${listType}`, {
+                    navigation.navigate(`Review ${capitalize(query)}`, {
                       infoId: info._id,
                       query,
                     });
