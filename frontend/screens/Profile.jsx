@@ -1,4 +1,6 @@
 /* eslint-disable react/jsx-no-bind */
+import * as SecureStore from "expo-secure-store";
+import jwt_decode from "jwt-decode";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
 import {
@@ -52,10 +54,17 @@ function MainProfile({ route, navigation }) {
   const [story, setStory] = useState("");
   const [balance, setBalance] = useState(0);
 
+  async function getProfileIdFromToken() {
+    const token = await SecureStore.getItemAsync("token");
+    const decoded = await jwt_decode(token);
+    return decoded.id;
+  }
+
   // TODO may need to implement initialParams
   useEffect(() => {
-    apiHandler
-      .getProfile("615a3f8470e6e721d8ee26d4")
+    getProfileIdFromToken().then((id) => {
+      apiHandler
+      .getProfile(id)
       .then((response) => response.json()) // handles parsing
       .then((responseJSON) => {
         // handles setting
@@ -66,7 +75,9 @@ function MainProfile({ route, navigation }) {
       .catch((error) => {
         console.error(error);
         alert(`Promise rejected: ${error}`);
-      });
+    });    
+    });
+    
   }, [route.params.name, route.params.story, route.params.balance]);
 
   // TODO RETURN component
@@ -111,6 +122,12 @@ function MainProfile({ route, navigation }) {
 function EditProfile({ route, navigation }) {
   const [story, setStory] = useState(route.params.story);
 
+  async function getProfileIdFromToken() {
+    const token = await SecureStore.getItemAsync("token");
+    const decoded = await jwt_decode(token);
+    return decoded.id;
+  }
+
   return (
     <>
       <View style={editStyles.textInputContainer}>
@@ -127,10 +144,11 @@ function EditProfile({ route, navigation }) {
       <Button
         title="Submit"
         onPress={async () => {
+          const id = await getProfileIdFromToken();
           try {
             const response = await apiHandler.updateStoryForProfile(
               story,
-              "615a3f8470e6e721d8ee26d4"
+              id
             );
             if (response.status === 200) {
               navigation.navigate({
