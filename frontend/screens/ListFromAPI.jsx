@@ -23,6 +23,7 @@ const Stack = createNativeStackNavigator();
  *                        to which api endpoint every sub-component's http request will be sent.
  */
 function ListFromAPI({ query }) {
+  let listType = (capitalize(query) == 'Shelter') ? 'Social Service' : capitalize(query)
   const listName = `${capitalize(query)}List`;
   return (
     <>
@@ -37,7 +38,7 @@ function ListFromAPI({ query }) {
         >
           {({ navigation }) => (
             <>
-              <ScreenHeader headerText={listName} />
+              <ScreenHeader headerText={`${listType} List`} />
               <ServiceList
                 navigation={navigation}
                 query={query}
@@ -56,21 +57,21 @@ function ListFromAPI({ query }) {
           )}
         </Stack.Screen>
         <Stack.Screen
-          name={`${capitalize(query)}Details`}
+          name={`${listType} Details`}
           component={ServiceDetails}
           options={{
             headerShown: true,
           }}
         />
         <Stack.Screen
-          name={`Review ${capitalize(query)}`}
+          name={`Review ${listType}`}
           component={WriteReview}
           options={{
             headerShown: true,
           }}
         />
         <Stack.Screen
-          name={`Map ${capitalize(query)}`}
+          name={`Map ${listType}`}
           component={Map}
           options={{
             headerShown: true,
