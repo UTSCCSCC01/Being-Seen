@@ -7,7 +7,7 @@ import React, { useEffect } from "react";
 import { Image, Platform, StatusBar, StyleSheet, View } from "react-native";
 
 import icons from "./constants/icons";
-import LandingPage from "./screens/landing_page";
+import LandingScreen from "./screens/LandingScreen";
 import ListFromAPI from "./screens/ListFromAPI";
 import Login from "./screens/Login";
 import RecoverAccountScreen from "./screens/RecoverAccountScreen";
@@ -31,12 +31,12 @@ const Home = () => (
       tabBarIcon: ({ focused }) => {
         let iconName;
 
-        if (route.name === "Merchants") {
+        if (route.name === "Landing") {
+          iconName = focused ? icons.home_filled : icons.home;
+        } else if (route.name === "Merchants") {
           iconName = focused ? icons.merchants_filled : icons.merchants;
         } else if (route.name === "Jobs") {
           iconName = focused ? icons.jobs_filled : icons.jobs;
-        } else if (route.name === "Profile") {
-          iconName = focused ? icons.profile_filled : icons.profile;
         } else if (route.name === "Social Services") {
           iconName = focused
             ? icons.social_services_filled
@@ -49,11 +49,11 @@ const Home = () => (
       },
     })}
   >
+    <Tab.Screen name="Landing" component={LandingScreen} />
     <Tab.Screen name="Merchants">
       {() => <ListFromAPI query="Merchant" />}
     </Tab.Screen>
     <Tab.Screen name="Jobs">{() => <ListFromAPI query="Job" />}</Tab.Screen>
-    <Tab.Screen name="Profile" component={SettingsScreen} />
     <Tab.Screen name="Social Services">
       {() => <ListFromAPI query="Shelter" />}
     </Tab.Screen>
@@ -117,7 +117,6 @@ export default function App() {
         >
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="Landing" component={LandingPage} />
           <Stack.Screen
             name="RegisterAccount"
             component={RegisterAccountScreen}

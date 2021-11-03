@@ -21,11 +21,11 @@ import { tailwind } from "tailwind";
 import Login from "./Login";
 
 /**
- * @function LandingPage
- * @module LandingPage
- * @description The landing page (or "Home") of this App.
+ * @function LandingScreen
+ * @module LandingScreen
+ * @description The landing page (or "Home") of this App. It contains the newsreel.
  */
-function LandingPage({ navigation }) {
+function LandingScreen({ navigation }) {
   function Header() {
     return (
       <View
@@ -212,4 +212,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LandingPage;
+export default LandingScreen;
