@@ -28,7 +28,7 @@ export default function ServiceList({
   listHeader,
 }) {
   const listType =
-    capitalize(query) == "Shelter" ? "Social Service" : capitalize(query);
+    capitalize(query) === "Shelter" ? "Social Service" : capitalize(query);
   const [information, setInformation] = useState([
     { name: `Error ${query} not loaded` },
   ]);
