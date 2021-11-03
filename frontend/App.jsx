@@ -13,6 +13,7 @@ import Profile from "./screens/Profile";
 import Login from "./screens/Login";
 import RecoverAccountScreen from "./screens/RecoverAccountScreen";
 import RegisterAccountScreen from "./screens/RegisterAccountScreen";
+import SettingsScreen from "./screens/SettingsScreen";
 import TutorialScreen from "./screens/TutorialScreen";
 
 const Stack = createNativeStackNavigator();
@@ -127,6 +128,7 @@ export default function App() {
             component={RecoverAccountScreen}
           />
           <Stack.Screen name="Tutorial" component={TutorialScreen} />
+          <Stack.Screen name="Settings" component={SettingsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </>

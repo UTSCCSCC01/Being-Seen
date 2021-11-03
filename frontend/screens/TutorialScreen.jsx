@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
   Dimensions,
@@ -15,7 +15,13 @@ import { PrimaryHeader } from "../components/Headers";
 import UnderlinedLink from "../components/UnderlinedLink";
 import images from "../constants/images";
 
+/**
+ * @function TutorialScreen
+ * @module TutorialScreen
+ * @description App tutorial screen
+ */
 const TutorialScreen = () => {
+  const navigation = useNavigation();
   const { width, height } = Dimensions.get("window");
 
   const [sliderState, setSliderState] = useState({ currentPage: 0 });
@@ -34,19 +40,6 @@ const TutorialScreen = () => {
   };
 
   const { currentPage: pageIndex } = sliderState;
-
-  const checkIfFirstLaunch = async () => {
-    try {
-      const hasLaunched = await AsyncStorage.getItem("hasLaunched");
-      if (hasLaunched === null) {
-        AsyncStorage.setItem("hasLaunched", "true");
-        return true;
-      }
-      return false;
-    } catch (error) {
-      return false;
-    }
-  };
 
   return (
     <SafeAreaView style={styles({}).tutorialView}>
@@ -182,10 +175,10 @@ const TutorialScreen = () => {
           <View style={styles({ pageIndex, index }).sliderDot} key={key} />
         ))}
         <View style={styles({ width, height }).exit}>
-          {checkIfFirstLaunch() ? (
-            <UnderlinedLink text="Exit Tutorial" to="Login" />
+          {navigation.canGoBack() ? (
+            <UnderlinedLink text="Exit Tutorial" back />
           ) : (
-            <UnderlinedLink text="Exit" back />
+            <UnderlinedLink text="Exit Tutorial" to="Login" />
           )}
         </View>
       </View>

@@ -49,11 +49,11 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
   secondaryHeader: {
-    ...tailwind("text-primary text-opacity-75"),
+    ...tailwind("text-primary font-semibold"),
     fontSize: 25,
   },
   tertiaryHeader: {
-    ...tailwind("text-primary text-opacity-50"),
+    ...tailwind("text-primary font-medium"),
     fontSize: 20,
   },
 });
