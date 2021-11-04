@@ -64,20 +64,19 @@ function MainProfile({ route, navigation }) {
   useEffect(() => {
     getProfileIdFromToken().then((id) => {
       apiHandler
-      .getProfile(id)
-      .then((response) => response.json()) // handles parsing
-      .then((responseJSON) => {
-        // handles setting
-        setName(responseJSON.name);
-        setStory(responseJSON.story);
-        setBalance(responseJSON.balance);
-      })
-      .catch((error) => {
-        console.error(error);
-        alert(`Promise rejected: ${error}`);
-    });    
+        .getProfile(id)
+        .then((response) => response.json()) // handles parsing
+        .then((responseJSON) => {
+          // handles setting
+          setName(responseJSON.name);
+          setStory(responseJSON.story);
+          setBalance(responseJSON.balance);
+        })
+        .catch((error) => {
+          console.error(error);
+          alert(`Promise rejected: ${error}`);
+        });
     });
-    
   }, [route.params.name, route.params.story, route.params.balance]);
 
   // TODO RETURN component
@@ -146,10 +145,7 @@ function EditProfile({ route, navigation }) {
         onPress={async () => {
           const id = await getProfileIdFromToken();
           try {
-            const response = await apiHandler.updateStoryForProfile(
-              story,
-              id
-            );
+            const response = await apiHandler.updateStoryForProfile(story, id);
             if (response.status === 200) {
               navigation.navigate({
                 name: "MainProfile",
