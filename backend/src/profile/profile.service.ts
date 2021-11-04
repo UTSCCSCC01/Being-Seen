@@ -37,9 +37,9 @@ export class ProfileService {
    * @returns Updated profile
    */
   async postProfile(
-    userId: string, 
-    name: string, 
-    story: string, 
+    userId: string,
+    name: string,
+    story: string,
     balance: number,
   ) {
     const newProfile = new this.profileModel({
