@@ -13,11 +13,11 @@ export class ProfileService {
 
   /**
    * Get a profile from database by matching given id
-   * @param userId userId to match with Userd DB 
+   * @param userId userId to match with Userd DB
    * @returns The profile with matching userId
    */
   async getProfile(userId: string) {
-    return await this.profileModel.findOne({userId: userId}).exec();
+    return await this.profileModel.findOne({ userId: userId }).exec();
   }
 
   /**
@@ -36,7 +36,12 @@ export class ProfileService {
    * @param balance The balance to start for the new profile
    * @returns Updated profile
    */
-  async postProfile(userId: string, name: string, story: string, balance: number) {
+  async postProfile(
+    userId: string, 
+    name: string, 
+    story: string, 
+    balance: number,
+  ) {
     const newProfile = new this.profileModel({
       userId,
       name,
@@ -53,7 +58,7 @@ export class ProfileService {
    * @returnsUpdated profile
    */
   async putStory(userId: string, story: string) {
-    const profile = await this.profileModel.findOne({userId: userId}).exec();
+    const profile = await this.profileModel.findOne({ userId: userId }).exec();
     profile.story = story;
     return profile.save();
   }
