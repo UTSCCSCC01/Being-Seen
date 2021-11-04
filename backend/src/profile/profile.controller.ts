@@ -62,7 +62,7 @@ export class ProfileController {
    */
   @Put('/:userId')
   async putStory(
-    @Param('userId') userId: string, 
+    @Param('userId') userId: string,
     @Body('story') story: string,
   ) {
     const profile = await this.profilesService.putStory(userId, story);
