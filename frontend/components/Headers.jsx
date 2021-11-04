@@ -46,7 +46,7 @@ TertiaryHeader.propTypes = {
 const styles = StyleSheet.create({
   primaryHeader: {
     ...tailwind("text-primary font-bold"),
-    fontSize: 30,
+    fontSize: 32,
   },
   secondaryHeader: {
     ...tailwind("text-primary font-bold"),
