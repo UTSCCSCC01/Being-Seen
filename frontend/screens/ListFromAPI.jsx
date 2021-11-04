@@ -7,7 +7,7 @@ import ServiceList from "../components/screen_components/ServiceList";
 import ScreenHeader from "../components/ScreenHeader";
 import SearchBar from "../components/SearchBar";
 import apiHandler from "../util/APIHandler";
-import { capitalize } from "../util/FormatHelper";
+import { capitalize, getScreenNameFromQuery } from "../util/FormatHelper";
 import SearchScreen from "./SearchScreen";
 import ServiceDetails from "./ServiceDetails";
 import WriteReview from "./WriteReview";
@@ -23,6 +23,7 @@ const Stack = createNativeStackNavigator();
  *                        to which api endpoint every sub-component's http request will be sent.
  */
 function ListFromAPI({ query }) {
+  const screenName = getScreenNameFromQuery(query);
   const listName = `${capitalize(query)}List`;
   return (
     <>
@@ -31,13 +32,11 @@ function ListFromAPI({ query }) {
           name={listName}
           options={{
             headerShown: false,
-            headerTintColor: "#662997",
-            headerStyle: styles.header,
           }}
         >
           {({ navigation }) => (
             <>
-              <ScreenHeader headerText={listName} />
+              <ScreenHeader headerText={screenName} />
               <ServiceList
                 navigation={navigation}
                 query={query}
@@ -56,7 +55,7 @@ function ListFromAPI({ query }) {
           )}
         </Stack.Screen>
         <Stack.Screen
-          name={`${capitalize(query)}Details`}
+          name={`${capitalize(query)} Details`}
           component={ServiceDetails}
           options={{
             headerShown: true,
