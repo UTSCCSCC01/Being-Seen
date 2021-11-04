@@ -22,27 +22,30 @@ export class ProfileController {
    * @param id
    * @returns
    */
-  @Get('/:id')
-  async getProfile(@Param('id') id: string) {
-    const profile = await this.profilesService.getProfile(id);
+  @Get('/:userId')
+  async getProfile(@Param('userId') userId: string) {
+    const profile = await this.profilesService.getProfile(userId);
     console.log(profile);
     return profile;
   }
 
   /**
    * Create a new profile entry in database with given information
+   * @param userId
    * @param name
    * @param story
    * @param balance
    * @returns
    */
-  @Post()
+  @Post('/:userId')
   async postProfile(
+    @Param('userId') userId: string,
     @Body('name') name: string,
     @Body('story') story: string,
     @Body('balance') balance: number,
   ) {
     const profile = await this.profilesService.postProfile(
+      userId,
       name,
       story,
       balance,
@@ -53,13 +56,13 @@ export class ProfileController {
 
   /**
    * Update profile with matching id with a new story as user provided
-   * @param id
+   * @param userId
    * @param story
    * @returns
    */
-  @Put('/:id')
-  async putStory(@Param('id') id: string, @Body('story') story: string) {
-    const profile = await this.profilesService.putStory(id, story);
+  @Put('/:userId')
+  async putStory(@Param('userId') userId: string, @Body('story') story: string) {
+    const profile = await this.profilesService.putStory(userId, story);
     console.log(profile);
     return profile;
   }

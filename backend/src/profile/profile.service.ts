@@ -13,11 +13,11 @@ export class ProfileService {
 
   /**
    * Get a profile from database by matching given id
-   * @param id The id to search for
+   * @param userId The userid to match for
    *
    */
-  async getProfile(id: string) {
-    return await this.profileModel.findById(id);
+  async getProfile(userId: string) {
+    return await this.profileModel.findOne({userId: userId}).exec();
   }
 
   /**
@@ -30,13 +30,15 @@ export class ProfileService {
 
   /**
    * Insert new profile entries with the given parameters
+   * @param userId the id that should match with Users DB
    * @param name Name of the new profile
    * @param story The story associated with new profile
    * @param balance The balance to start for the new profile
    * @returns
    */
-  async postProfile(name: string, story: string, balance: number) {
+  async postProfile(userId: string, name: string, story: string, balance: number) {
     const newProfile = new this.profileModel({
+      userId,
       name,
       story,
       balance,
@@ -46,12 +48,12 @@ export class ProfileService {
 
   /**
    * Updates the story of the profile in database
-   * @param id The id of the profile to update
+   * @param userId The userid of the profile to update
    * @param story The story to update to
    * @returns
    */
-  async putStory(id: string, story: string) {
-    const profile = await this.profileModel.findById(id);
+  async putStory(userId: string, story: string) {
+    const profile = await this.profileModel.findOne({userId: userId}).exec();
     profile.story = story;
     return profile.save();
   }
