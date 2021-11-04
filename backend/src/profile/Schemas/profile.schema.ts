@@ -8,6 +8,8 @@ export class Profile {
   @Prop()
   id: string;
   @Prop({ required: true })
+  userId: string;
+  @Prop({ required: true })
   name: string;
   @Prop({ default: '' })
   story: string;
