@@ -8,7 +8,7 @@ export class ProfileController {
 
   /**
    * Get a list of all profiles in the database
-   * @returns Promise
+   * @returns All profiles found
    */
   @Get()
   async getAllProfiles() {
@@ -19,8 +19,8 @@ export class ProfileController {
 
   /**
    * Return a profile with a matching id
-   * @param id
-   * @returns
+   * @param id UserId to match with Users DB
+   * @returns The profile with matching userId
    */
   @Get('/:userId')
   async getProfile(@Param('userId') userId: string) {
@@ -31,11 +31,11 @@ export class ProfileController {
 
   /**
    * Create a new profile entry in database with given information
-   * @param userId
-   * @param name
-   * @param story
-   * @param balance
-   * @returns
+   * @param userId UserId to match with Users DB
+   * @param name Name to be used
+   * @param story Story to be used
+   * @param balance Balance to be used
+   * @returns Updated profile
    */
   @Post('/:userId')
   async postProfile(
@@ -56,9 +56,9 @@ export class ProfileController {
 
   /**
    * Update profile with matching id with a new story as user provided
-   * @param userId
-   * @param story
-   * @returns
+   * @param userId UserId to match with Users DB
+   * @param story Story to be replaced to
+   * @returns Updated profile
    */
   @Put('/:userId')
   async putStory(@Param('userId') userId: string, @Body('story') story: string) {

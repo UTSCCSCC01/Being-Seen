@@ -13,8 +13,8 @@ export class ProfileService {
 
   /**
    * Get a profile from database by matching given id
-   * @param userId The userid to match for
-   *
+   * @param userId userId to match with Userd DB 
+   * @returns The profile with matching userId
    */
   async getProfile(userId: string) {
     return await this.profileModel.findOne({userId: userId}).exec();
@@ -22,7 +22,7 @@ export class ProfileService {
 
   /**
    * Get all profiles in database
-   * @returns
+   * @returns All profiles found
    */
   async getAllProfiles() {
     return await this.profileModel.find().exec();
@@ -34,7 +34,7 @@ export class ProfileService {
    * @param name Name of the new profile
    * @param story The story associated with new profile
    * @param balance The balance to start for the new profile
-   * @returns
+   * @returns Updated profile
    */
   async postProfile(userId: string, name: string, story: string, balance: number) {
     const newProfile = new this.profileModel({
@@ -49,8 +49,8 @@ export class ProfileService {
   /**
    * Updates the story of the profile in database
    * @param userId The userid of the profile to update
-   * @param story The story to update to
-   * @returns
+   * @param story Story to be replaced to
+   * @returnsUpdated profile
    */
   async putStory(userId: string, story: string) {
     const profile = await this.profileModel.findOne({userId: userId}).exec();
