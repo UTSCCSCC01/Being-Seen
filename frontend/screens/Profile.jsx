@@ -97,7 +97,7 @@ function MainProfile({ route, navigation }) {
       <View style={styles.profileBlockContainer}>
         <View style={styles.profilePictureContainer}>
           <Image
-// eslint-disable-next-line global-require
+            // eslint-disable-next-line global-require
             source={require("../assets/rickroll.jpg")}
             style={styles.profilePicture}
           />
