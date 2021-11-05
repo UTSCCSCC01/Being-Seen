@@ -11,7 +11,7 @@ function QuotationBlock({ text, fontSize, style }) {
     </View>
   );
 }
-QuotationBlock.PropTypes = {
+QuotationBlock.propTypes = {
   text: PropTypes.string,
   fontFize: PropTypes.number,
   style: ViewPropTypes.style,
@@ -21,9 +21,7 @@ QuotationBlock.defaultProps = {
   text: "Default Text",
   fontSize: 16,
   style: null,
-}
-
-
+};
 
 export default QuotationBlock;
 

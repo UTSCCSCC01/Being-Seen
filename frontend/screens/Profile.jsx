@@ -44,7 +44,6 @@ function Profile() {
   );
 }
 
-
 /**
  *
  * @function MainProfile Display profile tab
@@ -119,10 +118,10 @@ function MainProfile({ route, navigation }) {
     </ScrollView>
   );
 }
-MainProfile.PropTypes = {
+MainProfile.propTypes = {
   route: PropTypes.object.isRequired,
   navigation: PropTypes.object.isRequired,
-}
+};
 
 function EditProfile({ route, navigation }) {
   const [story, setStory] = useState(route.params.story);
@@ -169,10 +168,10 @@ function EditProfile({ route, navigation }) {
     </>
   );
 }
-EditProfile.PropTypes = {
+EditProfile.propTypes = {
   route: PropTypes.object.isRequired,
   navigation: PropTypes.object.isRequired,
-}
+};
 
 const styles = StyleSheet.create({
   editIcon: {
