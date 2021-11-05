@@ -26,13 +26,13 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import React from 'react';
-import {
-  Pressable, StyleSheet, View, ViewPropTypes, Text,
-} from 'react-native';
-import PropTypes from 'prop-types';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { tailwind } from 'tailwind';
+            <pre class="prettyprint source linenums"><code>import PropTypes from "prop-types";
+import React from "react";
+import { Pressable, StyleSheet, View, ViewPropTypes } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { tailwind } from "tailwind";
+
+import { PrimaryHeader } from "./Headers";
 
 /**
  * @function ScreenHeader
@@ -57,13 +57,19 @@ const ScreenHeader = ({
 }) => (
   &lt;SafeAreaView>
     &lt;View style={styles.pageHeaderContainer}>
-      &lt;Pressable onPress={handleOnPressLeftNode} style={leftContainerStyle || styles.leftItem}>
+      &lt;Pressable
+        onPress={handleOnPressLeftNode}
+        style={leftContainerStyle || styles.leftItem}
+      >
         {leftNode}
       &lt;/Pressable>
       &lt;View style={styles.headerItem}>
-        &lt;Text style={styles.headerText}>{headerText}&lt;/Text>
+        &lt;PrimaryHeader text={headerText} />
       &lt;/View>
-      &lt;Pressable onPress={handleOnPressRightNode} style={rightContainerStyle || styles.rightItem}>
+      &lt;Pressable
+        onPress={handleOnPressRightNode}
+        style={rightContainerStyle || styles.rightItem}
+      >
         {rightNode}
       &lt;/Pressable>
     &lt;/View>
@@ -83,7 +89,7 @@ ScreenHeader.propTypes = {
 ScreenHeader.defaultProps = {
   leftNode: null,
   rightNode: null,
-  headerText: '',
+  headerText: "",
   handleOnPressLeftNode: null,
   handleOnPressRightNode: null,
   rightContainerStyle: null,
@@ -91,16 +97,17 @@ ScreenHeader.defaultProps = {
 };
 
 const styles = StyleSheet.create({
-  pageHeaderContainer: tailwind(
-    'flex flex-row items-center justify-between border-b border-gray-200',
-  ),
-  leftItem: tailwind('flex-1 pl-4 py-4'),
-  rightItem: tailwind('flex-1 pr-4 items-end py-4'),
   headerItem: {
-    ...tailwind('py-4 items-center'),
-    flex: 3,
+    ...tailwind("py-1 items-center"),
+    flex: 5,
   },
-  headerText: tailwind('text-primaryPurple font-bold text-2xl'),
+  leftItem: tailwind("flex-1 pl-4"),
+  pageHeaderContainer: {
+    ...tailwind(
+      "flex-row items-center justify-between border-b border-gray-200 pb-2"
+    ),
+  },
+  rightItem: tailwind("flex-1 pr-4 items-end py-4"),
 });
 
 export default ScreenHeader;
@@ -114,13 +121,13 @@ export default ScreenHeader;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Button.html">Button</a></li><li><a href="module-DisplayNotif.html">DisplayNotif</a></li><li><a href="module-DisplayShelter%2520DisplayShelter.html">DisplayShelter DisplayShelter</a></li><li><a href="module-DisplayTags.html">DisplayTags</a></li><li><a href="module-getTags%2520getTags.html">getTags getTags</a></li><li><a href="module-Headers.html">Headers</a></li><li><a href="module-LandingPage.html">LandingPage</a></li><li><a href="module-ListFromAPI.html">ListFromAPI</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-RecoverAccountScreen.html">RecoverAccountScreen</a></li><li><a href="module-RegisterAccountScreen.html">RegisterAccountScreen</a></li><li><a href="module-ScreenHeader.html">ScreenHeader</a></li><li><a href="module-ShelterList%2520ShelterList.html">ShelterList ShelterList</a></li><li><a href="module-TextField.html">TextField</a></li><li><a href="module-UnderlinedLink.html">UnderlinedLink</a></li><li><a href="module-WriteReview.html">WriteReview</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-BackButton.html">BackButton</a></li><li><a href="module-Button.html">Button</a></li><li><a href="module-DisplayNotif.html">DisplayNotif</a></li><li><a href="module-Headers.html">Headers</a></li><li><a href="module-LandingScreen.html">LandingScreen</a></li><li><a href="module-ListFromAPI.html">ListFromAPI</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-MainProfile.html">MainProfile</a></li><li><a href="module-NewsPostScreen.html">NewsPostScreen</a></li><li><a href="module-RecoverAccountScreen.html">RecoverAccountScreen</a></li><li><a href="module-RegisterAccountScreen.html">RegisterAccountScreen</a></li><li><a href="module-ScreenHeader.html">ScreenHeader</a></li><li><a href="module-SearchBar.html">SearchBar</a></li><li><a href="module-SearchScreen.html">SearchScreen</a></li><li><a href="module-ServiceDetails.html">ServiceDetails</a></li><li><a href="module-SettingsScreen.html">SettingsScreen</a></li><li><a href="module-TagRow.html">TagRow</a></li><li><a href="module-TextField.html">TextField</a></li><li><a href="module-TutorialScreen.html">TutorialScreen</a></li><li><a href="module-UnderlinedLink.html">UnderlinedLink</a></li><li><a href="module-WriteReview.html">WriteReview</a></li></ul><h3>Global</h3><ul><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getTags">getTags</a></li><li><a href="global.html#openPhone">openPhone</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Oct 22 2021 18:09:50 GMT-0400 (Eastern Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Nov 05 2021 19:46:42 GMT-0400 (Eastern Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

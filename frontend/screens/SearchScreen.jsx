@@ -10,10 +10,10 @@ import apiHandler from "../util/APIHandler";
  * @function SearchScreen
  * @module SearchScreen
  * @description The screen used to display the result of a search activity
- * @prop {object} [route] Must contain {searchKeys, serviceType} in route.params. searchKeys is a plain
+ * @prop {object} route Must contain {searchKeys, serviceType} in route.params. searchKeys is a plain
  *                        string the user typed and serviceType corresponds to the api end point to which
  *                        this component will make http requests.
- * @prop {object} [navigation] The navigation object provided by react navigation library.
+ * @prop {object} navigation The navigation object provided by react navigation library.
  */
 function SearchScreen({ route, navigation }) {
   const { searchKeys, serviceType } = route.params;

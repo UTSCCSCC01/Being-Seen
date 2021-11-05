@@ -7,7 +7,7 @@ import { tailwind } from "tailwind";
  * @function TagRow
  * @module TagRow
  * @description Displays given tags within a row of boxes
- * @prop {array} [tagList] The list of tags to be displayed
+ * @prop {array} tagList The list of tags to be displayed
  * @prop {style} [boxStyle] The style of the container of each tag text
  * @prop {style} [textStyle] The style of the text
  *

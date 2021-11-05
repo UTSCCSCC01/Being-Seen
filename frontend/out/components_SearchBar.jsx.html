@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/SearchBar.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/SearchBar.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import PropTypes from "prop-types";
+import React, { useState } from "react";
+import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import FeatherIcon from "react-native-vector-icons/Feather";
+import Icon from "react-native-vector-icons/Ionicons";
+import { tailwind } from "tailwind";
+
+import colors from "../constants/colors";
+
+/**
+ * @function SearchBar
+ * @module SearchBar
+ * @description This components accepts a user input and navigates the user to a dedicated
+ *              search result screen (SearchScreen) when the user submits.
+ * @prop {object} navigation The navigation object provided by the react navigation library.
+ * @prop {string} resultScreenName The name of the screen to which this component will
+ *                                    navigate the user.
+ * @prop {string} serviceType The name of the api endpoint to which the search screen will
+ *                               send http requests.
+ * @prop {string} [prefill] The prefill text in the search bar. Default: ""
+ * @prop {bool} [isSecondary] Whether there will be a back button on the right side of the
+ *                             text input. Default: false
+ */
+function SearchBar({
+  navigation,
+  resultScreenName,
+  serviceType,
+  prefill,
+  isSecondary,
+}) {
+  const [searchString, setSearchString] = useState(prefill);
+  const onSubmitEditing = () => {
+    navigation.push(resultScreenName, {
+      serviceType: serviceType.toLowerCase(),
+      searchKeys: searchString,
+    });
+  };
+
+  return (
+    &lt;View style={styles.headerBackGround}>
+      &lt;View style={styles.searchBoxContainer}>
+        &lt;Icon name="search" style={styles.searchIcon} />
+        &lt;TextInput
+          placeholder="Search"
+          style={styles.textInput}
+          onSubmitEditing={onSubmitEditing}
+          onChangeText={(text) => {
+            setSearchString(text);
+          }}
+          defaultValue={prefill}
+        />
+      &lt;/View>
+      {isSecondary ? (
+        &lt;TouchableOpacity
+          style={styles.backIconContainer}
+          onPress={() => navigation.goBack()}
+        >
+          &lt;FeatherIcon name="delete" style={styles.backIcon} />
+        &lt;/TouchableOpacity>
+      ) : null}
+    &lt;/View>
+  );
+}
+
+SearchBar.propTypes = {
+  navigation: PropTypes.object.isRequired,
+  resultScreenName: PropTypes.string.isRequired,
+  serviceType: PropTypes.string.isRequired,
+  prefill: PropTypes.string,
+  isSecondary: PropTypes.bool,
+};
+
+SearchBar.defaultProps = {
+  prefill: "",
+  isSecondary: false,
+};
+
+const styles = StyleSheet.create({
+  backIcon: {
+    color: colors.backgroundColor,
+    fontSize: 24,
+  },
+  backIconContainer: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+    marginLeft: 5,
+    marginRight: -10,
+    width: 40,
+  },
+  headerBackGround: {
+    ...tailwind("bg-primary"),
+    alignItems: "center",
+    flexDirection: "row",
+    height: 60,
+    justifyContent: "center",
+    paddingHorizontal: 20,
+  },
+  searchBoxContainer: {
+    ...tailwind("bg-white"),
+    alignItems: "center",
+    borderRadius: 20,
+    flex: 1,
+    flexDirection: "row",
+    height: 40,
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+  },
+  searchIcon: {
+    fontSize: 20,
+  },
+  textInput: {
+    flex: 1,
+    fontSize: 16,
+    marginLeft: 10,
+  },
+});
+
+export default SearchBar;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-BackButton.html">BackButton</a></li><li><a href="module-Button.html">Button</a></li><li><a href="module-DisplayNotif.html">DisplayNotif</a></li><li><a href="module-Headers.html">Headers</a></li><li><a href="module-LandingScreen.html">LandingScreen</a></li><li><a href="module-ListFromAPI.html">ListFromAPI</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-MainProfile.html">MainProfile</a></li><li><a href="module-NewsPostScreen.html">NewsPostScreen</a></li><li><a href="module-RecoverAccountScreen.html">RecoverAccountScreen</a></li><li><a href="module-RegisterAccountScreen.html">RegisterAccountScreen</a></li><li><a href="module-ScreenHeader.html">ScreenHeader</a></li><li><a href="module-SearchBar.html">SearchBar</a></li><li><a href="module-SearchScreen.html">SearchScreen</a></li><li><a href="module-ServiceDetails.html">ServiceDetails</a></li><li><a href="module-SettingsScreen.html">SettingsScreen</a></li><li><a href="module-TagRow.html">TagRow</a></li><li><a href="module-TextField.html">TextField</a></li><li><a href="module-TutorialScreen.html">TutorialScreen</a></li><li><a href="module-UnderlinedLink.html">UnderlinedLink</a></li><li><a href="module-WriteReview.html">WriteReview</a></li></ul><h3>Global</h3><ul><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getTags">getTags</a></li><li><a href="global.html#openPhone">openPhone</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Nov 05 2021 19:46:42 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

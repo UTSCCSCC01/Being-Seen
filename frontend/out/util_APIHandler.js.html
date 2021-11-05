@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: util/APIHandler.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: util/APIHandler.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const apiAddress = "http://10.0.2.2:3000/";
+
+// eslint-disable-next-line no-underscore-dangle
+async function __sendReviewToAPI(
+  serviceId,
+  reviewerId,
+  serviceType,
+  content,
+  rating,
+  method
+) {
+  if (content === undefined || Number.isNaN(rating)) {
+    throw new Error("Content is undefined or rating is NaN");
+  }
+  const body = JSON.stringify({ content, rating });
+  await fetch(`${apiAddress + serviceType}/${serviceId}/review/${reviewerId}`, {
+    method,
+    headers: { "Content-Type": "application/json" },
+    body,
+  });
+}
+
+export default {
+  /**
+   * Sends a GET request to the endpoint at serviceType.
+   * @param {string} serviceType The name of the endpoint to which this http request will be sent.
+   * @returns A Promise of response from the server.
+   */
+  getInfoFromApi(serviceType) {
+    return fetch(apiAddress + serviceType, {
+      method: "Get",
+    });
+  },
+
+  /**
+   * Sends a GET request to the endpoint at serviceType, with id concatenated.
+   * @param {string} serviceType The name of the endpoint to which this http request will be sent.
+   * @param {string} id The objectId of a database record.
+   * @returns The Promise of a record in the database with objectId as its id.
+   */
+  getInfoFromApiById(serviceType, id) {
+    return fetch(`${apiAddress + serviceType}/${id}`, {
+      method: "Get",
+    });
+  },
+
+  /**
+   * Sends the login credentials to the server.
+   * @param {string} username The username of the login credential.
+   * @param {string} password The password of the login credential.
+   * @returns A Promise of a response from the server, possibly containing an access token.
+   */
+  submitLogin(username, password) {
+    return fetch(`${apiAddress}auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+    });
+  },
+
+  /**
+   * Sends a list of strings as tags to the server.
+   * @param {string[]} tagList An array of strings. Each one represents a tag to be searched.
+   * @param {string} serviceType The name of the endpoint to which this http request will be sent.
+   * @returns A Promise of an array of database records.
+   */
+  getSearchResult(tagList, serviceType) {
+    const payload = JSON.stringify({
+      tagList,
+    });
+    return fetch(`${apiAddress}${serviceType}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: payload,
+    });
+  },
+
+  /**
+   * Gets this reviewer's review on this service.
+   * @param {string} serviceId The objectId of the service of interest.
+   * @param {string} reviewerId The objectId of the reviewer's profile.
+   * @param {string} serviceType The name of the endpoint to which this http request will be sent.
+   * @returns A Promise of the reviewer's review on this service. If this
+   *          reviewer has not reviewed this service, the status code would
+   *          be 404.
+   */
+  getReviewFromApi(serviceId, reviewerId, serviceType) {
+    return fetch(
+      `${apiAddress + serviceType}/${serviceId}/review/${reviewerId}`,
+      {
+        method: "Get",
+      }
+    );
+  },
+
+  /**
+   * Gets the specified number of most recent news posts.
+   * @param {string} numPosts the number of most recent posts
+   * @returns A Promise of an array of the most recent posts.
+   */
+  getMostRecentNewsFromApi(numPosts) {
+    return fetch(`${apiAddress}news/${numPosts}`, {
+      method: "Get",
+    });
+  },
+
+  /**
+   * Deletes this reviewer's review on this service.
+   * @param {string} serviceId The objectId of the service of interest.
+   * @param {string} reviewerId reviewerId The objectId of the reviewer's profile.
+   * @param {string} serviceType The name of the endpoint to which this http request will be sent.
+   * @returns A Promise of a response from the server. 200 on success.
+   */
+  deleteReviewFromApi(serviceId, reviewerId, serviceType) {
+    return fetch(
+      `${apiAddress + serviceType}/${serviceId}/review/${reviewerId}`,
+      {
+        method: "DELETE",
+      }
+    );
+  },
+
+  /**
+   * Sends a new review to the server and creates it in the database.
+   * @param {string} serviceId The objectId of the service of interest.
+   * @param {string} reviewerId The objectId of the reviewer's profile.
+   * @param {string} serviceType The name of the endpoint to which this http request will be sent.
+   * @param {string} content The content of this review.
+   * @param {Number} rating The rating of thie review.
+   */
+  async postReviewToApi(serviceId, reviewerId, serviceType, content, rating) {
+    __sendReviewToAPI(
+      serviceId,
+      reviewerId,
+      serviceType,
+      content,
+      rating,
+      "POST"
+    );
+  },
+
+  /**
+   * Sends an edited review to the server and overwrites it in the database.
+   * @param {string} serviceId The objectId of the service of interest.
+   * @param {string} reviewerId The objectId of the reviewer's profile.
+   * @param {string} serviceType The name of the endpoint to which this http request will be sent.
+   * @param {string} content The content of this review.
+   * @param {Number} rating The rating of thie review.
+   */
+  async patchReviewToApi(serviceId, reviewerId, serviceType, content, rating) {
+    __sendReviewToAPI(
+      serviceId,
+      reviewerId,
+      serviceType,
+      content,
+      rating,
+      "PATCH"
+    );
+  },
+
+  async getProfile(profileId) {
+    const URI = `${apiAddress}profiles/${profileId}`;
+    const response = await fetch(URI, {
+      method: "Get",
+    });
+    return response;
+  },
+
+  async updateStoryForProfile(story, profileId) {
+    const bodyData = { story };
+    const bodyDataJSON = JSON.stringify(bodyData);
+    const URI = `${apiAddress}profiles/${profileId}`;
+    const response = await fetch(URI, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: bodyDataJSON,
+    });
+    return response;
+  },
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-BackButton.html">BackButton</a></li><li><a href="module-Button.html">Button</a></li><li><a href="module-DisplayNotif.html">DisplayNotif</a></li><li><a href="module-Headers.html">Headers</a></li><li><a href="module-LandingScreen.html">LandingScreen</a></li><li><a href="module-ListFromAPI.html">ListFromAPI</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-MainProfile.html">MainProfile</a></li><li><a href="module-NewsPostScreen.html">NewsPostScreen</a></li><li><a href="module-RecoverAccountScreen.html">RecoverAccountScreen</a></li><li><a href="module-RegisterAccountScreen.html">RegisterAccountScreen</a></li><li><a href="module-ScreenHeader.html">ScreenHeader</a></li><li><a href="module-SearchBar.html">SearchBar</a></li><li><a href="module-SearchScreen.html">SearchScreen</a></li><li><a href="module-ServiceDetails.html">ServiceDetails</a></li><li><a href="module-SettingsScreen.html">SettingsScreen</a></li><li><a href="module-TagRow.html">TagRow</a></li><li><a href="module-TextField.html">TextField</a></li><li><a href="module-TutorialScreen.html">TutorialScreen</a></li><li><a href="module-UnderlinedLink.html">UnderlinedLink</a></li><li><a href="module-WriteReview.html">WriteReview</a></li></ul><h3>Global</h3><ul><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getTags">getTags</a></li><li><a href="global.html#openPhone">openPhone</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Nov 05 2021 19:46:42 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

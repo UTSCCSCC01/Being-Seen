@@ -47,9 +47,9 @@ function Profile() {
 
 /**
  *
- * @function MainProfile Display profile tab
- * @module MainProfile Profile
- * @description full page of to display profile
+ * @function MainProfile
+ * @module MainProfile
+ * @description Full page of to display profile
  */
 function MainProfile({ route, navigation }) {
   const [name, setName] = useState("");
