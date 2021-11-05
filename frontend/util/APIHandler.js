@@ -100,6 +100,17 @@ export default {
   },
 
   /**
+   * Gets the specified number of most recent news posts.
+   * @param {string} numPosts the number of most recent posts
+   * @returns A Promise of an array of the most recent posts.
+   */
+  getMostRecentNewsFromApi(numPosts) {
+    return fetch(`${apiAddress}news/${numPosts}`, {
+      method: "Get",
+    });
+  },
+
+  /**
    * Deletes this reviewer's review on this service.
    * @param {string} serviceId The objectId of the service of interest.
    * @param {string} reviewerId reviewerId The objectId of the reviewer's profile.

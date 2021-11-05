@@ -33,12 +33,14 @@ export class NewsService {
    * creates new newsreel with given info
    * @param headline headline of newsreel
    * @param content content of newsreel
+   * @param type type of post
    * @param picture picture associated with newsreel
    * @returns new newsreel as an object
    */
-  async createNewsReel(headline: string, content: string, picture: string) {
+  async createNewsReel(headline: string, type: string, content: string, picture: string) {
     const newReel = new this.newsModel({
       headline,
+      type,
       content,
       picture,
       date: new Date(),
@@ -50,6 +52,7 @@ export class NewsService {
    * updates newsreel with id of newsId to have given info
    * @param newsId id of newsreel in db
    * @param headline new headline of newsreel
+   * @param type type of post
    * @param content new content of newsreel
    * @param picture new picture of newsreel
    * @param date new date of newsreel
@@ -58,6 +61,7 @@ export class NewsService {
   async updateNewsReel(
     newsId: string,
     headline: string,
+    type: string,
     content: string,
     picture: string,
     date,
@@ -65,6 +69,7 @@ export class NewsService {
     try {
       const newsReel = await this.newsModel.findById(newsId);
       if (headline) newsReel.headline = headline;
+      if (type) newsReel.type = type;
       if (content) newsReel.content = content;
       if (picture) newsReel.picture = picture;
       if (date) newsReel.date = new Date();

@@ -5730,6 +5730,12 @@
 		"borderBottomColor": "rgba(144, 144, 144, 1)",
 		"borderLeftColor": "rgba(144, 144, 144, 1)"
 	},
+	"border-light-grey": {
+		"borderTopColor": "rgba(232, 232, 232, 1)",
+		"borderRightColor": "rgba(232, 232, 232, 1)",
+		"borderBottomColor": "rgba(232, 232, 232, 1)",
+		"borderLeftColor": "rgba(232, 232, 232, 1)"
+	},
 	"border-error": {
 		"borderTopColor": "rgba(255, 0, 0, 1)",
 		"borderRightColor": "rgba(255, 0, 0, 1)",
@@ -6122,6 +6128,9 @@
 	},
 	"bg-grey": {
 		"backgroundColor": "rgba(144, 144, 144, 1)"
+	},
+	"bg-light-grey": {
+		"backgroundColor": "rgba(232, 232, 232, 1)"
 	},
 	"bg-error": {
 		"backgroundColor": "rgba(255, 0, 0, 1)"
@@ -7596,6 +7605,9 @@
 	"text-grey": {
 		"color": "rgba(144, 144, 144, 1)"
 	},
+	"text-light-grey": {
+		"color": "rgba(232, 232, 232, 1)"
+	},
 	"text-error": {
 		"color": "rgba(255, 0, 0, 1)"
 	},
@@ -8138,6 +8150,9 @@
 	"ring-grey": {
 		"--tw-ring-color": "rgba(144, 144, 144, 1)"
 	},
+	"ring-light-grey": {
+		"--tw-ring-color": "rgba(232, 232, 232, 1)"
+	},
 	"ring-error": {
 		"--tw-ring-color": "rgba(255, 0, 0, 1)"
 	},
@@ -8461,6 +8476,9 @@
 	},
 	"ring-offset-grey": {
 		"--tw-ring-offset-color": "rgba(144, 144, 144, 1)"
+	},
+	"ring-offset-light-grey": {
+		"--tw-ring-offset-color": "rgba(232, 232, 232, 1)"
 	},
 	"ring-offset-error": {
 		"--tw-ring-offset-color": "rgba(255, 0, 0, 1)"

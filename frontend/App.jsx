@@ -10,6 +10,7 @@ import icons from "./constants/icons";
 import LandingScreen from "./screens/LandingScreen";
 import ListFromAPI from "./screens/ListFromAPI";
 import Login from "./screens/Login";
+import NewsPostScreen from "./screens/NewsPostScreen";
 import RecoverAccountScreen from "./screens/RecoverAccountScreen";
 import RegisterAccountScreen from "./screens/RegisterAccountScreen";
 import SettingsScreen from "./screens/SettingsScreen";
@@ -31,7 +32,7 @@ const Home = () => (
       tabBarIcon: ({ focused }) => {
         let iconName;
 
-        if (route.name === "Landing") {
+        if (route.name === "Hub") {
           iconName = focused ? icons.home_filled : icons.home;
         } else if (route.name === "Merchants") {
           iconName = focused ? icons.merchants_filled : icons.merchants;
@@ -49,7 +50,7 @@ const Home = () => (
       },
     })}
   >
-    <Tab.Screen name="Landing" component={LandingScreen} />
+    <Tab.Screen name="Hub" component={LandingScreen} />
     <Tab.Screen name="Merchants">
       {() => <ListFromAPI query="Merchant" />}
     </Tab.Screen>
@@ -127,6 +128,7 @@ export default function App() {
           />
           <Stack.Screen name="Tutorial" component={TutorialScreen} />
           <Stack.Screen name="Settings" component={SettingsScreen} />
+          <Stack.Screen name="NewsPost" component={NewsPostScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </>

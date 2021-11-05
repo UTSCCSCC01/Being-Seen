@@ -1,10 +1,4 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable global-require */
-/* eslint-disable react-native/no-color-literals */
-/* eslint-disable no-shadow */
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable react/jsx-no-bind */
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
   Dimensions,
@@ -25,7 +19,9 @@ import {
   SecondaryHeader,
   TertiaryHeader,
 } from "../components/Headers";
+import Newsreel from "../components/screen_components/Newsreel";
 import icons from "../constants/icons";
+import apiHandler from "../util/APIHandler";
 import Login from "./Login";
 
 /**
@@ -36,9 +32,14 @@ import Login from "./Login";
 const LandingScreen = () => {
   const [username, setUsername] = useState("");
   const [balance, setBalance] = useState("0");
+
+  const navigation = useNavigation();
+
+  const numPosts = "10";
+
   return (
     <SafeAreaView style={styles.landingView}>
-      <ScrollView>
+      <ScrollView style={styles.scrollView}>
         <View style={styles.headerView}>
           <PrimaryHeader text={`Welcome ${username}!`} />
         </View>
@@ -53,6 +54,13 @@ const LandingScreen = () => {
           <Image source={icons.right_arrow} style={styles.rightArrow} />
         </Pressable>
         <SecondaryHeader text="Recent Posts" />
+        <Newsreel
+          navigation={navigation}
+          numPosts={numPosts}
+          infoGetter={() => {
+            return apiHandler.getMostRecentNewsFromApi(numPosts);
+          }}
+        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -75,7 +83,6 @@ const styles = StyleSheet.create({
     ...tailwind("my-2"),
   },
   landingView: {
-    ...tailwind("px-4 py-2"),
     flex: 1,
   },
   profileText: {
@@ -83,11 +90,14 @@ const styles = StyleSheet.create({
   },
   profileView: {
     ...tailwind(
-      "bg-secondary flex-row my-2 px-3.5 py-2.5 rounded-xl justify-between items-center"
+      "bg-secondary flex-row mt-2 mb-4 px-3.5 py-2.5 rounded-xl justify-between items-center"
     ),
   },
   rightArrow: {
     ...tailwind("h-4 w-4"),
+  },
+  scrollView: {
+    ...tailwind("px-4 py-2"),
   },
 });
 
