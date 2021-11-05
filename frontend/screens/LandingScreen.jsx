@@ -1,5 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
+import * as SecureStore from "expo-secure-store";
+import jwt_decode from "jwt-decode";
+import React, { useEffect, useState } from "react";
 import {
   Dimensions,
   Image,
@@ -37,6 +39,28 @@ const LandingScreen = () => {
 
   const numPosts = "10";
 
+  async function getProfileIdFromToken() {
+    const token = await SecureStore.getItemAsync("token");
+    const decoded = await jwt_decode(token);
+    return decoded.id;
+  }
+
+  useEffect(() => {
+    getProfileIdFromToken().then((id) => {
+      apiHandler
+        .getProfile(id)
+        .then((response) => response.json()) // handles parsing
+        .then((responseJSON) => {
+          // handles setting
+          setUsername(responseJSON.name);
+          setBalance(responseJSON.balance);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    });
+  }, []);
+
   return (
     <SafeAreaView style={styles.landingView}>
       <ScrollView style={styles.scrollView}>
@@ -49,7 +73,12 @@ const LandingScreen = () => {
             <Text style={styles.balance}>{`$${balance}`}</Text>
           </View>
         </View>
-        <Pressable style={styles.profileView} onPress={() => {}}>
+        <Pressable
+          style={styles.profileView}
+          onPress={() => {
+            navigation.push("Profile");
+          }}
+        >
           <Text style={styles.profileText}>View profile</Text>
           <Image source={icons.right_arrow} style={styles.rightArrow} />
         </Pressable>

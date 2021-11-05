@@ -37,7 +37,12 @@ export class NewsService {
    * @param picture picture associated with newsreel
    * @returns new newsreel as an object
    */
-  async createNewsReel(headline: string, type: string, content: string, picture: string) {
+  async createNewsReel(
+    headline: string,
+    type: string,
+    content: string,
+    picture: string,
+  ) {
     const newReel = new this.newsModel({
       headline,
       type,

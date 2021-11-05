@@ -9,11 +9,7 @@
     "lintf:check": "npx eslint . --ext .js,.jsx",
     "lintf": "npx eslint . --ext .js,.jsx --fix",
     "formatf:check": "npx prettier --check \"**/*.{js,jsx}\"",
-    "formatf": "npx prettier --write \"**/*.{js,jsx}\"",
-    "lintb:check": "npx eslint ./src ./test --ext .ts",
-    "lintb": "npx eslint ./src ./test --ext .ts --fix",
-    "formatb:check": "npx prettier --check \"./{src,test}/*.ts\"",
-    "formatb": "npx prettier --write \"./{src,test}/*.ts\""
+    "formatf": "npx prettier --write \"**/*.{js,jsx}\""
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.9",

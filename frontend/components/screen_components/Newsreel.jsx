@@ -42,6 +42,7 @@ export default function Newsreel({ navigation, numPosts, infoGetter }) {
       .catch((error) => console.error(error));
     setSheltersRefreshing(false);
   }
+
   return (
     <View style={styles.newsPostView}>
       {information.map((item) => {

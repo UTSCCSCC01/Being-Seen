@@ -16,6 +16,7 @@ import {
 import Icon from "react-native-vector-icons/Entypo";
 import { tailwind } from "tailwind";
 
+import BackButton from "../components/BackButton";
 import QuotationBlock from "../components/QuotationBlock";
 import ScreenHeader from "../components/ScreenHeader";
 import apiHandler from "../util/APIHandler";
@@ -84,6 +85,7 @@ function MainProfile({ route, navigation }) {
   return (
     <ScrollView>
       <ScreenHeader
+        leftNode={<BackButton />}
         headerText="My Profile"
         rightNode={<Icon name="pencil" style={styles.editIcon} />}
         rightContainerStyle={styles.editIconContainer}
