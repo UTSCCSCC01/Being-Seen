@@ -1,5 +1,6 @@
+import PropTypes from "prop-types";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, ViewPropTypes } from "react-native";
 import { tailwind } from "tailwind";
 
 function QuotationBlock({ text, fontSize, style }) {
@@ -10,6 +11,19 @@ function QuotationBlock({ text, fontSize, style }) {
     </View>
   );
 }
+QuotationBlock.PropTypes = {
+  text: PropTypes.string,
+  fontFize: PropTypes.number,
+  style: ViewPropTypes.style,
+};
+
+QuotationBlock.defaultProps = {
+  text: "Default Text",
+  fontSize: 16,
+  style: null,
+}
+
+
 
 export default QuotationBlock;
 

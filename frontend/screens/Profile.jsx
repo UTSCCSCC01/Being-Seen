@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-no-bind */
 import * as SecureStore from "expo-secure-store";
 import jwt_decode from "jwt-decode";
+import PropTypes from "prop-types";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
 import {
@@ -42,6 +43,7 @@ function Profile() {
     </Stack.Navigator>
   );
 }
+
 
 /**
  *
@@ -117,6 +119,10 @@ function MainProfile({ route, navigation }) {
     </ScrollView>
   );
 }
+MainProfile.PropTypes = {
+  route: PropTypes.object.isRequired,
+  navigation: PropTypes.object.isRequired,
+}
 
 function EditProfile({ route, navigation }) {
   const [story, setStory] = useState(route.params.story);
@@ -162,6 +168,10 @@ function EditProfile({ route, navigation }) {
       />
     </>
   );
+}
+EditProfile.PropTypes = {
+  route: PropTypes.object.isRequired,
+  navigation: PropTypes.object.isRequired,
 }
 
 const styles = StyleSheet.create({

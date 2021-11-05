@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, Patch } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 
 import { ProfileService } from './profile.service';
 
