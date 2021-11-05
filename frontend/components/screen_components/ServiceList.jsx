@@ -58,7 +58,7 @@ export default function ServiceList({
           <View style={styles.listItemContainer}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate(`${capitalize(query)}Details`, {
+                navigation.navigate(`${capitalize(query)} Details`, {
                   itemId: item._id,
                   query,
                 });

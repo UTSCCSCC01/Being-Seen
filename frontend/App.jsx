@@ -11,6 +11,7 @@ import LandingScreen from "./screens/LandingScreen";
 import ListFromAPI from "./screens/ListFromAPI";
 import Login from "./screens/Login";
 import NewsPostScreen from "./screens/NewsPostScreen";
+import Profile from "./screens/Profile";
 import RecoverAccountScreen from "./screens/RecoverAccountScreen";
 import RegisterAccountScreen from "./screens/RegisterAccountScreen";
 import SettingsScreen from "./screens/SettingsScreen";

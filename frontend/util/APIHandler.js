@@ -1,5 +1,4 @@
 const apiAddress = "http://10.0.2.2:3000/";
-// const apiAddress = "http://192.168.0.13:3000/";
 
 // eslint-disable-next-line no-underscore-dangle
 async function __sendReviewToAPI(
@@ -162,5 +161,25 @@ export default {
       rating,
       "PATCH"
     );
+  },
+
+  async getProfile(profileId) {
+    const URI = `${apiAddress}profiles/${profileId}`;
+    const response = await fetch(URI, {
+      method: "Get",
+    });
+    return response;
+  },
+
+  async updateStoryForProfile(story, profileId) {
+    const bodyData = { story };
+    const bodyDataJSON = JSON.stringify(bodyData);
+    const URI = `${apiAddress}profiles/${profileId}`;
+    const response = await fetch(URI, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: bodyDataJSON,
+    });
+    return response;
   },
 };

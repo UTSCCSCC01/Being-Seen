@@ -79,3 +79,15 @@ export function openPhone(phone) {
   }
   return Linking.openURL(phoneNumber);
 }
+
+const queryToName = {
+  merchant: "Merchants",
+  job: "Jobs",
+  shelter: "Social Services",
+  education: "Education",
+};
+
+export function getScreenNameFromQuery(query) {
+  const key = query.toLowerCase().replace(" ", "_");
+  return queryToName[key];
+}
