@@ -4,13 +4,12 @@ import {
   Delete,
   Get,
   Param,
-  Patch,
   Post,
   Put,
 } from '@nestjs/common';
-import { Tag } from 'src/Schemas/tag.schema';
-import { MerchantService } from './merchant.service';
 import { Merchant } from 'src/Schemas/merchant.schema';
+
+import { MerchantService } from './merchant.service';
 
 /**
  * Send api requests to  .../merchant/<endpoint>
@@ -32,7 +31,7 @@ export class MerchantController {
    */
   @Get()
   async getMerchantsHandler(): Promise<Merchant[]> {
-    let merchants = await this.merchantService.getAllMerchants();
+    const merchants = await this.merchantService.getAllMerchants();
     return merchants;
   }
 
@@ -50,7 +49,7 @@ export class MerchantController {
    */
   @Get(':id')
   async getMerchantByIdHandler(@Param('id') id: string): Promise<Merchant> {
-    let merchant = await this.merchantService.getMerchantById(id);
+    const merchant = await this.merchantService.getMerchantById(id);
     return merchant;
   }
 
@@ -66,12 +65,8 @@ export class MerchantController {
    *   "address": "1234 abcd Rd.",
    *   "hours": "9-5",
    *   "tags": [
-   *     {
-   *       "id": "615b140f04816ef571baa486"
-   *     },
-   *     {
-   *       "id": "615b142f04816ef571baa48f"
-   *     }
+   *     "Tag1",
+   *     "Tag2"
    *   ]
    * }
    *
@@ -89,13 +84,12 @@ export class MerchantController {
   async createMerchantHandler(
     @Body('name') name: string,
     @Body('description') description: string,
-    @Body('tags') tags: Tag[],
+    @Body('tags') tags: string[],
     @Body('address') address: string,
     @Body('hours') hours: string,
     @Body('picture') picture: string,
   ): Promise<string> {
-    let merchantId;
-    merchantId = await this.merchantService.createMerchant(
+    const merchantId = await this.merchantService.createMerchant(
       name,
       description,
       address,
@@ -120,8 +114,38 @@ export class MerchantController {
    * and 0 on failure.
    */
   @Delete(':id')
-  async deleteMerchantHandler(@Body('id') id: string): Promise<Number> {
-    let deleteCount = await this.merchantService.deleteMerchant(id);
+  async deleteMerchantHandler(@Body('id') id: string): Promise<number> {
+    const deleteCount = await this.merchantService.deleteMerchant(id);
     return deleteCount;
+  }
+
+  /**
+   * NestJS handler. The request uri to this endpoint is:
+   *
+   *   PUT .../merchant
+   *
+   * with the payload of this format:
+   *
+   * NestJS handler. The request uri to this endpoint is:
+   *
+   *   POST .../merchant/
+   *
+   * with a body containing a json file of the format:
+   *
+   * {
+   *   "tagList": [
+   *        "tag1",
+   *        "tag2"
+   *    ]
+   * }
+   *
+   * returns a list of merchants that have all tags mentioned in tagList
+   * @param tagList list of tags to search by
+   * @returns returns a list of education resources that have all tags mentioned in tagList
+   */
+  @Put()
+  async searchEducation(@Body('tagList') tagList: string[]) {
+    const merList = await this.merchantService.searchMerchantByTags(tagList);
+    return merList;
   }
 }

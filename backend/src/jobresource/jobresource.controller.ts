@@ -1,6 +1,13 @@
-import { Controller, Get, Body, Put, Delete, Param } from '@nestjs/common';
-import { isPostalCode } from 'class-validator';
-import { Tag } from 'src/Schemas/tag.schema';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
+
 import { JobService } from './jobresource.service';
 
 @Controller('job')
@@ -12,8 +19,7 @@ export class JobResourceController {
    */
   @Get()
   async getAllJobResources() {
-    const jobResources =
-      await this.jobService.getAllJobResources();
+    const jobResources = await this.jobService.getAllJobResources();
     return jobResources;
   }
 
@@ -24,8 +30,7 @@ export class JobResourceController {
    */
   @Get('/:jobId')
   async getJobResourceById(@Param('jobId') jobId: string) {
-    const resource =
-      this.jobService.getJobResourceById(jobId);
+    const resource = this.jobService.getJobResourceById(jobId);
     return resource;
   }
 
@@ -42,17 +47,17 @@ export class JobResourceController {
    * @param picture url of picture of resources
    * @returns id of modified or new resource
    */
-  @Put()
+  @Post()
   async createJobResource(
     @Body('name') name: string,
     @Body('description') description: string,
     @Body('website') website: string,
     @Body('email') email: string,
     @Body('phoneNumber') phoneNumber: string,
-    @Body('tags') tags: Tag[],
-    @Body('address') address:string,
-    @Body('postalCode') postalCode:string,
-    @Body('picture') picture:string
+    @Body('tags') tags: string[],
+    @Body('address') address: string,
+    @Body('postalCode') postalCode: string,
+    @Body('picture') picture: string,
   ) {
     const newId = await this.jobService.createJobResource(
       name,
@@ -63,7 +68,7 @@ export class JobResourceController {
       tags,
       address,
       postalCode,
-      picture
+      picture,
     );
     return newId;
   }
@@ -76,5 +81,16 @@ export class JobResourceController {
   async deleteJobResourceById(@Param('jobId') jobId: string) {
     await this.jobService.deleteJobResource(jobId);
     return;
+  }
+
+  /**
+   * returns a list of education resources that have all tags mentioned in tagList
+   * @param tagList list of tags to search by
+   * @returns returns a list of education resources that have all tags mentioned in tagList
+   */
+  @Put()
+  async searchJobs(@Body('tagList') tagList: string[]) {
+    const result = await this.jobService.searchJobByTags(tagList);
+    return result;
   }
 }

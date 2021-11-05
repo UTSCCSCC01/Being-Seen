@@ -4,9 +4,14 @@
         "es2021": true
     },
     "extends": [
+        "eslint:recommended",
         "plugin:react/recommended",
+        "plugin:react-hooks/recommended",
+        "plugin:react-native/all",
         "airbnb",
-        "eslint-config-prettier"
+        "plugin:import/recommended",
+        "plugin:jsx-a11y/recommended",
+        "plugin:prettier/recommended"
     ],
     "parserOptions": {
         "ecmaFeatures": {
@@ -17,16 +22,38 @@
     },
     "plugins": [
         "react",
-        "eslint-config-prettier"
+        "react-native",
+        "import",
+        "jsx-a11y",
+        "prettier",
+        "simple-import-sort"
     ],
     "rules": {
         "no-use-before-define": "off",
         "react/style-prop-object": "off",
+        "react/forbid-prop-types": 0,
         "import/no-unresolved": "off",
         "linebreak-style": "off",
-        "prettier/prettier": ["error", {
-            "endOfLine": "auto"
-        }],
-        "arrow-body-style": "off"
+        "prettier/prettier": [
+            "error",
+            {
+                "endOfLine": "auto"
+            }
+        ],
+        "simple-import-sort/imports": "error",
+        "simple-import-sort/exports": "error",
+        "import/extensions": "off",
+        "no-unused-vars": "warn",
+        "react-native/no-unused-styles": "off",
+        "camelcase": "warn",
+		"no-underscore-dangle": ["error", {"allow": ["_id"]}],
+        "react/jsx-no-bind": ["warn", {
+            "ignoreDOMComponents": false,
+            "ignoreRefs": false,
+            "allowArrowFunctions": true,
+            "allowFunctions": true,
+            "allowBind": false
+          }],
+        "no-nested-ternary": "warn"
     }
 }

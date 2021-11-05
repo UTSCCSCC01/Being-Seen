@@ -1,63 +1,72 @@
-import { Controller, Get, Post, Put, Param, Body } from '@nestjs/common'
-import { ProfileService } from './profile.service'
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+
+import { ProfileService } from './profile.service';
 
 @Controller('profiles')
 export class ProfileController {
-    constructor(private readonly profilesService: ProfileService) {}
+  constructor(private readonly profilesService: ProfileService) {}
 
-    /**
-     * Get a list of all profiles in the database
-     * @returns Promise 
-     */
-    @Get()
-    async getAllProfiles(){
-        const profiles = await this.profilesService.getAllProfiles();
-        console.log(profiles);
-        return profiles;
-    }
+  /**
+   * Get a list of all profiles in the database
+   * @returns All profiles found
+   */
+  @Get()
+  async getAllProfiles() {
+    const profiles = await this.profilesService.getAllProfiles();
+    console.log(profiles);
+    return profiles;
+  }
 
-    /**
-     * Return a profile with a matching id
-     * @param id 
-     * @returns 
-     */
-    @Get('/:id')
-    async getProfile( @Param('id') id: string ) {
-        const profile = await this.profilesService.getProfile(id);
-        console.log(profile);
-        return profile
-    }
+  /**
+   * Return a profile with a matching id
+   * @param id UserId to match with Users DB
+   * @returns The profile with matching userId
+   */
+  @Get('/:userId')
+  async getProfile(@Param('userId') userId: string) {
+    const profile = await this.profilesService.getProfile(userId);
+    console.log(profile);
+    return profile;
+  }
 
-    /**
-     * Create a new profile entry in database with given information
-     * @param name 
-     * @param story 
-     * @param balance 
-     * @returns 
-     */
-    @Post()
-    async postProfile( 
-        @Body('name') name: string, 
-        @Body('story') story: string, 
-        @Body('balance') balance: number) {
-        const profile = await this.profilesService.postProfile(name, story, balance);
-        console.log(profile);
-        return profile;
-    }
-    
-    /**
-     * Update profile with matching id with a new story as user provided
-     * @param id 
-     * @param story 
-     * @returns 
-     */
-    @Put('/:id')
-    async putStory( 
-        @Param('id') id: string, 
-        @Body('story') story: string) {
-        const profile = await this.profilesService.putStory(id, story);
-        console.log(profile);
-        return profile;
-    }
+  /**
+   * Create a new profile entry in database with given information
+   * @param userId UserId to match with Users DB
+   * @param name Name to be used
+   * @param story Story to be used
+   * @param balance Balance to be used
+   * @returns Updated profile
+   */
+  @Post('/:userId')
+  async postProfile(
+    @Param('userId') userId: string,
+    @Body('name') name: string,
+    @Body('story') story: string,
+    @Body('balance') balance: number,
+  ) {
+    const profile = await this.profilesService.postProfile(
+      userId,
+      name,
+      story,
+      balance,
+    );
+    console.log(profile);
+    return profile;
+  }
 
+  /**
+   * Update profile with matching id with a new story as user provided
+   * @param userId UserId to match with Users DB
+   * @param story Story to be replaced to
+   * @returns Updated profile
+   */
+  @Put('/:userId')
+  async putStory(
+    @Param('userId') userId: string,
+    @Body('story') story: string,
+  ) {
+    const profile = await this.profilesService.putStory(userId, story);
+    console.log(profile);
+    return profile;
+  }
 }

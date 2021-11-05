@@ -1,10 +1,10 @@
-import React from 'react';
-import {
-  Pressable, StyleSheet, View, ViewPropTypes, Text,
-} from 'react-native';
-import PropTypes from 'prop-types';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { tailwind } from 'tailwind';
+import PropTypes from "prop-types";
+import React from "react";
+import { Pressable, StyleSheet, View, ViewPropTypes } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { tailwind } from "tailwind";
+
+import { PrimaryHeader } from "./Headers";
 
 /**
  * @function ScreenHeader
@@ -29,13 +29,19 @@ const ScreenHeader = ({
 }) => (
   <SafeAreaView>
     <View style={styles.pageHeaderContainer}>
-      <Pressable onPress={handleOnPressLeftNode} style={leftContainerStyle || styles.leftItem}>
+      <Pressable
+        onPress={handleOnPressLeftNode}
+        style={leftContainerStyle || styles.leftItem}
+      >
         {leftNode}
       </Pressable>
       <View style={styles.headerItem}>
-        <Text style={styles.headerText}>{headerText}</Text>
+        <PrimaryHeader text={headerText} />
       </View>
-      <Pressable onPress={handleOnPressRightNode} style={rightContainerStyle || styles.rightItem}>
+      <Pressable
+        onPress={handleOnPressRightNode}
+        style={rightContainerStyle || styles.rightItem}
+      >
         {rightNode}
       </Pressable>
     </View>
@@ -55,7 +61,7 @@ ScreenHeader.propTypes = {
 ScreenHeader.defaultProps = {
   leftNode: null,
   rightNode: null,
-  headerText: '',
+  headerText: "",
   handleOnPressLeftNode: null,
   handleOnPressRightNode: null,
   rightContainerStyle: null,
@@ -63,16 +69,17 @@ ScreenHeader.defaultProps = {
 };
 
 const styles = StyleSheet.create({
-  pageHeaderContainer: tailwind(
-    'flex flex-row items-center justify-between border-b border-gray-200',
-  ),
-  leftItem: tailwind('flex-1 pl-4 py-4'),
-  rightItem: tailwind('flex-1 pr-4 items-end py-4'),
   headerItem: {
-    ...tailwind('py-4 items-center'),
-    flex: 3,
+    ...tailwind("py-1 items-center"),
+    flex: 5,
   },
-  headerText: tailwind('text-primaryPurple font-bold text-2xl'),
+  leftItem: tailwind("flex-1 pl-4"),
+  pageHeaderContainer: {
+    ...tailwind(
+      "flex-row items-center justify-between border-b border-gray-200 pb-2"
+    ),
+  },
+  rightItem: tailwind("flex-1 pr-4 items-end py-4"),
 });
 
 export default ScreenHeader;

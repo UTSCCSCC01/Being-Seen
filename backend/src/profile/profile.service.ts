@@ -1,27 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Mongoose, Schema, Types } from 'mongoose';
+import { Model } from 'mongoose';
 
-import { Profile, ProfileDocument } from './Schemas/profile.schema'
+import { ProfileDocument } from './Schemas/profile.schema';
 
 @Injectable()
 export class ProfileService {
-
-
-  constructor(@InjectModel("Profile") private readonly profileModel: Model<ProfileDocument>) {}
+  constructor(
+    @InjectModel('Profile')
+    private readonly profileModel: Model<ProfileDocument>,
+  ) {}
 
   /**
    * Get a profile from database by matching given id
-   * @param id The id to search for
-   * 
+   * @param userId userId to match with Userd DB
+   * @returns The profile with matching userId
    */
-  async getProfile(id: string ) {
-    return await this.profileModel.findById(id);
+  async getProfile(userId: string) {
+    return await this.profileModel.findOne({ userId: userId }).exec();
   }
 
   /**
    * Get all profiles in database
-   * @returns 
+   * @returns All profiles found
    */
   async getAllProfiles() {
     return await this.profileModel.find().exec();
@@ -29,30 +30,36 @@ export class ProfileService {
 
   /**
    * Insert new profile entries with the given parameters
+   * @param userId the id that should match with Users DB
    * @param name Name of the new profile
    * @param story The story associated with new profile
    * @param balance The balance to start for the new profile
-   * @returns 
+   * @returns Updated profile
    */
-  async postProfile(name: string, story: string, balance: number) {
+  async postProfile(
+    userId: string,
+    name: string,
+    story: string,
+    balance: number,
+  ) {
     const newProfile = new this.profileModel({
+      userId,
       name,
-      story, 
-      balance
+      story,
+      balance,
     });
     return await this.profileModel.create(newProfile);
   }
 
   /**
    * Updates the story of the profile in database
-   * @param id The id of the profile to update
-   * @param story The story to update to
-   * @returns 
+   * @param userId The userid of the profile to update
+   * @param story Story to be replaced to
+   * @returnsUpdated profile
    */
-  async putStory(id: string, story: string) {
-    var profile = await this.profileModel.findById(id);
+  async putStory(userId: string, story: string) {
+    const profile = await this.profileModel.findOne({ userId: userId }).exec();
     profile.story = story;
-    return profile.save()
+    return profile.save();
   }
-  
 }
