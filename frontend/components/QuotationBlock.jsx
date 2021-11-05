@@ -13,7 +13,7 @@ function QuotationBlock({ text, fontSize, style }) {
 }
 QuotationBlock.propTypes = {
   text: PropTypes.string,
-  fontFize: PropTypes.number,
+  fontSize: PropTypes.number,
   style: ViewPropTypes.style,
 };
 

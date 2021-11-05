@@ -1,8 +1,8 @@
 /* eslint-disable react/jsx-no-bind */
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SecureStore from "expo-secure-store";
 import jwt_decode from "jwt-decode";
 import PropTypes from "prop-types";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
 import {
   Button,
@@ -97,6 +97,7 @@ function MainProfile({ route, navigation }) {
       <View style={styles.profileBlockContainer}>
         <View style={styles.profilePictureContainer}>
           <Image
+            // eslint-disable-next-line no-underscore-dangle
             source={require("../assets/rickroll.jpg")}
             style={styles.profilePicture}
           />
