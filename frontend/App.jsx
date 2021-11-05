@@ -10,6 +10,7 @@ import icons from "./constants/icons";
 import LandingPage from "./screens/landing_page";
 import ListFromAPI from "./screens/ListFromAPI";
 import Login from "./screens/Login";
+import Profile from "./screens/Profile";
 import RecoverAccountScreen from "./screens/RecoverAccountScreen";
 import RegisterAccountScreen from "./screens/RegisterAccountScreen";
 import SettingsScreen from "./screens/SettingsScreen";
@@ -53,7 +54,7 @@ const Home = () => (
       {() => <ListFromAPI query="Merchant" />}
     </Tab.Screen>
     <Tab.Screen name="Jobs">{() => <ListFromAPI query="Job" />}</Tab.Screen>
-    <Tab.Screen name="Profile" component={SettingsScreen} />
+    <Tab.Screen name="Profile" component={Profile} />
     <Tab.Screen name="Social Services">
       {() => <ListFromAPI query="Shelter" />}
     </Tab.Screen>
