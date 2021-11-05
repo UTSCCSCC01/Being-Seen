@@ -19,7 +19,7 @@ const Stack = createNativeStackNavigator();
  * @function ListFromAPI
  * @module ListFromAPI
  * @description full page of to display list of shelters and their details
- * @prop {string} [query] The type of service this page is going to display. This prop determines
+ * @prop {string} query The type of service this page is going to display. This prop determines
  *                        to which api endpoint every sub-component's http request will be sent.
  */
 function ListFromAPI({ query }) {

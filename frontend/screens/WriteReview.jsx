@@ -13,10 +13,10 @@ import apiHandler from "../util/APIHandler";
  * @function WriteReview
  * @module WriteReview
  * @description Displays a page responsible for handling the creation/editing of reviews
- * @prop {object} [route] Must contain {query, infoId} in route.params, where query is the
+ * @prop {object} route Must contain {query, infoId} in route.params, where query is the
  *                        type of the service being displayed and infoId is the objectId of
  *                        this one service being reviewed.
- * @prop {object} [navigation] The navigation object provided by react navigation library.
+ * @prop {object} navigation The navigation object provided by react navigation library.
  */
 export default function WriteReview({ route, navigation }) {
   const [oldReview, setOldReview] = useState({

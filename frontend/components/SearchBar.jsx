@@ -12,10 +12,10 @@ import colors from "../constants/colors";
  * @module SearchBar
  * @description This components accepts a user input and navigates the user to a dedicated
  *              search result screen (SearchScreen) when the user submits.
- * @prop {object} [navigation] The navigation object provided by the react navigation library.
- * @prop {string} [resultScreenName] The name of the screen to which this component will
+ * @prop {object} navigation The navigation object provided by the react navigation library.
+ * @prop {string} resultScreenName The name of the screen to which this component will
  *                                    navigate the user.
- * @prop {string} [serviceType] The name of the api endpoint to which the search screen will
+ * @prop {string} serviceType The name of the api endpoint to which the search screen will
  *                               send http requests.
  * @prop {string} [prefill] The prefill text in the search bar. Default: ""
  * @prop {bool} [isSecondary] Whether there will be a back button on the right side of the

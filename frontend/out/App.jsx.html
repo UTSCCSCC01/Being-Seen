@@ -26,20 +26,24 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { StatusBar } from "expo-status-bar";
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+            <pre class="prettyprint source linenums"><code>import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SecureStore from "expo-secure-store";
-// import Shelter from "./screens/Shelter";
-import LandingPage from "./screens/landing_page";
-import Login from "./screens/Login";
-import ListFromAPI from "./screens/ListFromAPI";
-import RegisterAccountScreen from "./screens/RegisterAccountScreen";
-import RecoverAccountScreen from "./screens/RecoverAccountScreen";
+import React, { useEffect } from "react";
+import { Image, Platform, StatusBar, StyleSheet, View } from "react-native";
+
 import icons from "./constants/icons";
+import LandingScreen from "./screens/LandingScreen";
+import ListFromAPI from "./screens/ListFromAPI";
+import Login from "./screens/Login";
+import NewsPostScreen from "./screens/NewsPostScreen";
+import Profile from "./screens/Profile";
+import RecoverAccountScreen from "./screens/RecoverAccountScreen";
+import RegisterAccountScreen from "./screens/RegisterAccountScreen";
+import SettingsScreen from "./screens/SettingsScreen";
+import TutorialScreen from "./screens/TutorialScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -51,33 +55,35 @@ const Tab = createBottomTabNavigator();
  */
 
 const Home = () => (
-  &lt;Tab.Navigator screenOptions={({ route }) => ({
-    headerShown: false,
-    tabBarIcon: ({}) => {
-      let iconName;
+  &lt;Tab.Navigator
+    screenOptions={({ route }) => ({
+      headerShown: false,
+      tabBarIcon: ({ focused }) => {
+        let iconName;
 
-      if (route.name === "Merchants") {
-        iconName = icons.merchants;
-      } else if (route.name === "Jobs") {
-        iconName = icons.jobs;
-      } else if (route.name === "Profile") {
-        iconName = icons.profile;
-      } else if (route.name === "Social Services") {
-        iconName = icons.social_services;
-      } else if (route.name === "Education") {
-        iconName = icons.education;
-      }
+        if (route.name === "Hub") {
+          iconName = focused ? icons.home_filled : icons.home;
+        } else if (route.name === "Merchants") {
+          iconName = focused ? icons.merchants_filled : icons.merchants;
+        } else if (route.name === "Jobs") {
+          iconName = focused ? icons.jobs_filled : icons.jobs;
+        } else if (route.name === "Social Services") {
+          iconName = focused
+            ? icons.social_services_filled
+            : icons.social_services;
+        } else if (route.name === "Education") {
+          iconName = focused ? icons.education_filled : icons.education;
+        }
 
-      return &lt;Image source={iconName} style={{ width: 30, height: 30 }} />;
-    }
-  })}>
+        return &lt;Image source={iconName} style={styles.tabIcon} />;
+      },
+    })}
+  >
+    &lt;Tab.Screen name="Hub" component={LandingScreen} />
     &lt;Tab.Screen name="Merchants">
       {() => &lt;ListFromAPI query="Merchant" />}
     &lt;/Tab.Screen>
-    &lt;Tab.Screen name="Jobs">
-      {()=> &lt;ListFromAPI query = 'Job'/> }
-    &lt;/Tab.Screen>
-    &lt;Tab.Screen name="Profile" component={View} />
+    &lt;Tab.Screen name="Jobs">{() => &lt;ListFromAPI query="Job" />}&lt;/Tab.Screen>
     &lt;Tab.Screen name="Social Services">
       {() => &lt;ListFromAPI query="Shelter" />}
     &lt;/Tab.Screen>
@@ -90,31 +96,81 @@ const Home = () => (
 export default function App() {
   let token;
 
+  const getToken = async () => {
+    token = await SecureStore.getItemAsync("token");
+  };
+
+  const checkIfFirstLaunch = async () => {
+    try {
+      const hasLaunched = await AsyncStorage.getItem("hasLaunched");
+      if (hasLaunched === null) {
+        AsyncStorage.setItem("hasLaunched", "true");
+        return true;
+      }
+      return false;
+    } catch (error) {
+      return false;
+    }
+  };
+
+  const theme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      background: "white",
+    },
+  };
+
   useEffect(() => {
-    const getToken = async () => {
-      token = await SecureStore.getItemAsync("token");
-    };
     getToken();
-  }, []);
+  });
 
   return (
-    &lt;NavigationContainer>
-      &lt;Stack.Navigator
-        initialRouteName="Login"
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        &lt;Stack.Screen name="Login" component={Login} />
-        &lt;Stack.Screen name="Home" component={Home} />
-        &lt;Stack.Screen name="Landing" component={LandingPage} />
-        &lt;Stack.Screen name="RegisterAccount" component={RegisterAccountScreen} />
-        &lt;Stack.Screen name="RecoverAccount" component={RecoverAccountScreen} />
-      &lt;/Stack.Navigator>
-    &lt;/NavigationContainer>
-    // &lt;Login />
+    &lt;>
+      &lt;StatusBar
+        barStyle={
+          Platform.OS === "android"
+            ? "dark-content"
+            : "ios"
+            ? "dark-content"
+            : "default"
+        }
+        backgroundColor="white"
+      />
+      &lt;NavigationContainer theme={theme}>
+        &lt;Stack.Navigator
+          initialRouteName={checkIfFirstLaunch() ? "Tutorial" : "Login"}
+          screenOptions={{
+            headerShown: false,
+            cardStyle: { backgroundColor: "white" },
+          }}
+        >
+          &lt;Stack.Screen name="Login" component={Login} />
+          &lt;Stack.Screen name="Home" component={Home} />
+          &lt;Stack.Screen
+            name="RegisterAccount"
+            component={RegisterAccountScreen}
+          />
+          &lt;Stack.Screen
+            name="RecoverAccount"
+            component={RecoverAccountScreen}
+          />
+          &lt;Stack.Screen name="Tutorial" component={TutorialScreen} />
+          &lt;Stack.Screen name="Settings" component={SettingsScreen} />
+          &lt;Stack.Screen name="NewsPost" component={NewsPostScreen} />
+          &lt;Stack.Screen name="Profile" component={Profile} />
+        &lt;/Stack.Navigator>
+      &lt;/NavigationContainer>
+    &lt;/>
   );
 }
+
+const styles = StyleSheet.create({
+  tabIcon: {
+    height: 30,
+    width: 30,
+  },
+});
 </code></pre>
         </article>
     </section>
@@ -125,13 +181,13 @@ export default function App() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-Button.html">Button</a></li><li><a href="module-DisplayNotif.html">DisplayNotif</a></li><li><a href="module-DisplayShelter%2520DisplayShelter.html">DisplayShelter DisplayShelter</a></li><li><a href="module-DisplayTags.html">DisplayTags</a></li><li><a href="module-getTags%2520getTags.html">getTags getTags</a></li><li><a href="module-Headers.html">Headers</a></li><li><a href="module-LandingPage.html">LandingPage</a></li><li><a href="module-ListFromAPI.html">ListFromAPI</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-RecoverAccountScreen.html">RecoverAccountScreen</a></li><li><a href="module-RegisterAccountScreen.html">RegisterAccountScreen</a></li><li><a href="module-ScreenHeader.html">ScreenHeader</a></li><li><a href="module-ShelterList%2520ShelterList.html">ShelterList ShelterList</a></li><li><a href="module-TextField.html">TextField</a></li><li><a href="module-UnderlinedLink.html">UnderlinedLink</a></li><li><a href="module-WriteReview.html">WriteReview</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-BackButton.html">BackButton</a></li><li><a href="module-Button.html">Button</a></li><li><a href="module-DisplayNotif.html">DisplayNotif</a></li><li><a href="module-Headers.html">Headers</a></li><li><a href="module-LandingScreen.html">LandingScreen</a></li><li><a href="module-ListFromAPI.html">ListFromAPI</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-MainProfile.html">MainProfile</a></li><li><a href="module-NewsPostScreen.html">NewsPostScreen</a></li><li><a href="module-RecoverAccountScreen.html">RecoverAccountScreen</a></li><li><a href="module-RegisterAccountScreen.html">RegisterAccountScreen</a></li><li><a href="module-ScreenHeader.html">ScreenHeader</a></li><li><a href="module-SearchBar.html">SearchBar</a></li><li><a href="module-SearchScreen.html">SearchScreen</a></li><li><a href="module-ServiceDetails.html">ServiceDetails</a></li><li><a href="module-SettingsScreen.html">SettingsScreen</a></li><li><a href="module-TagRow.html">TagRow</a></li><li><a href="module-TextField.html">TextField</a></li><li><a href="module-TutorialScreen.html">TutorialScreen</a></li><li><a href="module-UnderlinedLink.html">UnderlinedLink</a></li><li><a href="module-WriteReview.html">WriteReview</a></li></ul><h3>Global</h3><ul><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getTags">getTags</a></li><li><a href="global.html#openPhone">openPhone</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Oct 22 2021 18:09:49 GMT-0400 (Eastern Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Nov 05 2021 19:46:42 GMT-0400 (Eastern Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>
