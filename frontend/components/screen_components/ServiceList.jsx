@@ -13,9 +13,9 @@ import { tailwind } from "tailwind";
 import { capitalize, getTags } from "../../util/FormatHelper";
 
 /**
- * @function ShelterList display list of shelters
- * @module ShelterList ShelterList
- * @description display list of shelters
+ * @function ServiceList
+ * @module ServiceList
+ * @description Display list of a service
  * @prop {Object} [navigation] - The navigation provided by react navigaition library.
  * @prop {string} [query] - The type of the service displayed in this list
  * @prop {funcion} [infoGetter] - A function with which this component uses to get data

@@ -28,6 +28,7 @@ export class NewsController {
   /**
    * creates a new news reel in db
    * @param headline headline of new newsreel
+   * @param type type of post
    * @param content content of new newsreel
    * @param picture picture associated with new newreel
    * @returns new newsreel object, associated with one created in db
@@ -35,11 +36,13 @@ export class NewsController {
   @Post()
   async createNewsReel(
     @Body('headline') headline: string,
+    @Body('type') type: string,
     @Body('content') content: string,
     @Body('picture') picture: string,
   ) {
     const newReel = await this.newsService.createNewsReel(
       headline,
+      type,
       content,
       picture,
     );
@@ -48,7 +51,7 @@ export class NewsController {
   /**
    * updates newsReel with id newsId to have new information
    * @param newsId id of newsreel in db
-   * @param headline new headline of newsreel
+   * @param type type of post
    * @param content new content of newsreel
    * @param picture new picture of newsreel
    * @param date new date of newsreel
@@ -58,6 +61,7 @@ export class NewsController {
   async updateNewsReel(
     @Param('newsId') newsId: string,
     @Body('headline') headline: string,
+    @Body('type') type: string,
     @Body('content') content: string,
     @Body('picture') picture: string,
     @Body('date') date: boolean,
@@ -65,6 +69,7 @@ export class NewsController {
     const updatedReel = await this.newsService.updateNewsReel(
       newsId,
       headline,
+      type,
       content,
       picture,
       date,

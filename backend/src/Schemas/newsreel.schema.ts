@@ -8,6 +8,8 @@ export class NewsReel {
   @Prop({ required: true })
   headline: string;
   @Prop({ required: true })
+  type: string;
+  @Prop({ required: true })
   content: string;
   @Prop({ default: 'https://c.tenor.com/d2-UHAzefXgAAAAi/pepe-cringe.gif' })
   picture: string;
