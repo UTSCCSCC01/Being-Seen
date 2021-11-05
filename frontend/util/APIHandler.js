@@ -1,5 +1,4 @@
 const apiAddress = "http://10.0.2.2:3000/";
-//const apiAddress = "http://192.168.0.13:3000/";
 
 // eslint-disable-next-line no-underscore-dangle
 async function __sendReviewToAPI(
