@@ -1,3 +1,4 @@
+import default_icon from "../assets/icon.png";
 import back_button from "../assets/icons/back_button.png";
 import education from "../assets/icons/education.png";
 import education_filled from "../assets/icons/education_filled.png";
@@ -30,4 +31,5 @@ export default {
   home,
   home_filled,
   right_arrow,
+  default_icon,
 };

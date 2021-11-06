@@ -5,7 +5,6 @@ import jwt_decode from "jwt-decode";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import {
-  Button,
   Image,
   ScrollView,
   StyleSheet,
@@ -17,6 +16,7 @@ import Icon from "react-native-vector-icons/Entypo";
 import { tailwind } from "tailwind";
 
 import BackButton from "../components/BackButton";
+import Button from "../components/Button";
 import QuotationBlock from "../components/QuotationBlock";
 import ScreenHeader from "../components/ScreenHeader";
 import apiHandler from "../util/APIHandler";
@@ -38,7 +38,7 @@ function Profile() {
       />
       <Stack.Screen
         name="EditProfile"
-        options={{ headerShown: true }}
+        options={{ headerShown: false }}
         component={EditProfile}
       />
     </Stack.Navigator>
@@ -106,9 +106,7 @@ function MainProfile({ route, navigation }) {
         </View>
         <View style={styles.profileInfoContainer}>
           <Text style={styles.usernameText}>{name}</Text>
-          <Text>Balance: {balance}</Text>
-          <Text>Story: </Text>
-          <Text style={styles.storyText}>{story}</Text>
+          <Text style={styles.balanceText}>Balance: ${balance}</Text>
         </View>
       </View>
       <View style={styles.horizontalRuler} />
@@ -137,37 +135,46 @@ function EditProfile({ route, navigation }) {
 
   return (
     <>
+      <ScreenHeader leftNode={<BackButton />} headerText="Edit Profile" />
       <View style={editStyles.textInputContainer}>
-        <TextInput
-          multiline
-          textAlignVertical="top"
-          numberOfLines={5}
-          value={story}
-          onChangeText={setStory}
-          placeholder={route.params.story}
-          style={editStyles.textInput}
+        <ScrollView>
+          <TextInput
+            multiline
+            textAlignVertical="top"
+            numberOfLines={5}
+            value={story}
+            onChangeText={setStory}
+            placeholder={route.params.story}
+            style={editStyles.textInput}
+          />
+        </ScrollView>
+      </View>
+      <View style={styles.submitButtonView}>
+        <Button
+          label="Submit"
+          onClick={async () => {
+            const id = await getProfileIdFromToken();
+            try {
+              const response = await apiHandler.updateStoryForProfile(
+                story,
+                id
+              );
+              if (response.status === 200) {
+                navigation.navigate({
+                  name: "MainProfile",
+                  params: { story },
+                  merge: true,
+                });
+              } else {
+                alert(`Http request failed: code ${response.status}`);
+              }
+            } catch (error) {
+              alert(`Promise rejected: ${error}`);
+            }
+          }}
+          disabled={false}
         />
       </View>
-      <Button
-        title="Submit"
-        onPress={async () => {
-          const id = await getProfileIdFromToken();
-          try {
-            const response = await apiHandler.updateStoryForProfile(story, id);
-            if (response.status === 200) {
-              navigation.navigate({
-                name: "MainProfile",
-                params: { story },
-                merge: true,
-              });
-            } else {
-              alert(`Http request failed: code ${response.status}`);
-            }
-          } catch (error) {
-            alert(`Promise rejected: ${error}`);
-          }
-        }}
-      />
     </>
   );
 }
@@ -177,6 +184,9 @@ EditProfile.propTypes = {
 };
 
 const styles = StyleSheet.create({
+  balanceText: {
+    fontSize: 18,
+  },
   editIcon: {
     fontSize: 30,
   },
@@ -223,13 +233,11 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginTop: 10,
   },
-  storyText: {
-    // backgroundColor: "#abc",
-    fontSize: 12,
-    padding: 4,
+  submitButtonView: {
+    ...tailwind("mx-4 my-2"),
   },
   usernameText: {
-    fontSize: 18,
+    fontSize: 32,
     // fontWeight: "bold",
   },
 });
@@ -237,7 +245,7 @@ const styles = StyleSheet.create({
 const editStyles = StyleSheet.create({
   textInput: {},
   textInputContainer: {
-    padding: 10,
+    ...tailwind("m-2 p-2 rounded-xl bg-light-grey"),
   },
 });
 

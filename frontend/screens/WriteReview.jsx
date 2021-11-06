@@ -3,10 +3,13 @@ import * as SecureStore from "expo-secure-store";
 import jwt_decode from "jwt-decode";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
 import { Rating } from "react-native-ratings";
 import { tailwind } from "tailwind";
 
+import BackButton from "../components/BackButton";
+import Button from "../components/Button";
+import ScreenHeader from "../components/ScreenHeader";
 import apiHandler from "../util/APIHandler";
 
 /**
@@ -110,6 +113,7 @@ export default function WriteReview({ route, navigation }) {
 
   return (
     <View style={styles.pageContainer}>
+      <ScreenHeader leftNode={<BackButton />} headerText="Write Review" />
       <View style={styles.writeReviewBox}>
         <TextInput
           multiline
@@ -137,19 +141,26 @@ export default function WriteReview({ route, navigation }) {
       <View alignItems="center">
         <Text style={styles.ratingHint}>Slide on The Stars to Rate</Text>
       </View>
-      <Button
-        title="publish review"
-        // color={purpleThemeColour}
-        onPress={() => {
-          setReadyToPublish(true);
-        }}
-      />
-      <Button title="Delete Review" color="red" onPress={DeleteReview} />
+      <View style={styles.buttonView}>
+        <Button
+          label="Publish Review"
+          disabled={false}
+          onClick={() => {
+            setReadyToPublish(true);
+          }}
+        />
+      </View>
+      <View style={styles.buttonView}>
+        <Button label="Delete Review" disabled={false} onClick={DeleteReview} />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  buttonView: {
+    ...tailwind("mx-4 my-2"),
+  },
   horizontalRuler: {
     ...tailwind("border-gray-400"),
     borderBottomWidth: 1,

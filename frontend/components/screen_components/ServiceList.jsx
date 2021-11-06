@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { tailwind } from "tailwind";
 
+import icons from "../../constants/icons";
 import { capitalize, getTags } from "../../util/FormatHelper";
 
 /**
@@ -65,30 +66,30 @@ export default function ServiceList({
               }}
               style={styles.itemElementContainer}
             >
-              <>
+              <View style={styles.firstRow}>
                 {item.picture ? (
                   <Image
                     style={styles.thumbnail}
                     source={{ uri: item.picture }}
                   />
-                ) : null}
-                <View style={styles.textContainer}>
-                  <Text style={styles.text} numberOfLines={1}>
-                    Name: {item.name}
-                  </Text>
-                  {item.address && (
-                    <Text style={styles.text} numberOfLines={1}>
-                      Address: {item.address}
-                    </Text>
-                  )}
-                  <Text style={styles.text} numberOfLines={1}>
-                    Phone: {item.phoneNumber}
-                  </Text>
-                  <Text style={styles.text} numberOfLines={1}>
-                    Tags: {item.tags ? getTags(item.tags) : "None"}
+                ) : (
+                  <Image style={styles.thumbnail} source={icons.default_icon} />
+                )}
+                <View style={styles.headlineView}>
+                  <Text
+                    style={styles.name}
+                    numberOfLines={2}
+                    ellipsizeMode="tail"
+                  >
+                    {item.name}
                   </Text>
                 </View>
-              </>
+              </View>
+              <View style={styles.textContainer}>
+                <Text style={styles.tags} numberOfLines={1}>
+                  Tags: {item.tags ? getTags(item.tags) : "None"}
+                </Text>
+              </View>
             </TouchableOpacity>
           </View>
         );
@@ -111,26 +112,27 @@ ServiceList.defaultProps = {
 };
 
 const styles = StyleSheet.create({
+  firstRow: {
+    ...tailwind("flex-row"),
+  },
+  headlineView: {
+    ...tailwind("ml-2"),
+    width: "70%",
+  },
   itemElementContainer: {
-    ...tailwind("border-primary"),
-    borderRadius: 8,
-    borderStyle: "solid",
-    borderWidth: 2,
-    flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    height: 80,
-    margin: 3,
+    ...tailwind("flex-col bg-light-grey m-1 p-2 rounded-xl"),
   },
   listItemContainer: {
-    ...tailwind("bg-gray-200"),
+    ...tailwind("p-2"),
+  },
+  name: {
+    ...tailwind("text-2xl font-bold"),
   },
   scrollBackground: {
     flex: 1,
   },
-  text: {
-    flex: 1,
-    flexWrap: "wrap",
+  tags: {
+    ...tailwind("font-bold"),
   },
   textContainer: {
     flex: 1,
