@@ -58,14 +58,14 @@ function ListFromAPI({ query }) {
           name={`${capitalize(query)} Details`}
           component={ServiceDetails}
           options={{
-            headerShown: true,
+            headerShown: false,
           }}
         />
         <Stack.Screen
           name={`Review ${capitalize(query)}`}
           component={WriteReview}
           options={{
-            headerShown: true,
+            headerShown: false,
           }}
         />
         <Stack.Screen

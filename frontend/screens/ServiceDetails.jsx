@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import {
-  Button,
   Dimensions,
   FlatList,
   ImageBackground,
@@ -15,6 +14,9 @@ import openMap from "react-native-open-maps";
 import { Rating } from "react-native-ratings";
 import { tailwind } from "tailwind";
 
+import BackButton from "../components/BackButton";
+import Button from "../components/Button";
+import ScreenHeader from "../components/ScreenHeader";
 import TagRow from "../components/TagRow";
 import apiHandler from "../util/APIHandler";
 import { capitalize, formatDate, openPhone } from "../util/FormatHelper";
@@ -53,6 +55,11 @@ export default function ServiceDetails({ route, navigation }) {
 
   return (
     <>
+      <ScreenHeader
+        leftNode={<BackButton />}
+        headerText={info?.name}
+        secondaryHeader
+      />
       {!info ? (
         <Text>Loading...</Text>
       ) : (
@@ -135,25 +142,31 @@ export default function ServiceDetails({ route, navigation }) {
                 ) : null}
               </View>
               <TagRow tagList={info.tags} />
-              {info.reviews ? (
-                <Button
-                  onPress={() => {
-                    navigation.navigate(`Review ${capitalize(query)}`, {
-                      infoId: info._id,
-                      query,
-                    });
-                  }}
-                  title="Write/Edit a Review For This Shelter"
-                />
-              ) : null}
-              {info.website ? (
-                <Button
-                  title="Go to website"
-                  onPress={() => {
-                    Linking.openURL(info.website);
-                  }}
-                />
-              ) : null}
+              <View style={styles.buttonsView}>
+                {info.reviews ? (
+                  <Button
+                    style={styles.button}
+                    onClick={() => {
+                      navigation.push(`Review ${capitalize(query)}`, {
+                        infoId: info._id,
+                        query,
+                      });
+                    }}
+                    label="Write/Edit a Review For This Shelter"
+                    disabled={false}
+                  />
+                ) : null}
+                {info.website ? (
+                  <Button
+                    style={styles.button}
+                    label="Go to website"
+                    disabled={false}
+                    onClick={() => {
+                      Linking.openURL(info.website);
+                    }}
+                  />
+                ) : null}
+              </View>
             </>
           }
           data={info.reviews}
@@ -187,6 +200,12 @@ ServiceDetails.propTypes = {
 };
 
 const styles = StyleSheet.create({
+  button: {
+    ...tailwind("p-4"),
+  },
+  buttonsView: {
+    ...tailwind("m-4"),
+  },
   headlinePicture: {
     height: Dimensions.get("window").height / 4,
     resizeMode: "cover",
