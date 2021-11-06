@@ -176,7 +176,7 @@ export default {
     const bodyDataJSON = JSON.stringify(bodyData);
     const URI = `${apiAddress}profiles/${profileId}`;
     const response = await fetch(URI, {
-      method: "PATCH",
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: bodyDataJSON,
     });
