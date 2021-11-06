@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: screens/Login.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: screens/Login.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { useNavigation } from "@react-navigation/native";
+import * as SecureStore from "expo-secure-store";
+import React, { useEffect, useState } from "react";
+import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
+import { tailwind } from "tailwind";
+
+import Button from "../components/Button";
+import DisplayNotif from "../components/DisplayNotif";
+import { PrimaryHeader } from "../components/Headers";
+import TextField from "../components/TextField";
+import UnderlinedLink from "../components/UnderlinedLink";
+import apiHandler from "../util/APIHandler";
+
+/**
+ * @function Login
+ * @module Login
+ * @description Login screen
+ */
+const Login = () => {
+  const failedLoginMessage = "Error: Incorrect Username Or Password";
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [failedLogin, setFailedLogin] = useState(false);
+
+  const navigation = useNavigation();
+
+  const saveToken = async (value) => {
+    await SecureStore.setItemAsync("token", value);
+  };
+
+  const deleteToken = async (key) => {
+    await SecureStore.deleteItemAsync(key);
+  };
+
+  const submitLogin = async () => {
+    try {
+      const response = await apiHandler.submitLogin(username, password);
+      const data = await response.json();
+      if (data.access_token) {
+        saveToken(data.access_token);
+        navigation.navigate("Home");
+      } else setFailedLogin(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    deleteToken("token");
+  }, []);
+
+  return (
+    &lt;ScrollView keyboardShouldPersistTaps="handled">
+      &lt;SafeAreaView style={styles.view}>
+        &lt;View style={styles.header}>
+          &lt;PrimaryHeader text="Login" />
+        &lt;/View>
+        &lt;View style={styles.errorMessage}>
+          &lt;DisplayNotif
+            notification={failedLoginMessage}
+            display={failedLogin}
+            color="indianred"
+          />
+        &lt;/View>
+
+        &lt;TextField
+          placeholder="Username"
+          onChangeText={(text) => setUsername(text)}
+        />
+        &lt;TextField
+          placeholder="Password"
+          secure
+          onChangeText={(text) => setPassword(text)}
+        />
+        &lt;View style={styles.loginButton}>
+          &lt;Button label="Enter" disabled={false} onClick={submitLogin} />
+        &lt;/View>
+        &lt;View style={styles.underlinedLinks}>
+          &lt;UnderlinedLink text="Don't have an account?" to="RegisterAccount" />
+          &lt;UnderlinedLink text="Can't log in?" to="RecoverAccount" />
+          &lt;UnderlinedLink text="Learn more about Being Seen" to="Tutorial" />
+        &lt;/View>
+      &lt;/SafeAreaView>
+    &lt;/ScrollView>
+  );
+};
+
+const styles = StyleSheet.create({
+  errorMessage: {
+    ...tailwind("items-center"),
+  },
+  header: {
+    ...tailwind("flex items-center my-10"),
+  },
+  loginButton: {
+    ...tailwind("my-5"),
+  },
+  underlinedLinks: {
+    ...tailwind("flex flex-col items-center"),
+  },
+  view: {
+    ...tailwind("flex flex-col justify-center mx-5 my-10"),
+  },
+});
+
+export default Login;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-BackButton.html">BackButton</a></li><li><a href="module-Button.html">Button</a></li><li><a href="module-DisplayNotif.html">DisplayNotif</a></li><li><a href="module-Headers.html">Headers</a></li><li><a href="module-LandingScreen.html">LandingScreen</a></li><li><a href="module-ListFromAPI.html">ListFromAPI</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-MainProfile.html">MainProfile</a></li><li><a href="module-NewsPostScreen.html">NewsPostScreen</a></li><li><a href="module-RecoverAccountScreen.html">RecoverAccountScreen</a></li><li><a href="module-RegisterAccountScreen.html">RegisterAccountScreen</a></li><li><a href="module-ScreenHeader.html">ScreenHeader</a></li><li><a href="module-SearchBar.html">SearchBar</a></li><li><a href="module-SearchScreen.html">SearchScreen</a></li><li><a href="module-ServiceDetails.html">ServiceDetails</a></li><li><a href="module-SettingsScreen.html">SettingsScreen</a></li><li><a href="module-TagRow.html">TagRow</a></li><li><a href="module-TextField.html">TextField</a></li><li><a href="module-TutorialScreen.html">TutorialScreen</a></li><li><a href="module-UnderlinedLink.html">UnderlinedLink</a></li><li><a href="module-WriteReview.html">WriteReview</a></li></ul><h3>Global</h3><ul><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getTags">getTags</a></li><li><a href="global.html#openPhone">openPhone</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Nov 05 2021 19:46:42 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
