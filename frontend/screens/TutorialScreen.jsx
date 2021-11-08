@@ -175,11 +175,7 @@ const TutorialScreen = () => {
           <View style={styles({ pageIndex, index }).sliderDot} key={key} />
         ))}
         <View style={styles({ width, height }).exit}>
-          {navigation.canGoBack() ? (
-            <UnderlinedLink text="Exit Tutorial" back />
-          ) : (
-            <UnderlinedLink text="Exit Tutorial" to="Login" />
-          )}
+          <UnderlinedLink text="Exit Tutorial" to="Login" />
         </View>
       </View>
     </SafeAreaView>
