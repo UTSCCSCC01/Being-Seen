@@ -1,4 +1,4 @@
-import { Linking, Platform } from "react-native";
+import { Alert, Linking, Platform } from "react-native";
 
 /**
  * Capitalize the first character of str.
@@ -78,6 +78,36 @@ export function openPhone(phone) {
     phoneNumber = `tel:${phone}`;
   }
   return Linking.openURL(phoneNumber);
+}
+
+export function openWhatsApp(phone) {
+  const url = `whatsapp://send?text=Hello From Being Seen&phone=+1${phone}`;
+  Linking.canOpenURL(url)
+    .then((installed) => {
+      if (!installed) {
+        Alert.alert(
+          "Please install whats app to send direct message to students via whatsapp"
+        );
+      } else {
+        return Linking.openURL(url);
+      }
+    })
+    .catch((err) => console.error(err));
+}
+
+export function openPhoneNumber(phone) {
+  return Alert.alert("", "", [
+    {
+      text: "Cancel",
+      onPress: () => {},
+    },
+    { text: "Open in Phone App", onPress: () => openPhone(phone) },
+
+    {
+      text: "Open in WhatsApp",
+      onPress: () => openWhatsApp(phone),
+    },
+  ]);
 }
 
 const queryToName = {

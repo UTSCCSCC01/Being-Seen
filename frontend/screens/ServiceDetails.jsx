@@ -19,7 +19,7 @@ import Button from "../components/Button";
 import ScreenHeader from "../components/ScreenHeader";
 import TagRow from "../components/TagRow";
 import apiHandler from "../util/APIHandler";
-import { capitalize, formatDate, openPhone } from "../util/FormatHelper";
+import { capitalize, formatDate, openPhoneNumber } from "../util/FormatHelper";
 
 /**
  * @function ServiceDetails displays expanded details of a service
@@ -96,7 +96,7 @@ export default function ServiceDetails({ route, navigation }) {
                     <Text style={styles.infoNormalText}>Phone Number: </Text>
                     <TouchableOpacity
                       onPress={() => {
-                        openPhone(info.phoneNumber);
+                        openPhoneNumber(info.phoneNumber);
                       }}
                     >
                       <Text style={styles.infoUnderlinedText} color="purple">
