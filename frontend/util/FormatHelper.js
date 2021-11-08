@@ -91,6 +91,7 @@ export function openWhatsApp(phone) {
       } else {
         return Linking.openURL(url);
       }
+      return;
     })
     .catch((err) => console.error(err));
 }
