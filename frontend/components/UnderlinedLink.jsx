@@ -27,7 +27,6 @@ const UnderlinedLink = ({ text, to }) => {
 UnderlinedLink.propTypes = {
   text: PropTypes.string.isRequired,
   to: PropTypes.string,
-  back: PropTypes.bool,
 };
 
 UnderlinedLink.defaultProps = {
