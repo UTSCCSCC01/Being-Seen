@@ -63,6 +63,7 @@ export default function WriteReview({ route, navigation }) {
         if (json !== null) {
           setOldReview(json);
           setReview(json);
+          setRating(review.rating);
           setIsEditing(true);
         }
       })
