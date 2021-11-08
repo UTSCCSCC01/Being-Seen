@@ -37,7 +37,7 @@ export default function WriteReview({ route, navigation }) {
   const [reviewer, setReviewer] = useState(null);
   // A classic moment of "when I remove this line the whole rating system collapses"
   // For some reason onFinishRating can't read review. This is the only workaround.
-  const [rating, setRating] = useState(-1);
+  const [rating, setRating] = useState(0);
   const { query, infoId } = route.params;
 
   async function getProfileIdFromToken() {
@@ -63,6 +63,7 @@ export default function WriteReview({ route, navigation }) {
         if (json !== null) {
           setOldReview(json);
           setReview(json);
+          setRating(review.rating);
           setIsEditing(true);
         }
       })
@@ -73,9 +74,7 @@ export default function WriteReview({ route, navigation }) {
 
   useEffect(() => {
     if (readyToPublish) {
-      console.log(`content: ${review.content}`);
       if (isEditing) {
-        console.log(`content: ${review.content}`);
         apiHandler
           .patchReviewToApi(infoId, reviewer, query, review.content, rating)
           .catch((error) => console.log(error));
@@ -131,7 +130,7 @@ export default function WriteReview({ route, navigation }) {
       </View>
       <View style={styles.horizontalRuler} />
       <Rating
-        startingValue={oldReview.rating}
+        startingValue={Math.max(0, oldReview.rating)}
         // tintColor={purpleThemeColour}
         jumpValue={0.5}
         imageSize={28}
