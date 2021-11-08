@@ -75,6 +75,7 @@ export default function WriteReview({ route, navigation }) {
   useEffect(() => {
     if (readyToPublish) {
       if (isEditing) {
+        console.log(`rating: ${rating} content:${review.content}`)
         apiHandler
           .patchReviewToApi(infoId, reviewer, query, review.content, rating)
           .catch((error) => console.log(error));

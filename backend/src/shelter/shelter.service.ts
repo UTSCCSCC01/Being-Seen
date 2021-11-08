@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConsoleLogger, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { TagService } from 'src/tag/tag.service';
@@ -96,19 +96,24 @@ export class ShelterService {
     content: string,
     rating: number,
   ) {
+    console.log(`rating: ${rating} content:${content}`)
     try {
       const shelter = await this.findShelterPrimitive(shelterId);
       const index = shelter.reviews.findIndex(
         (review) => review.reviewer == reviewerId,
       );
       if (index > -1) {
-        if (shelter.reviews[index].content) {
+        if (content) {
           shelter.reviews[index].content = content;
         }
-        if (shelter.reviews[index].rating) {
+        if (rating) {
           shelter.reviews[index].rating = rating;
         }
       }
+      else{
+        console.log("error has occured")
+      }
+      console.log(`rating: ${shelter.reviews[index].rating} content:${shelter.reviews[index].content}` )
       shelter.markModified('reviews');
       this.updateShelterScore(shelter);
     } catch (error) {
