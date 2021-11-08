@@ -96,7 +96,6 @@ export class ShelterService {
     content: string,
     rating: number,
   ) {
-    console.log(`rating: ${rating} content:${content}`)
     try {
       const shelter = await this.findShelterPrimitive(shelterId);
       const index = shelter.reviews.findIndex(
@@ -113,7 +112,6 @@ export class ShelterService {
       else{
         console.log("error has occured")
       }
-      console.log(`rating: ${shelter.reviews[index].rating} content:${shelter.reviews[index].content}` )
       shelter.markModified('reviews');
       this.updateShelterScore(shelter);
     } catch (error) {
