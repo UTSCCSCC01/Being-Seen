@@ -1,4 +1,4 @@
-import { ConsoleLogger, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { TagService } from 'src/tag/tag.service';
@@ -108,9 +108,8 @@ export class ShelterService {
         if (rating) {
           shelter.reviews[index].rating = rating;
         }
-      }
-      else{
-        console.log("error has occured")
+      } else {
+        console.log('error has occured');
       }
       shelter.markModified('reviews');
       this.updateShelterScore(shelter);
