@@ -10,14 +10,13 @@ import { tailwind } from "tailwind";
  * @description An underlined text link
  * @prop {string} text - The text to display
  * @prop {string} [to] - Destination link
- * @prop {boolean} [back] - go to the previous screen
  */
-const UnderlinedLink = ({ text, to, back }) => {
+const UnderlinedLink = ({ text, to }) => {
   const navigation = useNavigation();
 
   return (
     <TouchableHighlight
-      onPress={() => (back ? navigation.goBack() : navigation.navigate(to))}
+      onPress={() => navigation.replace(to)}
       underlayColor="#E8E7E7"
     >
       <Text style={styles.text}>{text}</Text>
@@ -28,12 +27,10 @@ const UnderlinedLink = ({ text, to, back }) => {
 UnderlinedLink.propTypes = {
   text: PropTypes.string.isRequired,
   to: PropTypes.string,
-  back: PropTypes.bool,
 };
 
 UnderlinedLink.defaultProps = {
   to: "",
-  back: false,
 };
 
 const styles = StyleSheet.create({
