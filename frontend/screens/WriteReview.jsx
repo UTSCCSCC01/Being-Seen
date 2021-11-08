@@ -129,7 +129,7 @@ export default function WriteReview({ route, navigation }) {
       </View>
       <View style={styles.horizontalRuler} />
       <Rating
-        startingValue={Math.max(0,oldReview.rating)}
+        startingValue={Math.max(0, oldReview.rating)}
         // tintColor={purpleThemeColour}
         jumpValue={0.5}
         imageSize={28}
