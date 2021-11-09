@@ -6,6 +6,7 @@ import React, { useEffect } from "react";
 import { Image, Platform, StatusBar, StyleSheet, View } from "react-native";
 
 import icons from "./constants/icons";
+import EditProfile from "./screens/EditProfile";
 import LandingScreen from "./screens/LandingScreen";
 import ListFromAPI from "./screens/ListFromAPI";
 import Login from "./screens/Login";
@@ -117,6 +118,7 @@ export default function App() {
           <Stack.Screen name="Settings" component={SettingsScreen} />
           <Stack.Screen name="NewsPost" component={NewsPostScreen} />
           <Stack.Screen name="Profile" component={Profile} />
+          <Stack.Screen name="EditProfile" component={EditProfile} />
         </Stack.Navigator>
       </NavigationContainer>
     </>

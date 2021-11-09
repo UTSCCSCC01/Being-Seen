@@ -6,6 +6,10 @@ const settings = [
         title: "View Tutorial",
         screen: "Tutorial",
       },
+      {
+        title: "Edit Profile",
+        screen: "EditProfile",
+      },
     ],
   },
 ];
