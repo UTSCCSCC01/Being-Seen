@@ -66,7 +66,7 @@ export default {
   /**
    * Let user log out and get back to Login page.
    */
-  logOut() {
+  async logOut() {
     const token = await SecureStore.getItemAsync("token");
     if (token != null ) {
       await SecureStore.deleteItemAsync("token");
