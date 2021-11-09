@@ -64,6 +64,17 @@ export default {
   },
 
   /**
+   * Let user log out and get back to Login page.
+   */
+  logOut() {
+    const token = await SecureStore.getItemAsync("token");
+    if (token != null ) {
+      await SecureStore.deleteItemAsync("token");
+      navigation.replace("Login");
+    }
+  },
+
+  /**
    * Sends a list of strings as tags to the server.
    * @param {string[]} tagList An array of strings. Each one represents a tag to be searched.
    * @param {string} serviceType The name of the endpoint to which this http request will be sent.
