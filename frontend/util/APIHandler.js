@@ -68,7 +68,7 @@ export default {
    */
   async logOut() {
     const token = await SecureStore.getItemAsync("token");
-    if (token != null ) {
+    if (token != null) {
       await SecureStore.deleteItemAsync("token");
       navigation.replace("Login");
     }
