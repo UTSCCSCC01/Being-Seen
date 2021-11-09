@@ -38,7 +38,7 @@ const Login = () => {
       const data = await response.json();
       if (data.access_token) {
         saveToken(data.access_token);
-        navigation.replace("Home");
+        navigation.navigate("Home");
       } else setFailedLogin(true);
     } catch (error) {
       console.error(error);
@@ -66,13 +66,11 @@ const Login = () => {
         <TextField
           placeholder="Username"
           onChangeText={(text) => setUsername(text)}
-          onSubmitEditing={submitLogin}
         />
         <TextField
           placeholder="Password"
           secure
           onChangeText={(text) => setPassword(text)}
-          onSubmitEditing={submitLogin}
         />
         <View style={styles.loginButton}>
           <Button label="Enter" disabled={false} onClick={submitLogin} />
