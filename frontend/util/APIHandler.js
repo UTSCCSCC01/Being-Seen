@@ -1,3 +1,6 @@
+import { UseNavigation } from "@react-navigation/native";
+import * as SecureStore from "expo-secure-store";
+
 const apiAddress = "http://10.0.2.2:3000/";
 
 // eslint-disable-next-line no-underscore-dangle
@@ -61,6 +64,18 @@ export default {
         password,
       }),
     });
+  },
+
+  /**
+   * Let user log out and get back to Login page.
+   */
+  async logOut() {
+    const navigation = UseNavigation();
+    const token = await SecureStore.getItemAsync("token");
+    if (token != null) {
+      await SecureStore.deleteItemAsync("token");
+      navigation.replace("Login");
+    }
   },
 
   /**
