@@ -17,7 +17,7 @@ import { UsersService } from './users.service';
     ]),
     ProfileModule,
   ],
-  providers: [UsersService, ProfileService],
+  providers: [UsersService],
   exports: [UsersService],
 })
 export class UsersModule {}
