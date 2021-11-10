@@ -55,10 +55,10 @@ const Home = () => (
     <Tab.Screen name="Merchants">
       {() => <ListFromAPI query="Merchant" />}
     </Tab.Screen>
-    <Tab.Screen name="Jobs">{() => <ListFromAPI query="Job" />}</Tab.Screen>
     <Tab.Screen name="Social Services">
       {() => <ListFromAPI query="Shelter" />}
     </Tab.Screen>
+    <Tab.Screen name="Jobs">{() => <ListFromAPI query="Job" />}</Tab.Screen>
     <Tab.Screen name="Education">
       {() => <ListFromAPI query="Education" />}
     </Tab.Screen>
