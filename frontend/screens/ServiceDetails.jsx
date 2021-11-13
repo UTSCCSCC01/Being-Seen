@@ -64,9 +64,7 @@ export default function ServiceDetails({ route, navigation }) {
         secondaryHeader
       />
       {refreshing ? (
-        <View style={styles.spinnerContainer}>
-          <Spinner />
-        </View>
+        <Spinner />
       ) : (
         <FlatList
           refreshing={refreshing}
@@ -249,10 +247,5 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     fontSize: 16,
     margin: 2,
-  },
-  spinnerContainer: {
-    alignItems: "center",
-    flex: 1,
-    justifyContent: "center",
   },
 });

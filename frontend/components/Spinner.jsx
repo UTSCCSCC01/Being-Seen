@@ -1,11 +1,15 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { ActivityIndicator } from "react-native";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { tailwind } from "tailwind";
 
 function Spinner({ style }) {
   const { color, size } = style;
-  return <ActivityIndicator color={color} size={size} />;
+  return (
+    <View style={styles.spinnerContainer}>
+      <ActivityIndicator color={color} size={size} />
+    </View>
+  );
 }
 
 Spinner.propTypes = {
@@ -18,5 +22,13 @@ Spinner.defaultProps = {
     size: "large",
   },
 };
+
+const styles = StyleSheet.create({
+  spinnerContainer: {
+    alignItems: "center",
+    flex: 1,
+    justifyContent: "center",
+  },
+});
 
 export default Spinner;
