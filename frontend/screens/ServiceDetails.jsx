@@ -17,6 +17,7 @@ import { tailwind } from "tailwind";
 import BackButton from "../components/BackButton";
 import Button from "../components/Button";
 import ScreenHeader from "../components/ScreenHeader";
+import Spinner from "../components/Spinner";
 import TagRow from "../components/TagRow";
 import apiHandler from "../util/APIHandler";
 import { capitalize, formatDate, openPhoneNumber } from "../util/FormatHelper";
@@ -33,14 +34,16 @@ import { capitalize, formatDate, openPhoneNumber } from "../util/FormatHelper";
  */
 export default function ServiceDetails({ route, navigation }) {
   const { query, itemId } = route.params;
-  const [refreshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState(true);
   const [info, setInfo] = useState(null);
 
   useEffect(() => {
+    setRefreshing(true);
     apiHandler
       .getInfoFromApiById(query, itemId)
       .then((res) => res.json())
       .then((json) => setInfo(json))
+      .then(() => setRefreshing(false))
       .catch((error) => console.log(error));
   }, []);
 
@@ -60,8 +63,8 @@ export default function ServiceDetails({ route, navigation }) {
         headerText={info?.name}
         secondaryHeader
       />
-      {!info ? (
-        <Text>Loading...</Text>
+      {refreshing ? (
+        <Spinner />
       ) : (
         <FlatList
           refreshing={refreshing}

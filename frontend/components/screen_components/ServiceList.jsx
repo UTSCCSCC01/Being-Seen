@@ -12,6 +12,7 @@ import { tailwind } from "tailwind";
 
 import icons from "../../constants/icons";
 import { capitalize, getTags } from "../../util/FormatHelper";
+import Spinner from "../Spinner";
 
 /**
  * @function ServiceList
@@ -31,28 +32,32 @@ export default function ServiceList({
   const [information, setInformation] = useState([
     { name: `Error ${query} not loaded` },
   ]);
-  const [sheltersRefreshing, setSheltersRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState(true);
 
   useEffect(() => {
+    setRefreshing(true);
     infoGetter()
       .then((response) => response.json())
       .then((json) => setInformation(json))
+      .then(() => setRefreshing(false))
       .catch((error) => console.error(error));
   }, [infoGetter]);
 
   async function refreshFromApi() {
-    setSheltersRefreshing(true);
+    setRefreshing(true);
     infoGetter()
       .then((response) => response.json())
       .then((json) => setInformation(json))
       .catch((error) => console.error(error));
-    setSheltersRefreshing(false);
+    setRefreshing(false);
   }
-  return (
+  return refreshing ? (
+    <Spinner />
+  ) : (
     <FlatList
       ListHeaderComponent={listHeader}
       data={information}
-      refreshing={sheltersRefreshing}
+      refreshing={refreshing}
       onRefresh={refreshFromApi}
       renderItem={({ item }) => {
         return (

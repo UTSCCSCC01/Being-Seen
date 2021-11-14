@@ -5,42 +5,15 @@ import * as SecureStore from "expo-secure-store";
 import jwt_decode from "jwt-decode";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
-import Icon from "react-native-vector-icons/Entypo";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { tailwind } from "tailwind";
 
 import BackButton from "../components/BackButton";
-import Button from "../components/Button";
 import QuotationBlock from "../components/QuotationBlock";
 import ScreenHeader from "../components/ScreenHeader";
+import Spinner from "../components/Spinner";
 import icons from "../constants/icons";
 import apiHandler from "../util/APIHandler";
-
-const Stack = createNativeStackNavigator();
-
-function Profile() {
-  return (
-    <Stack.Navigator initialRouteName={MainProfile}>
-      <Stack.Screen
-        name="MainProfile"
-        options={{ headerShown: false }}
-        component={MainProfile}
-        initialParams={{
-          name: "",
-          story: "",
-          balance: "",
-        }}
-      />
-    </Stack.Navigator>
-  );
-}
 
 /**
  *
@@ -54,6 +27,7 @@ function MainProfile({ route, navigation }) {
   const [name, setName] = useState("");
   const [story, setStory] = useState("");
   const [balance, setBalance] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   async function getProfileIdFromToken() {
     const token = await SecureStore.getItemAsync("token");
@@ -61,46 +35,37 @@ function MainProfile({ route, navigation }) {
     return decoded.id;
   }
 
+  const refresh = () => {
+    setLoading(true);
+    getProfileIdFromToken()
+      .then((id) => {
+        apiHandler
+          .getProfile(id)
+          .then((response) => response.json()) // handles parsing
+          .then((responseJSON) => {
+            // handles setting
+            setName(responseJSON.name);
+            setStory(responseJSON.story);
+            setBalance(responseJSON.balance);
+          })
+          .catch((error) => {
+            console.error(error);
+            alert(`Promise rejected: ${error}`);
+          });
+      })
+      .then(() => setLoading(false));
+  };
   useEffect(() => {
-    // Put Your Code Here Which You Want To Refresh or Reload on Coming Back to This Screen.
-    getProfileIdFromToken().then((id) => {
-      apiHandler
-        .getProfile(id)
-        .then((response) => response.json()) // handles parsing
-        .then((responseJSON) => {
-          // handles setting
-          setName(responseJSON.name);
-          setStory(responseJSON.story);
-          setBalance(responseJSON.balance);
-        })
-        .catch((error) => {
-          console.error(error);
-          alert(`Promise rejected: ${error}`);
-        });
-    });
+    refresh();
   }, [isFocused]);
 
-  // TODO may need to implement initialParams
   useEffect(() => {
-    getProfileIdFromToken().then((id) => {
-      apiHandler
-        .getProfile(id)
-        .then((response) => response.json()) // handles parsing
-        .then((responseJSON) => {
-          // handles setting
-          setName(responseJSON.name);
-          setStory(responseJSON.story);
-          setBalance(responseJSON.balance);
-        })
-        .catch((error) => {
-          console.error(error);
-          alert(`Promise rejected: ${error}`);
-        });
-    });
-  }, [route.params.name, route.params.story, route.params.balance]);
+    refresh();
+  }, []);
 
-  // TODO RETURN component
-  return (
+  return loading ? (
+    <Spinner />
+  ) : (
     <ScrollView>
       <ScreenHeader
         leftNode={<BackButton />}
@@ -202,4 +167,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Profile;
+export default MainProfile;
