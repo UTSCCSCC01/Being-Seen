@@ -74,7 +74,10 @@ export default {
     const token = await SecureStore.getItemAsync("token");
     if (token != null) {
       await SecureStore.deleteItemAsync("token");
-      navigation.replace("Login");
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Login" }],
+      });
     }
   },
 
