@@ -69,12 +69,15 @@ export default {
   /**
    * Let user log out and get back to Login page.
    */
-  async logOut() {
-    const navigation = UseNavigation();
+  async logOut(navigation) {
+    // const navigation = UseNavigation();
     const token = await SecureStore.getItemAsync("token");
     if (token != null) {
       await SecureStore.deleteItemAsync("token");
-      navigation.replace("Login");
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Login" }],
+      });
     }
   },
 

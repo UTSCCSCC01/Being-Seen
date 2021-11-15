@@ -15,6 +15,7 @@ import BackButton from "../components/BackButton";
 import { SecondaryHeader } from "../components/Headers";
 import ScreenHeader from "../components/ScreenHeader";
 import settings from "../constants/settings";
+import apiHandler from "../util/APIHandler";
 
 /**
  * @function SettingsScreen
@@ -28,6 +29,18 @@ const SettingsScreen = () => {
     <SafeAreaView style={styles.settingsView}>
       <ScreenHeader leftNode={<BackButton />} headerText="Settings" />
       <View style={styles.settingsList}>
+        <View style={styles.settingsHeader}>
+          <SecondaryHeader text="Logout" />
+        </View>
+        <Pressable
+          style={
+            settingsItemStyles({ isFirstElement: true, isLastElement: true })
+              .settingsItem
+          }
+          onPress={() => apiHandler.logOut(navigation)}
+        >
+          <Text style={styles.settingsItemText}>Logout</Text>
+        </Pressable>
         <SectionList
           sections={settings}
           showsVerticalScrollIndicator
@@ -41,7 +54,7 @@ const SettingsScreen = () => {
             return (
               <Pressable
                 style={
-                  settingsItemStyles({ isFirstElement, isLastElement })
+                  settingsItemStyles({ isFirstElement: false, isLastElement })
                     .settingsItem
                 }
                 onPress={() => navigation.push(props.item.screen)}
