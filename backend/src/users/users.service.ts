@@ -7,6 +7,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Schema } from 'mongoose';
 
 import { CreateUserDto } from './dto/createUser.dto';
+import { ProfileService } from 'src/profile/profile.service';
 import { User } from './users.schema';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const bcrypt = require('bcrypt');
@@ -14,7 +15,9 @@ const bcrypt = require('bcrypt');
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel(User.name) private readonly UserModel: Model<User>,
+    @InjectModel(User.name) 
+    private readonly UserModel: Model<User>,
+    private readonly profileService: ProfileService,
   ) {}
 
   /**
@@ -66,6 +69,9 @@ export class UsersService {
 
         try {
           const newUser = await userObject.save();
+
+          const newProfile = await this.profileService.postProfile(userObject.id, createUserDto.username, '', 0);
+
           return newUser;
         } catch (error) {
           throw new InternalServerErrorException(error);

@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
 import React, { useEffect, useState } from "react";
@@ -45,8 +46,40 @@ const Login = () => {
     }
   };
 
+  const checkIfFirstLaunch = async () => {
+    try {
+      const hasLaunched = await AsyncStorage.getItem("hasLaunched");
+      if (hasLaunched === null) {
+        AsyncStorage.setItem("hasLaunched", "true");
+        return true;
+      }
+      return false;
+    } catch (error) {
+      return false;
+    }
+  };
+
   useEffect(() => {
     deleteToken("token");
+    // The commented out code simulate the first run of the app.
+    //   function clearAllData() {
+    //     return AsyncStorage.getAllKeys().then((keys) =>
+    //       AsyncStorage.multiRemove(keys)
+    //     );
+    //   }
+    //   clearAllData()
+    //     .then(() => {
+    //       return checkIfFirstLaunch();
+    //     }).then((bool) => {
+    //       if (bool) {
+    //         navigation.navigate("Tutorial");
+    //       }
+    //   });
+    checkIfFirstLaunch().then((bool) => {
+      if (bool) {
+        navigation.navigate("Tutorial");
+      }
+    });
   }, []);
 
   return (

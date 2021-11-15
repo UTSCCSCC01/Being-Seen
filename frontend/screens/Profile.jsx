@@ -1,49 +1,19 @@
 /* eslint-disable react/jsx-no-bind */
+import { useIsFocused } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SecureStore from "expo-secure-store";
 import jwt_decode from "jwt-decode";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
-import Icon from "react-native-vector-icons/Entypo";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { tailwind } from "tailwind";
 
 import BackButton from "../components/BackButton";
-import Button from "../components/Button";
 import QuotationBlock from "../components/QuotationBlock";
 import ScreenHeader from "../components/ScreenHeader";
+import Spinner from "../components/Spinner";
+import icons from "../constants/icons";
 import apiHandler from "../util/APIHandler";
-
-const Stack = createNativeStackNavigator();
-
-function Profile() {
-  return (
-    <Stack.Navigator initialRouteName={MainProfile}>
-      <Stack.Screen
-        name="MainProfile"
-        options={{ headerShown: false }}
-        component={MainProfile}
-        initialParams={{
-          name: "",
-          story: "",
-          balance: "",
-        }}
-      />
-      <Stack.Screen
-        name="EditProfile"
-        options={{ headerShown: false }}
-        component={EditProfile}
-      />
-    </Stack.Navigator>
-  );
-}
 
 /**
  *
@@ -52,9 +22,12 @@ function Profile() {
  * @description Full page of to display profile
  */
 function MainProfile({ route, navigation }) {
+  const isFocused = useIsFocused();
+
   const [name, setName] = useState("");
   const [story, setStory] = useState("");
   const [balance, setBalance] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   async function getProfileIdFromToken() {
     const token = await SecureStore.getItemAsync("token");
@@ -62,38 +35,45 @@ function MainProfile({ route, navigation }) {
     return decoded.id;
   }
 
-  // TODO may need to implement initialParams
+  const refresh = () => {
+    setLoading(true);
+    getProfileIdFromToken()
+      .then((id) => {
+        apiHandler
+          .getProfile(id)
+          .then((response) => response.json()) // handles parsing
+          .then((responseJSON) => {
+            // handles setting
+            setName(responseJSON.name);
+            setStory(responseJSON.story);
+            setBalance(responseJSON.balance);
+          })
+          .catch((error) => {
+            console.error(error);
+            alert(`Promise rejected: ${error}`);
+          });
+      })
+      .then(() => setLoading(false));
+  };
   useEffect(() => {
-    getProfileIdFromToken().then((id) => {
-      apiHandler
-        .getProfile(id)
-        .then((response) => response.json()) // handles parsing
-        .then((responseJSON) => {
-          // handles setting
-          setName(responseJSON.name);
-          setStory(responseJSON.story);
-          setBalance(responseJSON.balance);
-        })
-        .catch((error) => {
-          console.error(error);
-          alert(`Promise rejected: ${error}`);
-        });
-    });
-  }, [route.params.name, route.params.story, route.params.balance]);
+    refresh();
+  }, [isFocused]);
 
-  // TODO RETURN component
-  return (
+  useEffect(() => {
+    refresh();
+  }, []);
+
+  return loading ? (
+    <Spinner />
+  ) : (
     <ScrollView>
       <ScreenHeader
         leftNode={<BackButton />}
         headerText="My Profile"
-        rightNode={<Icon name="pencil" style={styles.editIcon} />}
+        rightNode={<Image source={icons.settings} style={styles.tabIcon} />}
         rightContainerStyle={styles.editIconContainer}
         handleOnPressRightNode={() => {
-          navigation.navigate("EditProfile", {
-            name,
-            story,
-          });
+          navigation.navigate("Settings");
         }}
       />
       <View style={styles.profileBlockContainer}>
@@ -120,65 +100,6 @@ function MainProfile({ route, navigation }) {
   );
 }
 MainProfile.propTypes = {
-  route: PropTypes.object.isRequired,
-  navigation: PropTypes.object.isRequired,
-};
-
-function EditProfile({ route, navigation }) {
-  const [story, setStory] = useState(route.params.story);
-
-  async function getProfileIdFromToken() {
-    const token = await SecureStore.getItemAsync("token");
-    const decoded = await jwt_decode(token);
-    return decoded.id;
-  }
-
-  return (
-    <>
-      <ScreenHeader leftNode={<BackButton />} headerText="Edit Profile" />
-      <View style={editStyles.textInputContainer}>
-        <ScrollView>
-          <TextInput
-            multiline
-            textAlignVertical="top"
-            numberOfLines={5}
-            value={story}
-            onChangeText={setStory}
-            placeholder={route.params.story}
-            style={editStyles.textInput}
-          />
-        </ScrollView>
-      </View>
-      <View style={styles.submitButtonView}>
-        <Button
-          label="Submit"
-          onClick={async () => {
-            const id = await getProfileIdFromToken();
-            try {
-              const response = await apiHandler.updateStoryForProfile(
-                story,
-                id
-              );
-              if (response.status === 200) {
-                navigation.navigate({
-                  name: "MainProfile",
-                  params: { story },
-                  merge: true,
-                });
-              } else {
-                alert(`Http request failed: code ${response.status}`);
-              }
-            } catch (error) {
-              alert(`Promise rejected: ${error}`);
-            }
-          }}
-          disabled={false}
-        />
-      </View>
-    </>
-  );
-}
-EditProfile.propTypes = {
   route: PropTypes.object.isRequired,
   navigation: PropTypes.object.isRequired,
 };
@@ -236,17 +157,14 @@ const styles = StyleSheet.create({
   submitButtonView: {
     ...tailwind("mx-4 my-2"),
   },
+  tabIcon: {
+    height: 30,
+    width: 30,
+  },
   usernameText: {
     fontSize: 32,
     // fontWeight: "bold",
   },
 });
 
-const editStyles = StyleSheet.create({
-  textInput: {},
-  textInputContainer: {
-    ...tailwind("m-2 p-2 rounded-xl bg-light-grey"),
-  },
-});
-
-export default Profile;
+export default MainProfile;
