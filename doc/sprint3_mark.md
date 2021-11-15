@@ -225,8 +225,8 @@ Tracking on Jira Total Mark: 22 / 24
     - **8 marks = features presented work flawlessly**
     - 1 mark removed for each bug/error identified or for missing records on Jira
   - Presentation (max 2 marks)
-    - 2 marks = UI demonstrated is visually appealing and intuitive for users
-    - **1 mark = one or more errors identified by the demo TA**
+    - **2 marks = UI demonstrated is visually appealing and intuitive for users**
+    - 1 mark = one or more errors identified by the demo TA
     - 0 marks = UI is visually unappealing
   - Documentation (max 2 marks)
       - **2 marks = documentation has been created for frontend and backend systems with great detail**
@@ -235,10 +235,10 @@ Tracking on Jira Total Mark: 22 / 24
 
 
 
-  Your Mark: TBD / 14
+  Your Mark: 14 / 14
 
 ---
 
 ## Total Mark
 
-78 / 93
+91 / 93
