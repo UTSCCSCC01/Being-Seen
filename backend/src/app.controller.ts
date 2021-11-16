@@ -57,7 +57,7 @@ export class AppController {
   }
 
   @Put('auth/change')
-  async changePassword(@Body() user, @Body('new') newPass:string) {
+  async changePassword(@Body() user, @Body('new') newPass: string) {
     return await this.authService.updatePassword(user, newPass);
   }
 }

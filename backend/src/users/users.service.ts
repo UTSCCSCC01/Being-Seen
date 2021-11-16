@@ -5,10 +5,10 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Schema } from 'mongoose';
+import { ProfileService } from 'src/profile/profile.service';
 
 import { CreateUserDto } from './dto/createUser.dto';
 import { loginUserDto } from './dto/loginUser.dto';
-import { ProfileService } from 'src/profile/profile.service';
 import { User } from './users.schema';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const bcrypt = require('bcrypt');
@@ -16,7 +16,7 @@ const bcrypt = require('bcrypt');
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel(User.name) 
+    @InjectModel(User.name)
     private readonly UserModel: Model<User>,
     private readonly profileService: ProfileService,
   ) {}
@@ -71,7 +71,12 @@ export class UsersService {
         try {
           const newUser = await userObject.save();
 
-          const newProfile = await this.profileService.postProfile(userObject.id, createUserDto.username, '', 0);
+          const newProfile = await this.profileService.postProfile(
+            userObject.id,
+            createUserDto.username,
+            '',
+            0,
+          );
 
           return newUser;
         } catch (error) {
@@ -83,20 +88,17 @@ export class UsersService {
     }
   }
 
-  async updatePassword(loginUserDto: loginUserDto, newPass:string){
+  async updatePassword(loginUserDto: loginUserDto, newPass: string) {
     const userExists = await this.getUserByUsername(loginUserDto.username);
     if (userExists.length !== 0) {
       bcrypt.hash(newPass, 10, async (error, hash) => {
         if (error) {
           throw new InternalServerErrorException(error);
         }
-      console.log(loginUserDto.password)
-      console.log(hash)
-      console.log(userExists[0])
 
         try {
           userExists[0].password = hash;
-          userExists[0].save()
+          userExists[0].save();
 
           return userExists[0];
         } catch (error) {
