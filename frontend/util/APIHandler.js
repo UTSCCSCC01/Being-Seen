@@ -1,7 +1,7 @@
 import { UseNavigation } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
 
-const apiAddress = "http://10.0.2.2:3000/";
+const apiAddress = "https://beingseen.live/";
 
 // eslint-disable-next-line no-underscore-dangle
 async function __sendReviewToAPI(
