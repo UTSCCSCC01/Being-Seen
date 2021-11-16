@@ -7,6 +7,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Schema } from 'mongoose';
 
 import { CreateUserDto } from './dto/createUser.dto';
+import { loginUserDto } from './dto/loginUser.dto';
 import { ProfileService } from 'src/profile/profile.service';
 import { User } from './users.schema';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -80,5 +81,31 @@ export class UsersService {
     } else {
       throw new ConflictException('Username already exists');
     }
+  }
+
+  async updatePassword(loginUserDto: loginUserDto, newPass:string){
+    const userExists = await this.getUserByUsername(loginUserDto.username);
+    if (userExists.length !== 0) {
+      bcrypt.hash(newPass, 10, async (error, hash) => {
+        if (error) {
+          throw new InternalServerErrorException(error);
+        }
+      console.log(loginUserDto.password)
+      console.log(hash)
+      console.log(userExists[0])
+
+        try {
+          userExists[0].password = hash;
+          userExists[0].save()
+
+          return userExists[0];
+        } catch (error) {
+          throw new InternalServerErrorException(error);
+        }
+      });
+    } else {
+      throw new ConflictException('Username already exists');
+    }
+    return null;
   }
 }
