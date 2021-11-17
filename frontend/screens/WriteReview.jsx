@@ -3,7 +3,14 @@ import * as SecureStore from "expo-secure-store";
 import jwt_decode from "jwt-decode";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { Rating } from "react-native-ratings";
 import { tailwind } from "tailwind";
 
@@ -113,45 +120,50 @@ export default function WriteReview({ route, navigation }) {
   return (
     <View style={styles.pageContainer}>
       <ScreenHeader leftNode={<BackButton />} headerText="Write Review" />
-      <View style={styles.writeReviewBox}>
-        <TextInput
-          multiline
-          defaultValue={oldReview.content}
-          placeholder="Enter Review Here"
-          maxLength={400}
-          onChangeText={(content) => {
-            setReview({
-              content,
-              rating: review.rating,
-              date: review.date,
-            });
-          }}
+      <ScrollView>
+        <View style={styles.writeReviewBox}>
+          <TextInput
+            multiline
+            defaultValue={oldReview.content}
+            placeholder="Enter Review Here"
+            maxLength={400}
+            onChangeText={(content) => {
+              setReview({
+                content,
+                rating: review.rating,
+                date: review.date,
+              });
+            }}
+          />
+        </View>
+        <Rating
+          startingValue={Math.max(0, oldReview.rating)}
+          // tintColor={purpleThemeColour}
+          jumpValue={0.5}
+          imageSize={28}
+          onFinishRating={setRating}
+          style={styles.ratingStars}
         />
-      </View>
-      <View style={styles.horizontalRuler} />
-      <Rating
-        startingValue={Math.max(0, oldReview.rating)}
-        // tintColor={purpleThemeColour}
-        jumpValue={0.5}
-        imageSize={28}
-        onFinishRating={setRating}
-        style={styles.ratingStars}
-      />
-      <View alignItems="center">
-        <Text style={styles.ratingHint}>Slide on The Stars to Rate</Text>
-      </View>
-      <View style={styles.buttonView}>
-        <Button
-          label="Publish Review"
-          disabled={false}
-          onClick={() => {
-            setReadyToPublish(true);
-          }}
-        />
-      </View>
-      <View style={styles.buttonView}>
-        <Button label="Delete Review" disabled={false} onClick={DeleteReview} />
-      </View>
+        <View alignItems="center">
+          <Text style={styles.ratingHint}>Slide on The Stars to Rate</Text>
+        </View>
+        <View style={styles.buttonView}>
+          <Button
+            label="Publish Review"
+            disabled={false}
+            onClick={() => {
+              setReadyToPublish(true);
+            }}
+          />
+        </View>
+        <View style={styles.buttonView}>
+          <Button
+            label="Delete Review"
+            disabled={false}
+            onClick={DeleteReview}
+          />
+        </View>
+      </ScrollView>
     </View>
   );
 }
@@ -161,7 +173,7 @@ const styles = StyleSheet.create({
     ...tailwind("mx-4 my-2"),
   },
   horizontalRuler: {
-    ...tailwind("border-gray-400"),
+    ...tailwind(""),
     borderBottomWidth: 1,
   },
   pageContainer: {
@@ -176,13 +188,8 @@ const styles = StyleSheet.create({
     marginVertical: 3,
   },
   writeReviewBox: {
-    ...tailwind("bg-white border-primary"),
-    borderRadius: 8,
-    borderWidth: 2,
-    height: "40%",
-    marginHorizontal: 5,
-    marginVertical: 3,
-    padding: 5,
+    ...tailwind("m-3 p-2 border-2 border-grey rounded-lg"),
+    height: 250,
   },
 });
 

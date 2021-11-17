@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { tailwind } from "tailwind";
 
-import { capitalize, getTags } from "../../util/FormatHelper";
+import { capitalize, formatText, getTags } from "../../util/FormatHelper";
 
 /**
  * @function Newsreel
@@ -71,7 +71,7 @@ export default function Newsreel({ navigation, numPosts, infoGetter }) {
                   numberOfLines={3}
                   ellipsizeMode="tail"
                 >
-                  {item.headline}
+                  {item?.headline}
                 </Text>
                 <Text
                   style={styles.contentPreview}
