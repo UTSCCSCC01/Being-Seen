@@ -16,6 +16,7 @@ import { tailwind } from "tailwind";
 
 import BackButton from "../components/BackButton";
 import Button from "../components/Button";
+import { PrimaryHeader, TertiaryHeader } from "../components/Headers";
 import ScreenHeader from "../components/ScreenHeader";
 import Spinner from "../components/Spinner";
 import TagRow from "../components/TagRow";
@@ -58,11 +59,7 @@ export default function ServiceDetails({ route, navigation }) {
 
   return (
     <>
-      <ScreenHeader
-        leftNode={<BackButton />}
-        headerText={info?.name}
-        secondaryHeader
-      />
+      <ScreenHeader leftNode={<BackButton />} />
       {refreshing ? (
         <Spinner />
       ) : (
@@ -78,73 +75,63 @@ export default function ServiceDetails({ route, navigation }) {
                 />
               ) : null}
               <View style={styles.infoContainer}>
-                <Text style={styles.infoNormalText}>Name: {info.name}</Text>
+                <View style={styles.topInfo}>
+                  <PrimaryHeader text={info?.name} />
+                  <TagRow tagList={info.tags} />
+                  {info.rating ? (
+                    <View style={styles.ratingView}>
+                      <Rating
+                        readonly="true"
+                        startingValue={info.rating}
+                        // tintColor={purpleThemeColour} <-- TODO: Fix this styling
+                        imageSize={28}
+                        jumpValue={0.5}
+                      />
+                    </View>
+                  ) : null}
+                  {info.hours ? (
+                    <Text style={styles.hours}>Open {info.hours}</Text>
+                  ) : null}
+                  <Text style={styles.description}>{info.description}</Text>
+                </View>
                 {info.address ? (
-                  <View style={styles.infoRow}>
-                    <Text style={styles.infoNormalText}>Address: </Text>
-                    <TouchableOpacity
-                      onPress={() => {
-                        openMap({ query: info.address });
-                      }}
-                    >
-                      <Text style={styles.infoUnderlinedText}>
-                        {" "}
-                        {info.address}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
+                  <TouchableOpacity
+                    onPress={() => {
+                      openMap({ query: info.address });
+                    }}
+                    style={styles.infoRow}
+                  >
+                    <TertiaryHeader text="Address" />
+                    <Text style={styles.link}>{info.address}</Text>
+                  </TouchableOpacity>
                 ) : null}
                 {info.phoneNumber ? (
-                  <View style={styles.infoRow}>
-                    <Text style={styles.infoNormalText}>Phone Number: </Text>
-                    <TouchableOpacity
-                      onPress={() => {
-                        openPhoneNumber(info.phoneNumber);
-                      }}
-                    >
-                      <Text style={styles.infoUnderlinedText} color="purple">
-                        {" "}
-                        {info.phoneNumber}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
+                  <TouchableOpacity
+                    onPress={() => {
+                      openPhoneNumber(info.phoneNumber);
+                    }}
+                    style={styles.infoRow}
+                  >
+                    <TertiaryHeader text="Phone Number" />
+                    <Text style={styles.link} color="purple">
+                      {info.phoneNumber}
+                    </Text>
+                  </TouchableOpacity>
                 ) : null}
                 {info.email ? (
-                  <View style={styles.infoRow}>
-                    <Text style={styles.infoNormalText}>Email:</Text>
-                    <TouchableOpacity
-                      onPress={() => {
-                        Linking.openURL(`mailto:${info.email}?subject=&body=`);
-                      }}
-                    >
-                      <Text style={styles.infoUnderlinedText} color="purple">
-                        {" "}
-                        {info.email}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                ) : null}
-                <Text style={styles.infoNormalText}>
-                  <Text style={styles.infoNormalText}>Description:</Text>
-                  <Text style={styles.infoNormalText}>{info.description}</Text>
-                </Text>
-                {info.hours ? (
-                  <Text style={styles.infoNormalText}>Hours: {info.hours}</Text>
-                ) : null}
-                {info.rating ? (
-                  <View flexDirection="row">
-                    <Text style={styles.infoNormalText}>Rating:</Text>
-                    <Rating
-                      readonly="true"
-                      startingValue={info.rating}
-                      // tintColor={purpleThemeColour} <-- TODO: Fix this styling
-                      imageSize={28}
-                      jumpValue={0.5}
-                    />
-                  </View>
+                  <TouchableOpacity
+                    onPress={() => {
+                      Linking.openURL(`mailto:${info.email}?subject=&body=`);
+                    }}
+                    style={styles.infoRow}
+                  >
+                    <TertiaryHeader text="Email" />
+                    <Text style={styles.link} color="purple">
+                      {info.email}
+                    </Text>
+                  </TouchableOpacity>
                 ) : null}
               </View>
-              <TagRow tagList={info.tags} />
               <View style={styles.buttonsView}>
                 {info.reviews ? (
                   <Button
@@ -176,8 +163,7 @@ export default function ServiceDetails({ route, navigation }) {
           renderItem={({ item }) => (
             <View style={styles.reviewBox} key={item}>
               <Text style={styles.reviewText}>&quot;{item.content}&quot;</Text>
-              <View flexDirection="row">
-                <Text style={styles.reviewText}>Rating: </Text>
+              <View style={styles.ratingView}>
                 <Rating
                   readonly="true"
                   startingValue={item.rating}
@@ -185,9 +171,7 @@ export default function ServiceDetails({ route, navigation }) {
                   imageSize={25}
                 />
               </View>
-              <Text style={styles.reviewText}>
-                Written on {formatDate(item.date)}
-              </Text>
+              <Text style={styles.reviewDate}>{formatDate(item.date)}</Text>
             </View>
           )}
           keyExtractor={(item) => item.reviewer.toString()}
@@ -209,43 +193,40 @@ const styles = StyleSheet.create({
   buttonsView: {
     ...tailwind("m-4"),
   },
+  description: {
+    ...tailwind("text-base"),
+  },
   headlinePicture: {
-    height: Dimensions.get("window").height / 4,
+    height: Dimensions.get("window").height / 3.5,
     resizeMode: "cover",
     width: Dimensions.get("window").width,
   },
-  infoContainer: {
-    ...tailwind("bg-gray-100"),
-    // borderRadius: 10,
-    paddingHorizontal: 5,
-    paddingVertical: 5,
+  hours: {
+    ...tailwind("text-lg font-bold"),
   },
-  infoNormalText: {
-    ...tailwind("text-black"),
-    fontSize: 16,
-    margin: 2,
+  infoContainer: {
+    ...tailwind("py-3"),
   },
   infoRow: {
-    flexDirection: "row",
+    ...tailwind("px-3 py-2 border-light-grey border-t-2"),
   },
-  infoUnderlinedText: {
-    ...tailwind("text-black"),
-    fontSize: 16,
-    margin: 2,
-    // textDecorationColor: purpleThemeColour,
-    textDecorationLine: "underline",
+  link: {
+    ...tailwind("text-base"),
+  },
+  ratingView: {
+    ...tailwind("flex-row py-2"),
   },
   reviewBox: {
-    ...tailwind("bg-white border-primary"),
-    borderRadius: 10,
-    borderWidth: 2,
-    margin: 5,
-    padding: 5,
+    ...tailwind("px-4 py-3 border-light-grey border-t-2"),
+  },
+  reviewDate: {
+    ...tailwind("text-sm text-grey"),
   },
   reviewText: {
-    ...tailwind("text-black"),
+    ...tailwind("font-black text-base"),
     flexWrap: "wrap",
-    fontSize: 16,
-    margin: 2,
+  },
+  topInfo: {
+    ...tailwind("px-3 mb-3"),
   },
 });

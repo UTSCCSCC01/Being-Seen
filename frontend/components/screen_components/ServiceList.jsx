@@ -13,6 +13,7 @@ import { tailwind } from "tailwind";
 import icons from "../../constants/icons";
 import { capitalize, getTags } from "../../util/FormatHelper";
 import Spinner from "../Spinner";
+import TagRow from "../TagRow";
 
 /**
  * @function ServiceList
@@ -88,12 +89,17 @@ export default function ServiceList({
                   >
                     {item.name}
                   </Text>
+                  <Text
+                    style={styles.description}
+                    numberOfLines={2}
+                    ellipsizeMode="tail"
+                  >
+                    {item.description}
+                  </Text>
                 </View>
               </View>
               <View style={styles.textContainer}>
-                <Text style={styles.tags} numberOfLines={1}>
-                  Tags: {item.tags ? getTags(item.tags) : "None"}
-                </Text>
+                <TagRow tagList={item.tags} />
               </View>
             </TouchableOpacity>
           </View>
@@ -117,6 +123,9 @@ ServiceList.defaultProps = {
 };
 
 const styles = StyleSheet.create({
+  description: {
+    ...tailwind("text-sm"),
+  },
   firstRow: {
     ...tailwind("flex-row"),
   },
