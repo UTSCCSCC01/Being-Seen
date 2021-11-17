@@ -54,7 +54,7 @@ const SettingsScreen = () => {
             return (
               <Pressable
                 style={
-                  settingsItemStyles({ isFirstElement: false, isLastElement })
+                  settingsItemStyles({ isFirstElement, isLastElement })
                     .settingsItem
                 }
                 onPress={() => navigation.push(props.item.screen)}
@@ -92,11 +92,14 @@ const styles = StyleSheet.create({
 const settingsItemStyles = ({ isFirstElement, isLastElement }) =>
   StyleSheet.create({
     settingsItem: {
-      ...tailwind("flex-row p-2 border-2 border-solid border-grey"),
+      ...tailwind(
+        "flex-row p-2 border-b-2 border-l-2 border-r-2 border-solid border-grey"
+      ),
       borderBottomLeftRadius: isLastElement ? 10 : 0,
       borderBottomRightRadius: isLastElement ? 10 : 0,
       borderTopLeftRadius: isFirstElement ? 10 : 0,
       borderTopRightRadius: isFirstElement ? 10 : 0,
+      borderTopWidth: isFirstElement ? 2 : 0,
     },
   });
 
