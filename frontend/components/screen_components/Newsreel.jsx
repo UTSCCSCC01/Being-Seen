@@ -11,8 +11,6 @@ import {
 } from "react-native";
 import { tailwind } from "tailwind";
 
-import { capitalize, formatText, getTags } from "../../util/FormatHelper";
-
 /**
  * @function Newsreel
  * @module Newsreel
