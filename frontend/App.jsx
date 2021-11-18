@@ -120,7 +120,7 @@ export default function App() {
           <Stack.Screen name="NewsPost" component={NewsPostScreen} />
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="EditProfile" component={EditProfile} />
-          <Stack.Screen name="ChangePassword" component={ChangePassword}/>
+          <Stack.Screen name="ChangePassword" component={ChangePassword} />
         </Stack.Navigator>
       </NavigationContainer>
     </>

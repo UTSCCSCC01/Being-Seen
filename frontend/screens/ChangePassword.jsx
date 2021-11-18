@@ -5,6 +5,7 @@ import jwt_decode from "jwt-decode";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   Image,
   ScrollView,
   StyleSheet,
@@ -28,19 +29,20 @@ function ChangePassword() {
   const [newPassword, setNewPassword] = useState("");
   const [confirm, setConfirm] = useState("");
 
-	async function decodeJWTPayload() {
+  async function decodeJWTPayload() {
     const token = await SecureStore.getItemAsync("token");
     const decoded = await jwt_decode(token);
     return decoded;
-  };
+  }
 
-	const updatePassword = async () => {
+  const updatePassword = async () => {
     try {
-      if (newPassword != confirm) {
+      if (newPassword !== confirm) {
+        Alert.alert("passwords do not match");
         return;
       }
       const decoded = await decodeJWTPayload();
-      const username = decoded.username;
+      const { username } = decoded;
       console.log(username, curPassword, newPassword, confirm);
       const response = await apiHandler.updatePassword(
         username,
@@ -60,28 +62,43 @@ function ChangePassword() {
   return (
     <>
       <ScreenHeader leftNode={<BackButton />} headerText="Change Password" />
-      <View>
-			<TextField
-        placeholder="Current Password"
-        secure
-        onChangeText={setCurPassword}
-        onSubmitEditing={updatePassword}
-      />
-      <TextField
-        placeholder="New Password"
-        secure
-        onChangeText={setNewPassword}
-        onSubmitEditing={updatePassword}
-      />
-      <TextField
-        placeholder="Confirm New Password"
-        secure
-        onChangeText={setConfirm}
-        onSubmitEditing={updatePassword}
-      />
+      <View style={styles.changeScreen}>
+        <TextField
+          placeholder="Current Password"
+          secure
+          onChangeText={setCurPassword}
+          onSubmitEditing={updatePassword}
+        />
+        <TextField
+          placeholder="New Password"
+          secure
+          onChangeText={setNewPassword}
+          onSubmitEditing={updatePassword}
+        />
+        <TextField
+          placeholder="Confirm New Password"
+          secure
+          onChangeText={setConfirm}
+          onSubmitEditing={updatePassword}
+        />
+        <View style={styles.changeButton}>
+          <Button
+            label="Change Password"
+            disabled={false}
+            onClick={updatePassword}
+          />
+        </View>
       </View>
     </>
   );
 }
+const styles = StyleSheet.create({
+  changeButton: {
+    paddingTop: "3%",
+  },
+  changeScreen: {
+    padding: "5%",
+  },
+});
 
 export default ChangePassword;

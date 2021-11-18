@@ -29,7 +29,7 @@ function EditProfile() {
     const token = await SecureStore.getItemAsync("token");
     const decoded = await jwt_decode(token);
     return decoded.id;
-  } 
+  }
 
   // TODO may need to implement initialParams
   useEffect(() => {

@@ -68,10 +68,10 @@ export default {
 
   /**
    * Update password for a given user
-   * @param {string} username 
-   * @param {string} password 
-   * @param {string} newPassword 
-   * @returns 
+   * @param {string} username
+   * @param {string} password
+   * @param {string} newPassword
+   * @returns
    */
   updatePassword(username, password, newPassword) {
     return fetch(`${apiAddress}auth/update`, {
@@ -84,7 +84,7 @@ export default {
         password,
         newPassword,
       }),
-    })
+    });
   },
 
   /**
