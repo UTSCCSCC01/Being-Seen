@@ -69,17 +69,27 @@ export class AuthService {
     try {
       const validated = await this.validateUser(loginUserDto);
       if (validated !== null) {
-        const payload = await this.usersService.updatePassword(
+        const newLogin = await this.usersService.updatePassword(
           loginUserDto,
           newPass,
         );
-        return {
-          access_token: this.jwtService.sign(payload),
+        /*
+        const payload = {
+          id: newLogin._id,
+          username: newLogin.username,
+          permissions: newLogin.permissions,
+          createdAt: newLogin.createdAt,
         };
+        return ({
+          access_token: this.jwtService.sign(payload),
+        });
+        */
+        return;
       }
       return new UnauthorizedException();
     } catch (error) {
-      throw new InternalServerErrorException(error);
+      console.log(error);
+      return new InternalServerErrorException();
     }
   }
 }

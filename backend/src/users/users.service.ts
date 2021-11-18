@@ -98,9 +98,8 @@ export class UsersService {
 
         try {
           userExists[0].password = hash;
-          userExists[0].save();
-
-          return userExists[0];
+          const toRet = userExists[0].save();
+          return toRet;
         } catch (error) {
           throw new InternalServerErrorException(error);
         }
