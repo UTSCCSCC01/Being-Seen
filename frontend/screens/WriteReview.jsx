@@ -134,6 +134,7 @@ export default function WriteReview({ route, navigation }) {
                 date: review.date,
               });
             }}
+            style={styles.textInput}
           />
         </View>
         <Rating
@@ -186,6 +187,9 @@ const styles = StyleSheet.create({
   ratingStars: {
     ...tailwind("bg-transparent"),
     marginVertical: 3,
+  },
+  textInput: {
+    ...tailwind("text-base"),
   },
   writeReviewBox: {
     ...tailwind("m-3 p-2 border-2 border-grey rounded-lg"),

@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     ...tailwind("my-4"),
   },
   settingsItemText: {
-    ...tailwind("text-primary text-base"),
+    ...tailwind("text-primary text-base font-bold"),
   },
   settingsList: {
     ...tailwind("mx-6 my-4"),
@@ -93,7 +93,7 @@ const settingsItemStyles = ({ isFirstElement, isLastElement }) =>
   StyleSheet.create({
     settingsItem: {
       ...tailwind(
-        "flex-row p-2 border-b-2 border-l-2 border-r-2 border-solid border-grey"
+        "flex-row p-2 border-b-2 border-l-2 border-r-2 border-solid border-gray-400"
       ),
       borderBottomLeftRadius: isLastElement ? 10 : 0,
       borderBottomRightRadius: isLastElement ? 10 : 0,

@@ -154,9 +154,11 @@ const styles = StyleSheet.create({
 });
 
 const editStyles = StyleSheet.create({
-  textInput: {},
+  textInput: {
+    ...tailwind("text-base"),
+  },
   textInputContainer: {
-    ...tailwind("m-2 p-2 rounded-xl bg-light-grey"),
+    ...tailwind("m-2 p-2 border-2 border-grey rounded-lg"),
   },
 });
 

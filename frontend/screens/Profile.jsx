@@ -1,6 +1,4 @@
-/* eslint-disable react/jsx-no-bind */
 import { useIsFocused } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SecureStore from "expo-secure-store";
 import jwt_decode from "jwt-decode";
 import PropTypes from "prop-types";
@@ -9,7 +7,7 @@ import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { tailwind } from "tailwind";
 
 import BackButton from "../components/BackButton";
-import QuotationBlock from "../components/QuotationBlock";
+import { SecondaryHeader } from "../components/Headers";
 import ScreenHeader from "../components/ScreenHeader";
 import Spinner from "../components/Spinner";
 import icons from "../constants/icons";
@@ -66,37 +64,40 @@ function MainProfile({ route, navigation }) {
   return loading ? (
     <Spinner />
   ) : (
-    <ScrollView>
+    <View>
       <ScreenHeader
         leftNode={<BackButton />}
         headerText="My Profile"
         rightNode={<Image source={icons.settings} style={styles.tabIcon} />}
-        rightContainerStyle={styles.editIconContainer}
         handleOnPressRightNode={() => {
-          navigation.navigate("Settings");
+          navigation.push("Settings");
         }}
       />
-      <View style={styles.profileBlockContainer}>
-        <View style={styles.profilePictureContainer}>
-          <Image
-            // eslint-disable-next-line global-require
-            source={require("../assets/rickroll.jpg")}
-            style={styles.profilePicture}
-          />
+      <ScrollView>
+        <View style={styles.profileBlockContainer}>
+          <View style={styles.profilePictureContainer}>
+            <Image
+              // eslint-disable-next-line global-require
+              source={require("../assets/rickroll.jpg")}
+              style={styles.profilePicture}
+            />
+          </View>
+          <View style={styles.profileInfoContainer}>
+            <Text style={styles.usernameText}>{name}</Text>
+            <View style={styles.balanceView}>
+              <Text style={styles.balanceHeader}>Balance</Text>
+              <Text style={styles.balance}>${balance}</Text>
+            </View>
+          </View>
         </View>
-        <View style={styles.profileInfoContainer}>
-          <Text style={styles.usernameText}>{name}</Text>
-          <Text style={styles.balanceText}>Balance: ${balance}</Text>
+        <View style={styles.infoView}>
+          <View style={styles.infoHeaderView}>
+            <SecondaryHeader text={`${name}'s Story`} />
+          </View>
+          <Text style={styles.storyText}>{story}</Text>
         </View>
-      </View>
-      <View style={styles.horizontalRuler} />
-      <Text style={styles.storySectionTitle}>About me</Text>
-      <QuotationBlock
-        text={story}
-        fontSize={16}
-        style={styles.quotationBlock}
-      />
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
 MainProfile.propTypes = {
@@ -105,34 +106,29 @@ MainProfile.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  balanceText: {
-    fontSize: 18,
+  balance: {
+    ...tailwind("text-lg font-bold"),
   },
-  editIcon: {
-    fontSize: 30,
+  balanceHeader: {
+    ...tailwind("text-sm text-grey"),
   },
-  editIconContainer: {
-    alignItems: "center",
-    // backgroundColor: "#abc",
-    flex: 1,
-    height: 40,
-    justifyContent: "center",
-    marginLeft: -10,
-    paddingRight: 10,
+  balanceView: {
+    ...tailwind(
+      "flex-col justify-center items-center bg-light-grey rounded-lg my-2 px-3 py-1"
+    ),
   },
-  horizontalRuler: {
-    ...tailwind("border-gray-400"),
-    borderBottomWidth: 1,
+  infoHeaderView: {
+    ...tailwind("my-2"),
+  },
+  infoView: {
+    ...tailwind("my-4 px-4"),
   },
   profileBlockContainer: {
     // backgroundColor: "#a73",
     flexDirection: "row",
   },
   profileInfoContainer: {
-    // backgroundColor: "#c80",
-    flexDirection: "column",
-    flex: 1,
-    paddingVertical: 10,
+    ...tailwind("flex-col p-3"),
   },
   profilePicture: {
     height: 100,
@@ -146,13 +142,8 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     width: 100,
   },
-  quotationBlock: {
-    marginHorizontal: 22,
-  },
-  storySectionTitle: {
-    fontSize: 28,
-    marginLeft: 20,
-    marginTop: 10,
+  storyText: {
+    ...tailwind("text-base"),
   },
   submitButtonView: {
     ...tailwind("mx-4 my-2"),
@@ -162,8 +153,7 @@ const styles = StyleSheet.create({
     width: 30,
   },
   usernameText: {
-    fontSize: 32,
-    // fontWeight: "bold",
+    ...tailwind("text-2xl font-bold"),
   },
 });
 
