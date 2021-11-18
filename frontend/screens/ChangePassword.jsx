@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     paddingTop: "3%",
   },
   changeScreen: {
-    padding: "5%",
+    padding: "7%",
   },
 });
 
