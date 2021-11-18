@@ -11,6 +11,10 @@ const settings = [
         screen: "EditProfile",
       },
       {
+        title: "Change Password",
+        screen: "ChangePassword",
+      },
+      {
         title: "Email Us",
         screen: "EmailUs",
       },

@@ -8,6 +8,7 @@ import { Model, Schema } from 'mongoose';
 import { ProfileService } from 'src/profile/profile.service';
 
 import { CreateUserDto } from './dto/createUser.dto';
+import { loginUserDto } from './dto/loginUser.dto';
 import { User } from './users.schema';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const bcrypt = require('bcrypt');
@@ -85,5 +86,27 @@ export class UsersService {
     } else {
       throw new ConflictException('Username already exists');
     }
+  }
+
+  async updatePassword(loginUserDto: loginUserDto, newPass: string) {
+    const userExists = await this.getUserByUsername(loginUserDto.username);
+    if (userExists.length !== 0) {
+      bcrypt.hash(newPass, 10, async (error, hash) => {
+        if (error) {
+          throw new InternalServerErrorException(error);
+        }
+
+        try {
+          userExists[0].password = hash;
+          const toRet = userExists[0].save();
+          return toRet;
+        } catch (error) {
+          throw new InternalServerErrorException(error);
+        }
+      });
+    } else {
+      throw new ConflictException('Username already exists');
+    }
+    return null;
   }
 }
