@@ -94,7 +94,7 @@ function ChangePassword() {
 }
 const styles = StyleSheet.create({
   changeButton: {
-    marginTop: "5%"
+    marginTop: "5%",
   },
   changeScreen: {
     padding: "5%",
