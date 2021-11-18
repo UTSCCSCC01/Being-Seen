@@ -36,3 +36,7 @@ lerna-debug.log*
 
 # dotenv
 .env
+
+# https
+/secrets
+/public/.well-known

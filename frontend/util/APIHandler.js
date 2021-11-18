@@ -1,7 +1,7 @@
 import { UseNavigation } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
 
-const apiAddress = "http://10.0.2.2:3000/";
+const apiAddress = "https://beingseen.live/";
 
 // eslint-disable-next-line no-underscore-dangle
 async function __sendReviewToAPI(
@@ -90,12 +90,15 @@ export default {
   /**
    * Let user log out and get back to Login page.
    */
-  async logOut() {
-    const navigation = UseNavigation();
+  async logOut(navigation) {
+    // const navigation = UseNavigation();
     const token = await SecureStore.getItemAsync("token");
     if (token != null) {
       await SecureStore.deleteItemAsync("token");
-      navigation.replace("Login");
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Login" }],
+      });
     }
   },
 

@@ -29,7 +29,7 @@ const RegisterAccountScreen = () => {
             label="Register"
             onClick={() =>
               Linking.openURL(
-                "mailto:support@beingseen.com?subject=Register An Account&body="
+                "mailto:beingseen.2020@gmail.com?subject=Register An Account&body="
               )
             }
             disabled={false}

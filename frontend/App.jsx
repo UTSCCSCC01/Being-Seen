@@ -8,6 +8,7 @@ import { Image, Platform, StatusBar, StyleSheet, View } from "react-native";
 import icons from "./constants/icons";
 import ChangePassword from "./screens/ChangePassword";
 import EditProfile from "./screens/EditProfile";
+import EmailUsScreen from "./screens/EmailUsScreen";
 import LandingScreen from "./screens/LandingScreen";
 import ListFromAPI from "./screens/ListFromAPI";
 import Login from "./screens/Login";
@@ -121,6 +122,7 @@ export default function App() {
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="EditProfile" component={EditProfile} />
           <Stack.Screen name="ChangePassword" component={ChangePassword} />
+          <Stack.Screen name="EmailUs" component={EmailUsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </>

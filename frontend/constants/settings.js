@@ -14,6 +14,10 @@ const settings = [
         title: "Change Password",
         screen: "ChangePassword",
       },
+      {
+        title: "Email Us",
+        screen: "EmailUs",
+      },
     ],
   },
 ];
