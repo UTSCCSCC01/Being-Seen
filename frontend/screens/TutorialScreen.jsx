@@ -55,8 +55,9 @@ const TutorialScreen = () => {
       >
         <View style={styles({ width, height }).slide}>
           <Image
-            source={images.landing_page_bg_1}
+            source={images.being_seen_logo_transparent}
             style={styles({ width, height }).image}
+            resizeMode="contain"
           />
           <View style={styles({}).textBox}>
             <PrimaryHeader text="Welcome" />
@@ -70,8 +71,9 @@ const TutorialScreen = () => {
         </View>
         <View style={styles({ width, height }).slide}>
           <Image
-            source={images.landing_page_bg_1}
+            source={images.newsreel}
             style={styles({ width, height }).image}
+            resizeMode="contain"
           />
           <View style={styles({}).textBox}>
             <PrimaryHeader text="Newsreel" />
@@ -84,8 +86,9 @@ const TutorialScreen = () => {
         </View>
         <View style={styles({ width, height }).slide}>
           <Image
-            source={images.landing_page_bg_1}
+            source={images.profile}
             style={styles({ width, height }).image}
+            resizeMode="contain"
           />
           <View style={styles({}).textBox}>
             <PrimaryHeader text="Profile" />
@@ -98,8 +101,9 @@ const TutorialScreen = () => {
         </View>
         <View style={styles({ width, height }).slide}>
           <Image
-            source={images.landing_page_bg_1}
+            source={images.search}
             style={styles({ width, height }).image}
+            resizeMode="contain"
           />
           <View style={styles({}).textBox}>
             <PrimaryHeader text="Search" />
@@ -112,8 +116,9 @@ const TutorialScreen = () => {
         </View>
         <View style={styles({ width, height }).slide}>
           <Image
-            source={images.landing_page_bg_1}
+            source={images.merchants}
             style={styles({ width, height }).image}
+            resizeMode="contain"
           />
           <View style={styles({}).textBox}>
             <PrimaryHeader text="Merchants" />
@@ -126,8 +131,9 @@ const TutorialScreen = () => {
         </View>
         <View style={styles({ width, height }).slide}>
           <Image
-            source={images.landing_page_bg_1}
+            source={images.jobs}
             style={styles({ width, height }).image}
+            resizeMode="contain"
           />
           <View style={styles({}).textBox}>
             <PrimaryHeader text="Jobs" />
@@ -141,8 +147,9 @@ const TutorialScreen = () => {
         </View>
         <View style={styles({ width, height }).slide}>
           <Image
-            source={images.landing_page_bg_1}
+            source={images.social_services}
             style={styles({ width, height }).image}
+            resizeMode="contain"
           />
           <View style={styles({}).textBox}>
             <PrimaryHeader text="Social Services" />
@@ -157,8 +164,9 @@ const TutorialScreen = () => {
         </View>
         <View style={styles({ width, height }).slide}>
           <Image
-            source={images.landing_page_bg_1}
+            source={images.education}
             style={styles({ width, height }).image}
+            resizeMode="contain"
           />
           <View style={styles({}).textBox}>
             <PrimaryHeader text="Education" />
@@ -196,7 +204,8 @@ const styles = ({ width, height, pageIndex, index }) =>
       right: width * 0.03,
     },
     image: {
-      height: height * 0.6,
+      ...tailwind("rounded-xl"),
+      height: height * 0.65,
       width: "auto",
     },
     slide: {
