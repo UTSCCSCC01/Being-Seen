@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, UseGuards } from '@nestjs/common';
 
 import { AuthService } from './auth/auth.service';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
@@ -54,5 +54,10 @@ export class AppController {
   @Post('auth/register')
   async register(@Body() user) {
     return await this.usersService.createUser(user);
+  }
+
+  @Put('auth/update')
+  async updatePassword(@Body() user, @Body('newPassword') newPass: string) {
+    return await this.authService.updatePassword(user, newPass);
   }
 }
