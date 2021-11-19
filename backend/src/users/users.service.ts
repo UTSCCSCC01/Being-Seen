@@ -88,6 +88,12 @@ export class UsersService {
     }
   }
 
+  /**
+   * updates user's password to be new pass
+   * @param loginUserDto user object
+   * @param newPass new password for user
+   * @returns user object with new password if request successful otherwise null
+   */
   async updatePassword(loginUserDto: loginUserDto, newPass: string) {
     const userExists = await this.getUserByUsername(loginUserDto.username);
     if (userExists.length !== 0) {
@@ -98,7 +104,7 @@ export class UsersService {
 
         try {
           userExists[0].password = hash;
-          const toRet = userExists[0].save();
+          const toRet = await userExists[0].save();
           return toRet;
         } catch (error) {
           throw new InternalServerErrorException(error);
