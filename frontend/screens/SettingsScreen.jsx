@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useRef, useState } from "react";
 import {
   Pressable,
   SafeAreaView,
@@ -16,6 +16,7 @@ import { SecondaryHeader } from "../components/Headers";
 import ScreenHeader from "../components/ScreenHeader";
 import settings from "../constants/settings";
 import apiHandler from "../util/APIHandler";
+import { AlertWarning } from "./Alerts";
 
 /**
  * @function SettingsScreen
@@ -24,9 +25,25 @@ import apiHandler from "../util/APIHandler";
  */
 const SettingsScreen = () => {
   const navigation = useNavigation();
+  const [showAlert, setShowAlert] = useState(false);
+  const alertMsg = useRef("");
 
   return (
     <SafeAreaView style={styles.settingsView}>
+      <AlertWarning
+        isShown={showAlert}
+        onCancel={() => {
+          setShowAlert(false);
+        }}
+        onConfirm={() => {
+          apiHandler.logOut(navigation);
+        }}
+        customView={
+          <View style={styles.alertContainer}>
+            <Text style={styles.alertText}>{alertMsg.current}</Text>
+          </View>
+        }
+      />
       <ScreenHeader leftNode={<BackButton />} headerText="Settings" />
       <View style={styles.settingsList}>
         <View style={styles.settingsHeader}>
@@ -37,7 +54,10 @@ const SettingsScreen = () => {
             settingsItemStyles({ isFirstElement: true, isLastElement: true })
               .settingsItem
           }
-          onPress={() => apiHandler.logOut(navigation)}
+          onPress={() => {
+            alertMsg.current = "Are you sure you want to log out?";
+            setShowAlert(true);
+          }}
         >
           <Text style={styles.settingsItemText}>Logout</Text>
         </Pressable>
@@ -75,6 +95,12 @@ const SettingsScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  alertContainer: {
+    ...tailwind("items-center justify-center mt-2"),
+  },
+  alertText: {
+    ...tailwind("text-center leading-5"),
+  },
   settingsHeader: {
     ...tailwind("my-4"),
   },
