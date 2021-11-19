@@ -62,7 +62,7 @@ export class AuthService {
         access_token: this.jwtService.sign(payload),
       };
     }
-    return new UnauthorizedException();
+    throw new UnauthorizedException();
   }
 
   async updatePassword(loginUserDto: loginUserDto, newPass: string) {
@@ -86,10 +86,14 @@ export class AuthService {
         */
         return;
       }
-      return new UnauthorizedException();
+      throw new UnauthorizedException();
     } catch (error) {
-      console.log(error);
-      return new InternalServerErrorException();
+      if(error instanceof UnauthorizedException){
+        throw new UnauthorizedException();
+      }else{
+        throw new InternalServerErrorException();
+      }
+      
     }
   }
 }

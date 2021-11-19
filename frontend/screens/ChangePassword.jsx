@@ -38,22 +38,26 @@ function ChangePassword() {
   const updatePassword = async () => {
     try {
       if (newPassword !== confirm) {
-        Alert.alert("passwords do not match");
-        return;
+        Alert.alert("incorrect password entered or passwords do not match");
       }
-      const decoded = await decodeJWTPayload();
-      const { username } = decoded;
-      console.log(username, curPassword, newPassword, confirm);
-      const response = await apiHandler.updatePassword(
-        username,
-        curPassword,
-        newPassword
-      );
-      if (response.status === 200) {
-        navigation.goBack();
-      } else {
-        alert(`Http request failed, code ${response.status}`);
-      }
+      else{
+        const decoded = await decodeJWTPayload();
+        const { username } = decoded;
+        console.log(username, curPassword, newPassword, confirm);
+        const response = await apiHandler.updatePassword(
+          username,
+          curPassword,
+          newPassword
+        );
+        if (response.status === 200) {
+          navigation.goBack();
+        } else if(response.status === 401){
+          Alert.alert("incorrect password entered or passwords do not match");
+        }
+        else {
+          alert(`Http request failed, code ${response.status}`);
+        }
+    }
     } catch (error) {
       console.log(error);
     }
