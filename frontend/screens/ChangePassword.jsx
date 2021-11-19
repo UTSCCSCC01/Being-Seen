@@ -42,27 +42,24 @@ function ChangePassword() {
         alertMsg.current = "New passwords do not match!";
         setShowError(true);
         return;
-      } else{
-        const decoded = await decodeJWTPayload();
-        const { username } = decoded;
-        console.log(username, curPassword, newPassword, confirm);
-        const response = await apiHandler.updatePassword(
+      }
+      const decoded = await decodeJWTPayload();
+      const { username } = decoded;
+      console.log(username, curPassword, newPassword, confirm);
+      const response = await apiHandler.updatePassword(
         username,
         curPassword,
         newPassword
-        );
-        if (response.status === 200) {
-          navigation.goBack();
-        } else if(response.status === 401){
-          alertMsg.current = "Incorrect password entered!";
-          setShowError(true);
-          return;
-        }
-        else {
-          alert(`Http request failed, code ${response.status}`);
-        }
+      );
+      if (response.status === 200) {
+        navigation.goBack();
+      } else if (response.status === 401) {
+        alertMsg.current = "Incorrect password entered!";
+        setShowError(true);
+        return;
+      } else {
+        alert(`Http request failed, code ${response.status}`);
       }
-      
     } catch (error) {
       console.log(error);
     }

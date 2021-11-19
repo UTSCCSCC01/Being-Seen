@@ -88,12 +88,11 @@ export class AuthService {
       }
       throw new UnauthorizedException();
     } catch (error) {
-      if(error instanceof UnauthorizedException){
+      if (error instanceof UnauthorizedException) {
         throw new UnauthorizedException();
-      }else{
+      } else {
         throw new InternalServerErrorException();
       }
-      
     }
   }
 }
