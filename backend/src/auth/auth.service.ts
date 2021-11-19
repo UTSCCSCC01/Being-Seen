@@ -62,9 +62,15 @@ export class AuthService {
         access_token: this.jwtService.sign(payload),
       };
     }
-    return new UnauthorizedException();
+    throw new UnauthorizedException();
   }
 
+  /**
+   * updates user to have password newpas
+   * @param loginUserDto user object
+   * @param newPass new password for user
+   * @returns null
+   */
   async updatePassword(loginUserDto: loginUserDto, newPass: string) {
     try {
       const validated = await this.validateUser(loginUserDto);
@@ -86,10 +92,13 @@ export class AuthService {
         */
         return;
       }
-      return new UnauthorizedException();
+      throw new UnauthorizedException();
     } catch (error) {
-      console.log(error);
-      return new InternalServerErrorException();
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException();
+      } else {
+        throw new InternalServerErrorException();
+      }
     }
   }
 }

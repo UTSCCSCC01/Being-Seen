@@ -53,6 +53,10 @@ function ChangePassword() {
       );
       if (response.status === 200) {
         navigation.goBack();
+      } else if (response.status === 401) {
+        alertMsg.current = "Incorrect password entered!";
+        setShowError(true);
+        return;
       } else {
         alert(`Http request failed, code ${response.status}`);
       }
