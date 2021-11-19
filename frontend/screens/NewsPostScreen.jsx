@@ -6,6 +6,7 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  ImageStore,
   Linking,
   SafeAreaView,
   ScrollView,
@@ -37,43 +38,37 @@ import { capitalize, formatDate, openPhone } from "../util/FormatHelper";
  */
 export default function NewsPostScreen({ route, navigation }) {
   const { query, itemId, post } = route.params;
-  const [refreshing, setRefreshing] = useState(false);
-  const [info, setInfo] = useState(null);
+  const [headline, setHeadline] = useState("");
+  const [picture, setPicture] = useState("");
+  const [content, setContent] = useState("");
 
   useEffect(() => {
-    setInfo(post);
-    // apiHandler
-    //   .getInfoFromApiById(query, itemId)
-    //   .then((res) => res.json())
-    //   .then((json) => setInfo(json))
-    //   .catch((error) => console.log(error));
-  }, []);
-
-  async function refreshFromApi() {
-    setRefreshing(true);
-    const res = await apiHandler.getInfoFromApiById(query, info._id);
-    if (res.status === 200) {
-      res.json().then((json) => setInfo(json));
-    }
-    setRefreshing(false);
-  }
+    setHeadline(post.headline);
+    setPicture(post.picture);
+    const parsedContent = post.content.replace(/\\n/g, "\n\n");
+    setContent(parsedContent);
+  }, [post]);
 
   return (
     <>
-      {!info ? (
+      {!post ? (
         <Text>Loading...</Text>
       ) : (
         <SafeAreaView style={styles.newsPostView}>
           <ScreenHeader leftNode={<BackButton />} />
           <ScrollView style={styles.articleView}>
-            <Text style={styles.headline}>{info.headline}</Text>
-            <Image
-              source={{ uri: info.picture }}
-              style={styles.image}
-              resizeMethod="resize"
-              resizeMode="contain"
-            />
-            <Text style={styles.content}>{post.content}</Text>
+            <Text style={styles.headline}>{headline}</Text>
+            {picture ? (
+              <Image
+                source={{ uri: picture }}
+                style={styles.image}
+                resizeMethod="resize"
+                resizeMode="contain"
+              />
+            ) : (
+              <View />
+            )}
+            <Text style={styles.content}>{content}</Text>
           </ScrollView>
         </SafeAreaView>
       )}
@@ -88,7 +83,7 @@ NewsPostScreen.propTypes = {
 
 const styles = StyleSheet.create({
   articleView: {
-    ...tailwind("p-3"),
+    ...tailwind("px-4 my-2"),
   },
   content: {
     ...tailwind("text-base text-black"),
