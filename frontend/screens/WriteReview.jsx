@@ -3,14 +3,7 @@ import * as SecureStore from "expo-secure-store";
 import jwt_decode from "jwt-decode";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import {
-  Alert,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { Rating } from "react-native-ratings";
 import { tailwind } from "tailwind";
 
@@ -18,6 +11,7 @@ import BackButton from "../components/BackButton";
 import Button from "../components/Button";
 import ScreenHeader from "../components/ScreenHeader";
 import apiHandler from "../util/APIHandler";
+import { AlertOK, AlertWarning } from "./Alerts";
 
 /**
  * @function WriteReview
@@ -45,6 +39,8 @@ export default function WriteReview({ route, navigation }) {
   // A classic moment of "when I remove this line the whole rating system collapses"
   // For some reason onFinishRating can't read review. This is the only workaround.
   const [rating, setRating] = useState(0);
+  const [showConfirmAlert, setShowConfirmAlert] = useState(false);
+  const [showConfirmOK, setShowConfirmOK] = useState(false);
   const { query, infoId } = route.params;
 
   async function getProfileIdFromToken() {
@@ -90,86 +86,107 @@ export default function WriteReview({ route, navigation }) {
           .postReviewToApi(infoId, reviewer, query, review.content, rating)
           .catch((error) => console.log(error));
       }
-      navigation.goBack();
       return;
     }
     setReadyToPublish(false);
   }, [readyToPublish]);
 
-  function DeleteReview() {
-    Alert.alert(
-      "Are you sure",
-      "Once you delete this review, you cannot get it back",
-      [
-        {
-          text: "Cancel",
-          onPress: () => {},
-          style: "cancel",
-        },
-        {
-          text: "OK",
-          onPress: async () => {
-            await apiHandler.deleteReviewFromApi(infoId, reviewer, query);
-            navigation.goBack();
-          },
-        },
-      ]
-    );
-  }
-
   return (
-    <View style={styles.pageContainer}>
-      <ScreenHeader leftNode={<BackButton />} headerText="Write Review" />
-      <ScrollView>
-        <View style={styles.writeReviewBox}>
-          <TextInput
-            multiline
-            defaultValue={oldReview.content}
-            placeholder="Enter Review Here"
-            maxLength={400}
-            onChangeText={(content) => {
-              setReview({
-                content,
-                rating: review.rating,
-                date: review.date,
-              });
-            }}
-            style={styles.textInput}
+    <>
+      <AlertOK
+        isShown={showConfirmOK}
+        onCancel={() => {
+          navigation.goBack();
+        }}
+        onConfirm={() => {
+          navigation.goBack();
+        }}
+        customView={
+          <View style={styles.alertContainer}>
+            <Text style={styles.alertText}>Your review has been recorded.</Text>
+          </View>
+        }
+      />
+      <AlertWarning
+        isShown={showConfirmAlert}
+        onCancel={() => {
+          setShowConfirmAlert(false);
+        }}
+        onConfirm={async () => {
+          await apiHandler.deleteReviewFromApi(infoId, reviewer, query);
+          setShowConfirmAlert(false);
+          navigation.goBack();
+        }}
+        customView={
+          <View style={styles.alertContainer}>
+            <Text style={styles.alertText}>
+              Are you sure? Once you delete this review, you cannot get it back!
+            </Text>
+          </View>
+        }
+      />
+      <View style={styles.pageContainer}>
+        <ScreenHeader leftNode={<BackButton />} headerText="Write Review" />
+        <ScrollView>
+          <View style={styles.writeReviewBox}>
+            <TextInput
+              multiline
+              defaultValue={oldReview.content}
+              placeholder="Enter Review Here"
+              maxLength={400}
+              onChangeText={(content) => {
+                setReview({
+                  content,
+                  rating: review.rating,
+                  date: review.date,
+                });
+              }}
+              style={styles.textInput}
+            />
+          </View>
+          <Rating
+            startingValue={Math.max(0, oldReview.rating)}
+            // tintColor={purpleThemeColour}
+            jumpValue={0.5}
+            imageSize={28}
+            onFinishRating={setRating}
+            style={styles.ratingStars}
           />
-        </View>
-        <Rating
-          startingValue={Math.max(0, oldReview.rating)}
-          // tintColor={purpleThemeColour}
-          jumpValue={0.5}
-          imageSize={28}
-          onFinishRating={setRating}
-          style={styles.ratingStars}
-        />
-        <View alignItems="center">
-          <Text style={styles.ratingHint}>Slide on The Stars to Rate</Text>
-        </View>
-        <View style={styles.buttonView}>
-          <Button
-            label="Publish Review"
-            disabled={false}
-            onClick={() => {
-              setReadyToPublish(true);
-            }}
-          />
-        </View>
-        <View style={styles.buttonView}>
-          <Button
-            label="Delete Review"
-            disabled={false}
-            onClick={DeleteReview}
-          />
-        </View>
-      </ScrollView>
-    </View>
+          <View alignItems="center">
+            <Text style={styles.ratingHint}>Slide on The Stars to Rate</Text>
+          </View>
+          <View style={styles.buttonView}>
+            <Button
+              label="Publish Review"
+              disabled={false}
+              onClick={() => {
+                setShowConfirmOK(true);
+                setReadyToPublish(true);
+              }}
+            />
+          </View>
+          <View style={styles.buttonView}>
+            <Button
+              label="Delete Review"
+              disabled={false}
+              onClick={() => {
+                setShowConfirmAlert(true);
+              }}
+            />
+          </View>
+        </ScrollView>
+      </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
+  alertContainer: {
+    ...tailwind("items-center justify-center mt-2"),
+  },
+  alertText: {
+    ...tailwind("text-center leading-5"),
+  },
   buttonView: {
     ...tailwind("mx-4 my-2"),
   },
