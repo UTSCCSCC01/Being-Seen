@@ -26,63 +26,33 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/* eslint-disable react/jsx-no-bind */
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+            <pre class="prettyprint source linenums"><code>import { useIsFocused } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
 import jwt_decode from "jwt-decode";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
-import Icon from "react-native-vector-icons/Entypo";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { tailwind } from "tailwind";
 
 import BackButton from "../components/BackButton";
-import QuotationBlock from "../components/QuotationBlock";
+import { SecondaryHeader } from "../components/Headers";
 import ScreenHeader from "../components/ScreenHeader";
+import Spinner from "../components/Spinner";
+import icons from "../constants/icons";
 import apiHandler from "../util/APIHandler";
 
-const Stack = createNativeStackNavigator();
-
-function Profile() {
-  return (
-    &lt;Stack.Navigator initialRouteName={MainProfile}>
-      &lt;Stack.Screen
-        name="MainProfile"
-        options={{ headerShown: false }}
-        component={MainProfile}
-        initialParams={{
-          name: "",
-          story: "",
-          balance: "",
-        }}
-      />
-      &lt;Stack.Screen
-        name="EditProfile"
-        options={{ headerShown: true }}
-        component={EditProfile}
-      />
-    &lt;/Stack.Navigator>
-  );
-}
-
 /**
- *
  * @function MainProfile
  * @module MainProfile
  * @description Full page of to display profile
  */
 function MainProfile({ route, navigation }) {
+  const isFocused = useIsFocused();
+
   const [name, setName] = useState("");
   const [story, setStory] = useState("");
   const [balance, setBalance] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   async function getProfileIdFromToken() {
     const token = await SecureStore.getItemAsync("token");
@@ -90,63 +60,71 @@ function MainProfile({ route, navigation }) {
     return decoded.id;
   }
 
-  // TODO may need to implement initialParams
+  const refresh = () => {
+    setLoading(true);
+    getProfileIdFromToken()
+      .then((id) => {
+        apiHandler
+          .getProfile(id)
+          .then((response) => response.json()) // handles parsing
+          .then((responseJSON) => {
+            // handles setting
+            setName(responseJSON.name);
+            setStory(responseJSON.story);
+            setBalance(responseJSON.balance);
+          })
+          .catch((error) => {
+            console.error(error);
+            alert(`Promise rejected: ${error}`);
+          });
+      })
+      .then(() => setLoading(false));
+  };
   useEffect(() => {
-    getProfileIdFromToken().then((id) => {
-      apiHandler
-        .getProfile(id)
-        .then((response) => response.json()) // handles parsing
-        .then((responseJSON) => {
-          // handles setting
-          setName(responseJSON.name);
-          setStory(responseJSON.story);
-          setBalance(responseJSON.balance);
-        })
-        .catch((error) => {
-          console.error(error);
-          alert(`Promise rejected: ${error}`);
-        });
-    });
-  }, [route.params.name, route.params.story, route.params.balance]);
+    refresh();
+  }, [isFocused]);
 
-  // TODO RETURN component
-  return (
-    &lt;ScrollView>
+  useEffect(() => {
+    refresh();
+  }, []);
+
+  return loading ? (
+    &lt;Spinner />
+  ) : (
+    &lt;View>
       &lt;ScreenHeader
         leftNode={&lt;BackButton />}
         headerText="My Profile"
-        rightNode={&lt;Icon name="pencil" style={styles.editIcon} />}
-        rightContainerStyle={styles.editIconContainer}
+        rightNode={&lt;Image source={icons.settings} style={styles.tabIcon} />}
         handleOnPressRightNode={() => {
-          navigation.navigate("EditProfile", {
-            name,
-            story,
-          });
+          navigation.push("Settings");
         }}
       />
-      &lt;View style={styles.profileBlockContainer}>
-        &lt;View style={styles.profilePictureContainer}>
-          &lt;Image
-            // eslint-disable-next-line global-require
-            source={require("../assets/rickroll.jpg")}
-            style={styles.profilePicture}
-          />
+      &lt;ScrollView>
+        &lt;View style={styles.profileBlockContainer}>
+          &lt;View style={styles.profilePictureContainer}>
+            &lt;Image
+              // eslint-disable-next-line global-require
+              source={require("../assets/rickroll.jpg")}
+              style={styles.profilePicture}
+            />
+          &lt;/View>
+          &lt;View style={styles.profileInfoContainer}>
+            &lt;Text style={styles.usernameText}>{name}&lt;/Text>
+            &lt;View style={styles.balanceView}>
+              &lt;Text style={styles.balanceHeader}>Balance&lt;/Text>
+              &lt;Text style={styles.balance}>${balance}&lt;/Text>
+            &lt;/View>
+          &lt;/View>
         &lt;/View>
-        &lt;View style={styles.profileInfoContainer}>
-          &lt;Text style={styles.usernameText}>{name}&lt;/Text>
-          &lt;Text>Balance: {balance}&lt;/Text>
-          &lt;Text>Story: &lt;/Text>
+        &lt;View style={styles.infoView}>
+          &lt;View style={styles.infoHeaderView}>
+            &lt;SecondaryHeader text={`${name}'s Story`} />
+          &lt;/View>
           &lt;Text style={styles.storyText}>{story}&lt;/Text>
         &lt;/View>
-      &lt;/View>
-      &lt;View style={styles.horizontalRuler} />
-      &lt;Text style={styles.storySectionTitle}>About me&lt;/Text>
-      &lt;QuotationBlock
-        text={story}
-        fontSize={16}
-        style={styles.quotationBlock}
-      />
-    &lt;/ScrollView>
+      &lt;/ScrollView>
+    &lt;/View>
   );
 }
 MainProfile.propTypes = {
@@ -154,82 +132,30 @@ MainProfile.propTypes = {
   navigation: PropTypes.object.isRequired,
 };
 
-function EditProfile({ route, navigation }) {
-  const [story, setStory] = useState(route.params.story);
-
-  async function getProfileIdFromToken() {
-    const token = await SecureStore.getItemAsync("token");
-    const decoded = await jwt_decode(token);
-    return decoded.id;
-  }
-
-  return (
-    &lt;>
-      &lt;View style={editStyles.textInputContainer}>
-        &lt;TextInput
-          multiline
-          textAlignVertical="top"
-          numberOfLines={5}
-          value={story}
-          onChangeText={setStory}
-          placeholder={route.params.story}
-          style={editStyles.textInput}
-        />
-      &lt;/View>
-      &lt;Button
-        title="Submit"
-        onPress={async () => {
-          const id = await getProfileIdFromToken();
-          try {
-            const response = await apiHandler.updateStoryForProfile(story, id);
-            if (response.status === 200) {
-              navigation.navigate({
-                name: "MainProfile",
-                params: { story },
-                merge: true,
-              });
-            } else {
-              alert(`Http request failed: code ${response.status}`);
-            }
-          } catch (error) {
-            alert(`Promise rejected: ${error}`);
-          }
-        }}
-      />
-    &lt;/>
-  );
-}
-EditProfile.propTypes = {
-  route: PropTypes.object.isRequired,
-  navigation: PropTypes.object.isRequired,
-};
-
 const styles = StyleSheet.create({
-  editIcon: {
-    fontSize: 30,
+  balance: {
+    ...tailwind("text-lg font-bold"),
   },
-  editIconContainer: {
-    alignItems: "center",
-    // backgroundColor: "#abc",
-    flex: 1,
-    height: 40,
-    justifyContent: "center",
-    marginLeft: -10,
-    paddingRight: 10,
+  balanceHeader: {
+    ...tailwind("text-sm text-grey"),
   },
-  horizontalRuler: {
-    ...tailwind("border-gray-400"),
-    borderBottomWidth: 1,
+  balanceView: {
+    ...tailwind(
+      "flex-col justify-center items-center bg-light-grey rounded-lg my-2 px-3 py-1"
+    ),
+  },
+  infoHeaderView: {
+    ...tailwind("my-2"),
+  },
+  infoView: {
+    ...tailwind("my-4 px-4"),
   },
   profileBlockContainer: {
     // backgroundColor: "#a73",
     flexDirection: "row",
   },
   profileInfoContainer: {
-    // backgroundColor: "#c80",
-    flexDirection: "column",
-    flex: 1,
-    paddingVertical: 10,
+    ...tailwind("flex-col p-3"),
   },
   profilePicture: {
     height: 100,
@@ -243,33 +169,22 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     width: 100,
   },
-  quotationBlock: {
-    marginHorizontal: 22,
-  },
-  storySectionTitle: {
-    fontSize: 28,
-    marginLeft: 20,
-    marginTop: 10,
-  },
   storyText: {
-    // backgroundColor: "#abc",
-    fontSize: 12,
-    padding: 4,
+    ...tailwind("text-base"),
+  },
+  submitButtonView: {
+    ...tailwind("mx-4 my-2"),
+  },
+  tabIcon: {
+    height: 30,
+    width: 30,
   },
   usernameText: {
-    fontSize: 18,
-    // fontWeight: "bold",
+    ...tailwind("text-2xl font-bold"),
   },
 });
 
-const editStyles = StyleSheet.create({
-  textInput: {},
-  textInputContainer: {
-    padding: 10,
-  },
-});
-
-export default Profile;
+export default MainProfile;
 </code></pre>
         </article>
     </section>
@@ -280,13 +195,13 @@ export default Profile;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-BackButton.html">BackButton</a></li><li><a href="module-Button.html">Button</a></li><li><a href="module-DisplayNotif.html">DisplayNotif</a></li><li><a href="module-Headers.html">Headers</a></li><li><a href="module-LandingScreen.html">LandingScreen</a></li><li><a href="module-ListFromAPI.html">ListFromAPI</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-MainProfile.html">MainProfile</a></li><li><a href="module-NewsPostScreen.html">NewsPostScreen</a></li><li><a href="module-RecoverAccountScreen.html">RecoverAccountScreen</a></li><li><a href="module-RegisterAccountScreen.html">RegisterAccountScreen</a></li><li><a href="module-ScreenHeader.html">ScreenHeader</a></li><li><a href="module-SearchBar.html">SearchBar</a></li><li><a href="module-SearchScreen.html">SearchScreen</a></li><li><a href="module-ServiceDetails.html">ServiceDetails</a></li><li><a href="module-SettingsScreen.html">SettingsScreen</a></li><li><a href="module-TagRow.html">TagRow</a></li><li><a href="module-TextField.html">TextField</a></li><li><a href="module-TutorialScreen.html">TutorialScreen</a></li><li><a href="module-UnderlinedLink.html">UnderlinedLink</a></li><li><a href="module-WriteReview.html">WriteReview</a></li></ul><h3>Global</h3><ul><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getTags">getTags</a></li><li><a href="global.html#openPhone">openPhone</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Alerts.html">Alerts</a></li><li><a href="module-App.html">App</a></li><li><a href="module-BackButton.html">BackButton</a></li><li><a href="module-Button.html">Button</a></li><li><a href="module-ChangePassword.html">ChangePassword</a></li><li><a href="module-DisplayNotif.html">DisplayNotif</a></li><li><a href="module-EditProfile.html">EditProfile</a></li><li><a href="module-EmailUsScreen.html">EmailUsScreen</a></li><li><a href="module-Headers.html">Headers</a></li><li><a href="module-LandingScreen.html">LandingScreen</a></li><li><a href="module-ListFromAPI.html">ListFromAPI</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-MainProfile.html">MainProfile</a></li><li><a href="module-NewsPostScreen.html">NewsPostScreen</a></li><li><a href="module-RecoverAccountScreen.html">RecoverAccountScreen</a></li><li><a href="module-RegisterAccountScreen.html">RegisterAccountScreen</a></li><li><a href="module-ScreenHeader.html">ScreenHeader</a></li><li><a href="module-SearchBar.html">SearchBar</a></li><li><a href="module-SearchScreen.html">SearchScreen</a></li><li><a href="module-ServiceDetails.html">ServiceDetails</a></li><li><a href="module-SettingsScreen.html">SettingsScreen</a></li><li><a href="module-TagRow.html">TagRow</a></li><li><a href="module-TextField.html">TextField</a></li><li><a href="module-TutorialScreen.html">TutorialScreen</a></li><li><a href="module-UnderlinedLink.html">UnderlinedLink</a></li><li><a href="module-WriteReview.html">WriteReview</a></li></ul><h3>Global</h3><ul><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getScreenNameFromQuery">getScreenNameFromQuery</a></li><li><a href="global.html#getTags">getTags</a></li><li><a href="global.html#openPhone">openPhone</a></li><li><a href="global.html#openPhoneNumber">openPhoneNumber</a></li><li><a href="global.html#openWhatsApp">openWhatsApp</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Nov 05 2021 19:46:42 GMT-0400 (Eastern Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Nov 19 2021 19:35:14 GMT-0500 (Eastern Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

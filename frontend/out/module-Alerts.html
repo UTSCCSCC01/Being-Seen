@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: SearchBar</title>
+    <title>JSDoc: Module: Alerts</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: SearchBar</h1>
+    <h1 class="page-title">Module: Alerts</h1>
 
     
 
@@ -38,7 +38,7 @@
     <div class="container-overview">
     
         
-            <div class="description">This components accepts a user input and navigates the user to a dedicated             search result screen (SearchScreen) when the user submits.</div>
+            <div class="description">A popup alert screen that can be used to display warnings or errors</div>
         
 
         
@@ -86,13 +86,13 @@
 
         <tr>
             
-                <td class="name"><code>navigation</code></td>
+                <td class="name"><code>isShown</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type">boolean</span>
 
 
             
@@ -108,72 +108,14 @@
 
             
 
-            <td class="description last">The navigation object provided by the react navigation library.</td>
+            <td class="description last">Whether the alert is shown or not</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>resultScreenName</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The name of the screen to which this component will                                   navigate the user.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>serviceType</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">The name of the api endpoint to which the search screen will                              send http requests.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>prefill</code></td>
+                <td class="name"><code>title</code></td>
             
 
             <td class="type">
@@ -197,20 +139,20 @@
 
             
 
-            <td class="description last">The prefill text in the search bar. Default: ""</td>
+            <td class="description last">The title of the alert</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>isSecondary</code></td>
+                <td class="name"><code>message</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">bool</span>
+<span class="param-type">string</span>
 
 
             
@@ -228,7 +170,129 @@
 
             
 
-            <td class="description last">Whether there will be a back button on the right side of the                            text input. Default: false</td>
+            <td class="description last">The message of the alert</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>confirmText</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The text of the confirm button</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>onCancel</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The function to be called when the cancel button is pressed</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>onConfirm</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">The function to be called when the confirm button is pressed</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>customView</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">JSX.Element</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">A custom view to be displayed in the alert</td>
         </tr>
 
     
@@ -267,7 +331,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="components_SearchBar.jsx.html">components/SearchBar.jsx</a>, <a href="components_SearchBar.jsx.html#line10">line 10</a>
+        <a href="screens_Alerts.jsx.html">screens/Alerts.jsx</a>, <a href="screens_Alerts.jsx.html#line9">line 9</a>
     </li></ul></dd>
     
 

@@ -14,7 +14,6 @@ import icons from "../constants/icons";
 import apiHandler from "../util/APIHandler";
 
 /**
- *
  * @function MainProfile
  * @module MainProfile
  * @description Full page of to display profile

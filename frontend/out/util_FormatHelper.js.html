@@ -26,7 +26,7 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { Linking, Platform } from "react-native";
+            <pre class="prettyprint source linenums"><code>import { Alert, Linking, Platform } from "react-native";
 
 /**
  * Capitalize the first character of str.
@@ -108,6 +108,45 @@ export function openPhone(phone) {
   return Linking.openURL(phoneNumber);
 }
 
+/**
+ * Redirects the user to the WhatsApp app on their phone on a specified number.
+ * @param {string} phone The WhatsApp phone number.
+ */
+export function openWhatsApp(phone) {
+  const url = `whatsapp://send?text=Hello From Being Seen&amp;phone=+1${phone}`;
+  Linking.canOpenURL(url)
+    .then((installed) => {
+      if (!installed) {
+        Alert.alert(
+          "Please install whats app to send direct message to students via whatsapp"
+        );
+      } else {
+        return Linking.openURL(url);
+      }
+      return false;
+    })
+    .catch((err) => console.error(err));
+}
+
+/**
+ * Redirects the user to the phone app on their phone on a specified number.
+ * @param {string} phone The phone number.
+ */
+export function openPhoneNumber(phone) {
+  return Alert.alert("", "", [
+    {
+      text: "Cancel",
+      onPress: () => {},
+    },
+    { text: "Open in Phone App", onPress: () => openPhone(phone) },
+
+    {
+      text: "Open in WhatsApp",
+      onPress: () => openWhatsApp(phone),
+    },
+  ]);
+}
+
 const queryToName = {
   merchant: "Merchants",
   job: "Jobs",
@@ -115,6 +154,11 @@ const queryToName = {
   education: "Education",
 };
 
+/**
+ * Parses the name of the screen from a query.
+ * @param {string} query The query to parse.
+ * @returns The parsed screen name.
+ */
 export function getScreenNameFromQuery(query) {
   const key = query.toLowerCase().replace(" ", "_");
   return queryToName[key];
@@ -129,13 +173,13 @@ export function getScreenNameFromQuery(query) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-BackButton.html">BackButton</a></li><li><a href="module-Button.html">Button</a></li><li><a href="module-DisplayNotif.html">DisplayNotif</a></li><li><a href="module-Headers.html">Headers</a></li><li><a href="module-LandingScreen.html">LandingScreen</a></li><li><a href="module-ListFromAPI.html">ListFromAPI</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-MainProfile.html">MainProfile</a></li><li><a href="module-NewsPostScreen.html">NewsPostScreen</a></li><li><a href="module-RecoverAccountScreen.html">RecoverAccountScreen</a></li><li><a href="module-RegisterAccountScreen.html">RegisterAccountScreen</a></li><li><a href="module-ScreenHeader.html">ScreenHeader</a></li><li><a href="module-SearchBar.html">SearchBar</a></li><li><a href="module-SearchScreen.html">SearchScreen</a></li><li><a href="module-ServiceDetails.html">ServiceDetails</a></li><li><a href="module-SettingsScreen.html">SettingsScreen</a></li><li><a href="module-TagRow.html">TagRow</a></li><li><a href="module-TextField.html">TextField</a></li><li><a href="module-TutorialScreen.html">TutorialScreen</a></li><li><a href="module-UnderlinedLink.html">UnderlinedLink</a></li><li><a href="module-WriteReview.html">WriteReview</a></li></ul><h3>Global</h3><ul><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getTags">getTags</a></li><li><a href="global.html#openPhone">openPhone</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Alerts.html">Alerts</a></li><li><a href="module-App.html">App</a></li><li><a href="module-BackButton.html">BackButton</a></li><li><a href="module-Button.html">Button</a></li><li><a href="module-ChangePassword.html">ChangePassword</a></li><li><a href="module-DisplayNotif.html">DisplayNotif</a></li><li><a href="module-EditProfile.html">EditProfile</a></li><li><a href="module-EmailUsScreen.html">EmailUsScreen</a></li><li><a href="module-Headers.html">Headers</a></li><li><a href="module-LandingScreen.html">LandingScreen</a></li><li><a href="module-ListFromAPI.html">ListFromAPI</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-MainProfile.html">MainProfile</a></li><li><a href="module-NewsPostScreen.html">NewsPostScreen</a></li><li><a href="module-RecoverAccountScreen.html">RecoverAccountScreen</a></li><li><a href="module-RegisterAccountScreen.html">RegisterAccountScreen</a></li><li><a href="module-ScreenHeader.html">ScreenHeader</a></li><li><a href="module-SearchBar.html">SearchBar</a></li><li><a href="module-SearchScreen.html">SearchScreen</a></li><li><a href="module-ServiceDetails.html">ServiceDetails</a></li><li><a href="module-SettingsScreen.html">SettingsScreen</a></li><li><a href="module-TagRow.html">TagRow</a></li><li><a href="module-TextField.html">TextField</a></li><li><a href="module-TutorialScreen.html">TutorialScreen</a></li><li><a href="module-UnderlinedLink.html">UnderlinedLink</a></li><li><a href="module-WriteReview.html">WriteReview</a></li></ul><h3>Global</h3><ul><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getScreenNameFromQuery">getScreenNameFromQuery</a></li><li><a href="global.html#getTags">getTags</a></li><li><a href="global.html#openPhone">openPhone</a></li><li><a href="global.html#openPhoneNumber">openPhoneNumber</a></li><li><a href="global.html#openWhatsApp">openWhatsApp</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Nov 05 2021 19:46:42 GMT-0400 (Eastern Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Nov 19 2021 19:35:14 GMT-0500 (Eastern Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

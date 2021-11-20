@@ -22,6 +22,11 @@ import TextField from "../components/TextField";
 import apiHandler from "../util/APIHandler";
 import { AlertError } from "./Alerts";
 
+/**
+ * @function ChangePassword
+ * @module ChangePassword
+ * @description This is the change password screen
+ */
 function ChangePassword() {
   const navigation = useNavigation();
   const [curPassword, setCurPassword] = useState("");

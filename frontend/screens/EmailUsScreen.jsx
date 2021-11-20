@@ -6,6 +6,11 @@ import BackButton from "../components/BackButton";
 import Button from "../components/Button";
 import ScreenHeader from "../components/ScreenHeader";
 
+/**
+ * @function EmailUsScreen
+ * @module EmailUsScreen
+ * @description A screen that allows the user to email Being Seen
+ */
 const EmailUsScreen = () => {
   return (
     <View>
