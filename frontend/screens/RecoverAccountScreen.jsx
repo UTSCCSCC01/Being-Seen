@@ -28,7 +28,7 @@ const RecoverAccountScreen = () => {
             label="Recover account"
             onClick={() =>
               Linking.openURL(
-                "mailto:support@beingseen.com?subject=Can't Log In&body="
+                "mailto:beingseen.2020@gmail.com?subject=Can't Log In&body="
               )
             }
             disabled={false}

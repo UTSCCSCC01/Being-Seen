@@ -1,4 +1,4 @@
-import { Linking, Platform } from "react-native";
+import { Alert, Linking, Platform } from "react-native";
 
 /**
  * Capitalize the first character of str.
@@ -80,6 +80,45 @@ export function openPhone(phone) {
   return Linking.openURL(phoneNumber);
 }
 
+/**
+ * Redirects the user to the WhatsApp app on their phone on a specified number.
+ * @param {string} phone The WhatsApp phone number.
+ */
+export function openWhatsApp(phone) {
+  const url = `whatsapp://send?text=Hello From Being Seen&phone=+1${phone}`;
+  Linking.canOpenURL(url)
+    .then((installed) => {
+      if (!installed) {
+        Alert.alert(
+          "Please install whats app to send direct message to students via whatsapp"
+        );
+      } else {
+        return Linking.openURL(url);
+      }
+      return false;
+    })
+    .catch((err) => console.error(err));
+}
+
+/**
+ * Redirects the user to the phone app on their phone on a specified number.
+ * @param {string} phone The phone number.
+ */
+export function openPhoneNumber(phone) {
+  return Alert.alert("", "", [
+    {
+      text: "Cancel",
+      onPress: () => {},
+    },
+    { text: "Open in Phone App", onPress: () => openPhone(phone) },
+
+    {
+      text: "Open in WhatsApp",
+      onPress: () => openWhatsApp(phone),
+    },
+  ]);
+}
+
 const queryToName = {
   merchant: "Merchants",
   job: "Jobs",
@@ -87,6 +126,11 @@ const queryToName = {
   education: "Education",
 };
 
+/**
+ * Parses the name of the screen from a query.
+ * @param {string} query The query to parse.
+ * @returns The parsed screen name.
+ */
 export function getScreenNameFromQuery(query) {
   const key = query.toLowerCase().replace(" ", "_");
   return queryToName[key];

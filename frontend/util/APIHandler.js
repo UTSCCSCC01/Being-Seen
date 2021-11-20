@@ -1,4 +1,7 @@
-const apiAddress = "http://10.0.2.2:3000/";
+import { UseNavigation } from "@react-navigation/native";
+import * as SecureStore from "expo-secure-store";
+
+const apiAddress = "https://beingseen.live/";
 
 // eslint-disable-next-line no-underscore-dangle
 async function __sendReviewToAPI(
@@ -61,6 +64,42 @@ export default {
         password,
       }),
     });
+  },
+
+  /**
+   * Update password for a given user
+   * @param {string} username
+   * @param {string} password
+   * @param {string} newPassword
+   */
+  updatePassword(username, password, newPassword) {
+    return fetch(`${apiAddress}auth/update`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username,
+        password,
+        newPassword,
+      }),
+    });
+  },
+
+  /**
+   * Let user log out and get back to Login page.
+   * @param {object} navigation The navigation object.
+   */
+  async logOut(navigation) {
+    // const navigation = UseNavigation();
+    const token = await SecureStore.getItemAsync("token");
+    if (token != null) {
+      await SecureStore.deleteItemAsync("token");
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Login" }],
+      });
+    }
   },
 
   /**
@@ -163,6 +202,11 @@ export default {
     );
   },
 
+  /**
+   * Gets a user's profile information.
+   * @param {string} userId The objectId of the user of interest.
+   * @returns {Promise} A Promise of a response from the server.
+   */
   async getProfile(profileId) {
     const URI = `${apiAddress}profiles/${profileId}`;
     const response = await fetch(URI, {
@@ -171,6 +215,12 @@ export default {
     return response;
   },
 
+  /**
+   * Updates a user's profile user story.
+   * @param {string} story The updated user story.
+   * @param {string} profileId The objectId of the user of interest.
+   * @returns {Promise} A Promise of a response from the server.
+   */
   async updateStoryForProfile(story, profileId) {
     const bodyData = { story };
     const bodyDataJSON = JSON.stringify(bodyData);

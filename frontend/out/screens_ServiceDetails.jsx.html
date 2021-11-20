@@ -29,7 +29,6 @@
             <pre class="prettyprint source linenums"><code>import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import {
-  Button,
   Dimensions,
   FlatList,
   ImageBackground,
@@ -43,9 +42,14 @@ import openMap from "react-native-open-maps";
 import { Rating } from "react-native-ratings";
 import { tailwind } from "tailwind";
 
+import BackButton from "../components/BackButton";
+import Button from "../components/Button";
+import { PrimaryHeader, TertiaryHeader } from "../components/Headers";
+import ScreenHeader from "../components/ScreenHeader";
+import Spinner from "../components/Spinner";
 import TagRow from "../components/TagRow";
 import apiHandler from "../util/APIHandler";
-import { capitalize, formatDate, openPhone } from "../util/FormatHelper";
+import { capitalize, formatDate, openPhoneNumber } from "../util/FormatHelper";
 
 /**
  * @function ServiceDetails displays expanded details of a service
@@ -59,14 +63,16 @@ import { capitalize, formatDate, openPhone } from "../util/FormatHelper";
  */
 export default function ServiceDetails({ route, navigation }) {
   const { query, itemId } = route.params;
-  const [refreshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState(true);
   const [info, setInfo] = useState(null);
 
   useEffect(() => {
+    setRefreshing(true);
     apiHandler
       .getInfoFromApiById(query, itemId)
       .then((res) => res.json())
       .then((json) => setInfo(json))
+      .then(() => setRefreshing(false))
       .catch((error) => console.log(error));
   }, []);
 
@@ -81,8 +87,9 @@ export default function ServiceDetails({ route, navigation }) {
 
   return (
     &lt;>
-      {!info ? (
-        &lt;Text>Loading...&lt;/Text>
+      &lt;ScreenHeader leftNode={&lt;BackButton />} />
+      {refreshing ? (
+        &lt;Spinner />
       ) : (
         &lt;FlatList
           refreshing={refreshing}
@@ -96,100 +103,95 @@ export default function ServiceDetails({ route, navigation }) {
                 />
               ) : null}
               &lt;View style={styles.infoContainer}>
-                &lt;Text style={styles.infoNormalText}>Name: {info.name}&lt;/Text>
+                &lt;View style={styles.topInfo}>
+                  &lt;PrimaryHeader text={info?.name} />
+                  &lt;TagRow tagList={info.tags} />
+                  {info.rating ? (
+                    &lt;View style={styles.ratingView}>
+                      &lt;Rating
+                        readonly="true"
+                        startingValue={info.rating}
+                        // tintColor={purpleThemeColour} &lt;-- TODO: Fix this styling
+                        imageSize={28}
+                        jumpValue={0.5}
+                      />
+                    &lt;/View>
+                  ) : null}
+                  {info.hours ? (
+                    &lt;Text style={styles.hours}>Open {info.hours}&lt;/Text>
+                  ) : null}
+                  &lt;Text style={styles.description}>{info.description}&lt;/Text>
+                &lt;/View>
                 {info.address ? (
-                  &lt;View style={styles.infoRow}>
-                    &lt;Text style={styles.infoNormalText}>Address: &lt;/Text>
-                    &lt;TouchableOpacity
-                      onPress={() => {
-                        openMap({ query: info.address });
-                      }}
-                    >
-                      &lt;Text style={styles.infoUnderlinedText}>
-                        {" "}
-                        {info.address}
-                      &lt;/Text>
-                    &lt;/TouchableOpacity>
-                  &lt;/View>
+                  &lt;TouchableOpacity
+                    onPress={() => {
+                      openMap({ query: info.address });
+                    }}
+                    style={styles.infoRow}
+                  >
+                    &lt;TertiaryHeader text="Address" />
+                    &lt;Text style={styles.link}>{info.address}&lt;/Text>
+                  &lt;/TouchableOpacity>
                 ) : null}
                 {info.phoneNumber ? (
-                  &lt;View style={styles.infoRow}>
-                    &lt;Text style={styles.infoNormalText}>Phone Number: &lt;/Text>
-                    &lt;TouchableOpacity
-                      onPress={() => {
-                        openPhone(info.phoneNumber);
-                      }}
-                    >
-                      &lt;Text style={styles.infoUnderlinedText} color="purple">
-                        {" "}
-                        {info.phoneNumber}
-                      &lt;/Text>
-                    &lt;/TouchableOpacity>
-                  &lt;/View>
+                  &lt;TouchableOpacity
+                    onPress={() => {
+                      openPhoneNumber(info.phoneNumber);
+                    }}
+                    style={styles.infoRow}
+                  >
+                    &lt;TertiaryHeader text="Phone Number" />
+                    &lt;Text style={styles.link} color="purple">
+                      {info.phoneNumber}
+                    &lt;/Text>
+                  &lt;/TouchableOpacity>
                 ) : null}
                 {info.email ? (
-                  &lt;View style={styles.infoRow}>
-                    &lt;Text style={styles.infoNormalText}>Email:&lt;/Text>
-                    &lt;TouchableOpacity
-                      onPress={() => {
-                        Linking.openURL(`mailto:${info.email}?subject=&amp;body=`);
-                      }}
-                    >
-                      &lt;Text style={styles.infoUnderlinedText} color="purple">
-                        {" "}
-                        {info.email}
-                      &lt;/Text>
-                    &lt;/TouchableOpacity>
-                  &lt;/View>
-                ) : null}
-                &lt;Text style={styles.infoNormalText}>
-                  &lt;Text style={styles.infoNormalText}>Description:&lt;/Text>
-                  &lt;Text style={styles.infoNormalText}>{info.description}&lt;/Text>
-                &lt;/Text>
-                {info.hours ? (
-                  &lt;Text style={styles.infoNormalText}>Hours: {info.hours}&lt;/Text>
-                ) : null}
-                {info.rating ? (
-                  &lt;View flexDirection="row">
-                    &lt;Text style={styles.infoNormalText}>Rating:&lt;/Text>
-                    &lt;Rating
-                      readonly="true"
-                      startingValue={info.rating}
-                      // tintColor={purpleThemeColour} &lt;-- TODO: Fix this styling
-                      imageSize={28}
-                      jumpValue={0.5}
-                    />
-                  &lt;/View>
+                  &lt;TouchableOpacity
+                    onPress={() => {
+                      Linking.openURL(`mailto:${info.email}?subject=&amp;body=`);
+                    }}
+                    style={styles.infoRow}
+                  >
+                    &lt;TertiaryHeader text="Email" />
+                    &lt;Text style={styles.link} color="purple">
+                      {info.email}
+                    &lt;/Text>
+                  &lt;/TouchableOpacity>
                 ) : null}
               &lt;/View>
-              &lt;TagRow tagList={info.tags} />
-              {info.reviews ? (
-                &lt;Button
-                  onPress={() => {
-                    navigation.navigate(`Review ${capitalize(query)}`, {
-                      infoId: info._id,
-                      query,
-                    });
-                  }}
-                  title="Write/Edit a Review For This Shelter"
-                />
-              ) : null}
-              {info.website ? (
-                &lt;Button
-                  title="Go to website"
-                  onPress={() => {
-                    Linking.openURL(info.website);
-                  }}
-                />
-              ) : null}
+              &lt;View style={styles.buttonsView}>
+                {info.reviews ? (
+                  &lt;Button
+                    style={styles.button}
+                    onClick={() => {
+                      navigation.push(`Review ${capitalize(query)}`, {
+                        infoId: info._id,
+                        query,
+                      });
+                    }}
+                    label="Write/Edit a Review For This Shelter"
+                    disabled={false}
+                  />
+                ) : null}
+                {info.website ? (
+                  &lt;Button
+                    style={styles.button}
+                    label="Go to website"
+                    disabled={false}
+                    onClick={() => {
+                      Linking.openURL(info.website);
+                    }}
+                  />
+                ) : null}
+              &lt;/View>
             &lt;/>
           }
           data={info.reviews}
           renderItem={({ item }) => (
             &lt;View style={styles.reviewBox} key={item}>
               &lt;Text style={styles.reviewText}>&amp;quot;{item.content}&amp;quot;&lt;/Text>
-              &lt;View flexDirection="row">
-                &lt;Text style={styles.reviewText}>Rating: &lt;/Text>
+              &lt;View style={styles.ratingView}>
                 &lt;Rating
                   readonly="true"
                   startingValue={item.rating}
@@ -197,9 +199,7 @@ export default function ServiceDetails({ route, navigation }) {
                   imageSize={25}
                 />
               &lt;/View>
-              &lt;Text style={styles.reviewText}>
-                Written on {formatDate(item.date)}
-              &lt;/Text>
+              &lt;Text style={styles.reviewDate}>{formatDate(item.date)}&lt;/Text>
             &lt;/View>
           )}
           keyExtractor={(item) => item.reviewer.toString()}
@@ -215,44 +215,47 @@ ServiceDetails.propTypes = {
 };
 
 const styles = StyleSheet.create({
+  button: {
+    ...tailwind("p-4"),
+  },
+  buttonsView: {
+    ...tailwind("m-4"),
+  },
+  description: {
+    ...tailwind("text-base"),
+  },
   headlinePicture: {
-    height: Dimensions.get("window").height / 4,
+    height: Dimensions.get("window").height / 3.5,
     resizeMode: "cover",
     width: Dimensions.get("window").width,
   },
-  infoContainer: {
-    ...tailwind("bg-gray-100"),
-    // borderRadius: 10,
-    paddingHorizontal: 5,
-    paddingVertical: 5,
+  hours: {
+    ...tailwind("text-lg font-bold"),
   },
-  infoNormalText: {
-    ...tailwind("text-black"),
-    fontSize: 16,
-    margin: 2,
+  infoContainer: {
+    ...tailwind("py-3"),
   },
   infoRow: {
-    flexDirection: "row",
+    ...tailwind("px-3 py-2 border-light-grey border-t-2"),
   },
-  infoUnderlinedText: {
-    ...tailwind("text-black"),
-    fontSize: 16,
-    margin: 2,
-    // textDecorationColor: purpleThemeColour,
-    textDecorationLine: "underline",
+  link: {
+    ...tailwind("text-base"),
+  },
+  ratingView: {
+    ...tailwind("flex-row py-2"),
   },
   reviewBox: {
-    ...tailwind("bg-white border-primary"),
-    borderRadius: 10,
-    borderWidth: 2,
-    margin: 5,
-    padding: 5,
+    ...tailwind("px-4 py-3 border-light-grey border-t-2"),
+  },
+  reviewDate: {
+    ...tailwind("text-sm text-grey"),
   },
   reviewText: {
-    ...tailwind("text-black"),
+    ...tailwind("font-black text-base"),
     flexWrap: "wrap",
-    fontSize: 16,
-    margin: 2,
+  },
+  topInfo: {
+    ...tailwind("px-3 mb-3"),
   },
 });
 </code></pre>
@@ -265,13 +268,13 @@ const styles = StyleSheet.create({
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-BackButton.html">BackButton</a></li><li><a href="module-Button.html">Button</a></li><li><a href="module-DisplayNotif.html">DisplayNotif</a></li><li><a href="module-Headers.html">Headers</a></li><li><a href="module-LandingScreen.html">LandingScreen</a></li><li><a href="module-ListFromAPI.html">ListFromAPI</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-MainProfile.html">MainProfile</a></li><li><a href="module-NewsPostScreen.html">NewsPostScreen</a></li><li><a href="module-RecoverAccountScreen.html">RecoverAccountScreen</a></li><li><a href="module-RegisterAccountScreen.html">RegisterAccountScreen</a></li><li><a href="module-ScreenHeader.html">ScreenHeader</a></li><li><a href="module-SearchBar.html">SearchBar</a></li><li><a href="module-SearchScreen.html">SearchScreen</a></li><li><a href="module-ServiceDetails.html">ServiceDetails</a></li><li><a href="module-SettingsScreen.html">SettingsScreen</a></li><li><a href="module-TagRow.html">TagRow</a></li><li><a href="module-TextField.html">TextField</a></li><li><a href="module-TutorialScreen.html">TutorialScreen</a></li><li><a href="module-UnderlinedLink.html">UnderlinedLink</a></li><li><a href="module-WriteReview.html">WriteReview</a></li></ul><h3>Global</h3><ul><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getTags">getTags</a></li><li><a href="global.html#openPhone">openPhone</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Alerts.html">Alerts</a></li><li><a href="module-App.html">App</a></li><li><a href="module-BackButton.html">BackButton</a></li><li><a href="module-Button.html">Button</a></li><li><a href="module-ChangePassword.html">ChangePassword</a></li><li><a href="module-DisplayNotif.html">DisplayNotif</a></li><li><a href="module-EditProfile.html">EditProfile</a></li><li><a href="module-EmailUsScreen.html">EmailUsScreen</a></li><li><a href="module-Headers.html">Headers</a></li><li><a href="module-LandingScreen.html">LandingScreen</a></li><li><a href="module-ListFromAPI.html">ListFromAPI</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-MainProfile.html">MainProfile</a></li><li><a href="module-NewsPostScreen.html">NewsPostScreen</a></li><li><a href="module-RecoverAccountScreen.html">RecoverAccountScreen</a></li><li><a href="module-RegisterAccountScreen.html">RegisterAccountScreen</a></li><li><a href="module-ScreenHeader.html">ScreenHeader</a></li><li><a href="module-SearchBar.html">SearchBar</a></li><li><a href="module-SearchScreen.html">SearchScreen</a></li><li><a href="module-ServiceDetails.html">ServiceDetails</a></li><li><a href="module-SettingsScreen.html">SettingsScreen</a></li><li><a href="module-TagRow.html">TagRow</a></li><li><a href="module-TextField.html">TextField</a></li><li><a href="module-TutorialScreen.html">TutorialScreen</a></li><li><a href="module-UnderlinedLink.html">UnderlinedLink</a></li><li><a href="module-WriteReview.html">WriteReview</a></li></ul><h3>Global</h3><ul><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getScreenNameFromQuery">getScreenNameFromQuery</a></li><li><a href="global.html#getTags">getTags</a></li><li><a href="global.html#openPhone">openPhone</a></li><li><a href="global.html#openPhoneNumber">openPhoneNumber</a></li><li><a href="global.html#openWhatsApp">openWhatsApp</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Nov 05 2021 19:46:42 GMT-0400 (Eastern Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Nov 19 2021 19:35:14 GMT-0500 (Eastern Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

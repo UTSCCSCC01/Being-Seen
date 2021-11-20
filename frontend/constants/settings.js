@@ -6,6 +6,18 @@ const settings = [
         title: "View Tutorial",
         screen: "Tutorial",
       },
+      {
+        title: "Edit Profile",
+        screen: "EditProfile",
+      },
+      {
+        title: "Change Password",
+        screen: "ChangePassword",
+      },
+      {
+        title: "Email Us",
+        screen: "EmailUs",
+      },
     ],
   },
 ];

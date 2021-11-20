@@ -28,7 +28,7 @@
         <article>
             <pre class="prettyprint source linenums"><code>/* eslint-disable react/prop-types */
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useRef, useState } from "react";
 import {
   Pressable,
   SafeAreaView,
@@ -43,6 +43,8 @@ import BackButton from "../components/BackButton";
 import { SecondaryHeader } from "../components/Headers";
 import ScreenHeader from "../components/ScreenHeader";
 import settings from "../constants/settings";
+import apiHandler from "../util/APIHandler";
+import { AlertWarning } from "./Alerts";
 
 /**
  * @function SettingsScreen
@@ -51,11 +53,42 @@ import settings from "../constants/settings";
  */
 const SettingsScreen = () => {
   const navigation = useNavigation();
+  const [showAlert, setShowAlert] = useState(false);
+  const alertMsg = useRef("");
 
   return (
     &lt;SafeAreaView style={styles.settingsView}>
+      &lt;AlertWarning
+        isShown={showAlert}
+        onCancel={() => {
+          setShowAlert(false);
+        }}
+        onConfirm={() => {
+          apiHandler.logOut(navigation);
+        }}
+        customView={
+          &lt;View style={styles.alertContainer}>
+            &lt;Text style={styles.alertText}>{alertMsg.current}&lt;/Text>
+          &lt;/View>
+        }
+      />
       &lt;ScreenHeader leftNode={&lt;BackButton />} headerText="Settings" />
       &lt;View style={styles.settingsList}>
+        &lt;View style={styles.settingsHeader}>
+          &lt;SecondaryHeader text="Logout" />
+        &lt;/View>
+        &lt;Pressable
+          style={
+            settingsItemStyles({ isFirstElement: true, isLastElement: true })
+              .settingsItem
+          }
+          onPress={() => {
+            alertMsg.current = "Are you sure you want to log out?";
+            setShowAlert(true);
+          }}
+        >
+          &lt;Text style={styles.settingsItemText}>Logout&lt;/Text>
+        &lt;/Pressable>
         &lt;SectionList
           sections={settings}
           showsVerticalScrollIndicator
@@ -90,11 +123,17 @@ const SettingsScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  alertContainer: {
+    ...tailwind("items-center justify-center mt-2"),
+  },
+  alertText: {
+    ...tailwind("text-center leading-5"),
+  },
   settingsHeader: {
     ...tailwind("my-4"),
   },
   settingsItemText: {
-    ...tailwind("text-primary text-base"),
+    ...tailwind("text-primary text-base font-bold"),
   },
   settingsList: {
     ...tailwind("mx-6 my-4"),
@@ -107,11 +146,14 @@ const styles = StyleSheet.create({
 const settingsItemStyles = ({ isFirstElement, isLastElement }) =>
   StyleSheet.create({
     settingsItem: {
-      ...tailwind("flex-row p-2 border-2 border-solid border-grey"),
+      ...tailwind(
+        "flex-row p-2 border-b-2 border-l-2 border-r-2 border-solid border-gray-400"
+      ),
       borderBottomLeftRadius: isLastElement ? 10 : 0,
       borderBottomRightRadius: isLastElement ? 10 : 0,
       borderTopLeftRadius: isFirstElement ? 10 : 0,
       borderTopRightRadius: isFirstElement ? 10 : 0,
+      borderTopWidth: isFirstElement ? 2 : 0,
     },
   });
 
@@ -126,13 +168,13 @@ export default SettingsScreen;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-BackButton.html">BackButton</a></li><li><a href="module-Button.html">Button</a></li><li><a href="module-DisplayNotif.html">DisplayNotif</a></li><li><a href="module-Headers.html">Headers</a></li><li><a href="module-LandingScreen.html">LandingScreen</a></li><li><a href="module-ListFromAPI.html">ListFromAPI</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-MainProfile.html">MainProfile</a></li><li><a href="module-NewsPostScreen.html">NewsPostScreen</a></li><li><a href="module-RecoverAccountScreen.html">RecoverAccountScreen</a></li><li><a href="module-RegisterAccountScreen.html">RegisterAccountScreen</a></li><li><a href="module-ScreenHeader.html">ScreenHeader</a></li><li><a href="module-SearchBar.html">SearchBar</a></li><li><a href="module-SearchScreen.html">SearchScreen</a></li><li><a href="module-ServiceDetails.html">ServiceDetails</a></li><li><a href="module-SettingsScreen.html">SettingsScreen</a></li><li><a href="module-TagRow.html">TagRow</a></li><li><a href="module-TextField.html">TextField</a></li><li><a href="module-TutorialScreen.html">TutorialScreen</a></li><li><a href="module-UnderlinedLink.html">UnderlinedLink</a></li><li><a href="module-WriteReview.html">WriteReview</a></li></ul><h3>Global</h3><ul><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getTags">getTags</a></li><li><a href="global.html#openPhone">openPhone</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Alerts.html">Alerts</a></li><li><a href="module-App.html">App</a></li><li><a href="module-BackButton.html">BackButton</a></li><li><a href="module-Button.html">Button</a></li><li><a href="module-ChangePassword.html">ChangePassword</a></li><li><a href="module-DisplayNotif.html">DisplayNotif</a></li><li><a href="module-EditProfile.html">EditProfile</a></li><li><a href="module-EmailUsScreen.html">EmailUsScreen</a></li><li><a href="module-Headers.html">Headers</a></li><li><a href="module-LandingScreen.html">LandingScreen</a></li><li><a href="module-ListFromAPI.html">ListFromAPI</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-MainProfile.html">MainProfile</a></li><li><a href="module-NewsPostScreen.html">NewsPostScreen</a></li><li><a href="module-RecoverAccountScreen.html">RecoverAccountScreen</a></li><li><a href="module-RegisterAccountScreen.html">RegisterAccountScreen</a></li><li><a href="module-ScreenHeader.html">ScreenHeader</a></li><li><a href="module-SearchBar.html">SearchBar</a></li><li><a href="module-SearchScreen.html">SearchScreen</a></li><li><a href="module-ServiceDetails.html">ServiceDetails</a></li><li><a href="module-SettingsScreen.html">SettingsScreen</a></li><li><a href="module-TagRow.html">TagRow</a></li><li><a href="module-TextField.html">TextField</a></li><li><a href="module-TutorialScreen.html">TutorialScreen</a></li><li><a href="module-UnderlinedLink.html">UnderlinedLink</a></li><li><a href="module-WriteReview.html">WriteReview</a></li></ul><h3>Global</h3><ul><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getScreenNameFromQuery">getScreenNameFromQuery</a></li><li><a href="global.html#getTags">getTags</a></li><li><a href="global.html#openPhone">openPhone</a></li><li><a href="global.html#openPhoneNumber">openPhoneNumber</a></li><li><a href="global.html#openWhatsApp">openWhatsApp</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Nov 05 2021 19:46:42 GMT-0400 (Eastern Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Nov 19 2021 19:35:14 GMT-0500 (Eastern Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

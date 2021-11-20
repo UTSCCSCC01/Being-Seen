@@ -4,6 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { CreateUserDto } from 'src/users/dto/createUser.dto';
 import { loginUserDto } from 'src/users/dto/loginUser.dto';
 
 import { UsersService } from '../users/users.service';
@@ -61,6 +62,43 @@ export class AuthService {
         access_token: this.jwtService.sign(payload),
       };
     }
-    return new UnauthorizedException();
+    throw new UnauthorizedException();
+  }
+
+  /**
+   * updates user to have password newpas
+   * @param loginUserDto user object
+   * @param newPass new password for user
+   * @returns null
+   */
+  async updatePassword(loginUserDto: loginUserDto, newPass: string) {
+    try {
+      const validated = await this.validateUser(loginUserDto);
+      if (validated !== null) {
+        const newLogin = await this.usersService.updatePassword(
+          loginUserDto,
+          newPass,
+        );
+        /*
+        const payload = {
+          id: newLogin._id,
+          username: newLogin.username,
+          permissions: newLogin.permissions,
+          createdAt: newLogin.createdAt,
+        };
+        return ({
+          access_token: this.jwtService.sign(payload),
+        });
+        */
+        return;
+      }
+      throw new UnauthorizedException();
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException();
+      } else {
+        throw new InternalServerErrorException();
+      }
+    }
   }
 }

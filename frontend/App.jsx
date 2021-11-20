@@ -1,4 +1,3 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -7,6 +6,9 @@ import React, { useEffect } from "react";
 import { Image, Platform, StatusBar, StyleSheet, View } from "react-native";
 
 import icons from "./constants/icons";
+import ChangePassword from "./screens/ChangePassword";
+import EditProfile from "./screens/EditProfile";
+import EmailUsScreen from "./screens/EmailUsScreen";
 import LandingScreen from "./screens/LandingScreen";
 import ListFromAPI from "./screens/ListFromAPI";
 import Login from "./screens/Login";
@@ -72,19 +74,6 @@ export default function App() {
     token = await SecureStore.getItemAsync("token");
   };
 
-  const checkIfFirstLaunch = async () => {
-    try {
-      const hasLaunched = await AsyncStorage.getItem("hasLaunched");
-      if (hasLaunched === null) {
-        AsyncStorage.setItem("hasLaunched", "true");
-        return true;
-      }
-      return false;
-    } catch (error) {
-      return false;
-    }
-  };
-
   const theme = {
     ...DefaultTheme,
     colors: {
@@ -111,7 +100,7 @@ export default function App() {
       />
       <NavigationContainer theme={theme}>
         <Stack.Navigator
-          initialRouteName={checkIfFirstLaunch() ? "Tutorial" : "Login"}
+          initialRouteName="Login"
           screenOptions={{
             headerShown: false,
             cardStyle: { backgroundColor: "white" },
@@ -131,6 +120,9 @@ export default function App() {
           <Stack.Screen name="Settings" component={SettingsScreen} />
           <Stack.Screen name="NewsPost" component={NewsPostScreen} />
           <Stack.Screen name="Profile" component={Profile} />
+          <Stack.Screen name="EditProfile" component={EditProfile} />
+          <Stack.Screen name="ChangePassword" component={ChangePassword} />
+          <Stack.Screen name="EmailUs" component={EmailUsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </>

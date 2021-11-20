@@ -83,8 +83,9 @@ const TutorialScreen = () => {
       >
         &lt;View style={styles({ width, height }).slide}>
           &lt;Image
-            source={images.landing_page_bg_1}
+            source={images.being_seen_logo_transparent}
             style={styles({ width, height }).image}
+            resizeMode="contain"
           />
           &lt;View style={styles({}).textBox}>
             &lt;PrimaryHeader text="Welcome" />
@@ -98,8 +99,9 @@ const TutorialScreen = () => {
         &lt;/View>
         &lt;View style={styles({ width, height }).slide}>
           &lt;Image
-            source={images.landing_page_bg_1}
+            source={images.newsreel}
             style={styles({ width, height }).image}
+            resizeMode="contain"
           />
           &lt;View style={styles({}).textBox}>
             &lt;PrimaryHeader text="Newsreel" />
@@ -112,8 +114,9 @@ const TutorialScreen = () => {
         &lt;/View>
         &lt;View style={styles({ width, height }).slide}>
           &lt;Image
-            source={images.landing_page_bg_1}
+            source={images.profile}
             style={styles({ width, height }).image}
+            resizeMode="contain"
           />
           &lt;View style={styles({}).textBox}>
             &lt;PrimaryHeader text="Profile" />
@@ -126,8 +129,9 @@ const TutorialScreen = () => {
         &lt;/View>
         &lt;View style={styles({ width, height }).slide}>
           &lt;Image
-            source={images.landing_page_bg_1}
+            source={images.search}
             style={styles({ width, height }).image}
+            resizeMode="contain"
           />
           &lt;View style={styles({}).textBox}>
             &lt;PrimaryHeader text="Search" />
@@ -140,8 +144,9 @@ const TutorialScreen = () => {
         &lt;/View>
         &lt;View style={styles({ width, height }).slide}>
           &lt;Image
-            source={images.landing_page_bg_1}
+            source={images.merchants}
             style={styles({ width, height }).image}
+            resizeMode="contain"
           />
           &lt;View style={styles({}).textBox}>
             &lt;PrimaryHeader text="Merchants" />
@@ -154,8 +159,9 @@ const TutorialScreen = () => {
         &lt;/View>
         &lt;View style={styles({ width, height }).slide}>
           &lt;Image
-            source={images.landing_page_bg_1}
+            source={images.jobs}
             style={styles({ width, height }).image}
+            resizeMode="contain"
           />
           &lt;View style={styles({}).textBox}>
             &lt;PrimaryHeader text="Jobs" />
@@ -169,8 +175,9 @@ const TutorialScreen = () => {
         &lt;/View>
         &lt;View style={styles({ width, height }).slide}>
           &lt;Image
-            source={images.landing_page_bg_1}
+            source={images.social_services}
             style={styles({ width, height }).image}
+            resizeMode="contain"
           />
           &lt;View style={styles({}).textBox}>
             &lt;PrimaryHeader text="Social Services" />
@@ -185,8 +192,9 @@ const TutorialScreen = () => {
         &lt;/View>
         &lt;View style={styles({ width, height }).slide}>
           &lt;Image
-            source={images.landing_page_bg_1}
+            source={images.education}
             style={styles({ width, height }).image}
+            resizeMode="contain"
           />
           &lt;View style={styles({}).textBox}>
             &lt;PrimaryHeader text="Education" />
@@ -224,7 +232,8 @@ const styles = ({ width, height, pageIndex, index }) =>
       right: width * 0.03,
     },
     image: {
-      height: height * 0.6,
+      ...tailwind("rounded-xl"),
+      height: height * 0.65,
       width: "auto",
     },
     slide: {
@@ -262,13 +271,13 @@ export default TutorialScreen;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-BackButton.html">BackButton</a></li><li><a href="module-Button.html">Button</a></li><li><a href="module-DisplayNotif.html">DisplayNotif</a></li><li><a href="module-Headers.html">Headers</a></li><li><a href="module-LandingScreen.html">LandingScreen</a></li><li><a href="module-ListFromAPI.html">ListFromAPI</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-MainProfile.html">MainProfile</a></li><li><a href="module-NewsPostScreen.html">NewsPostScreen</a></li><li><a href="module-RecoverAccountScreen.html">RecoverAccountScreen</a></li><li><a href="module-RegisterAccountScreen.html">RegisterAccountScreen</a></li><li><a href="module-ScreenHeader.html">ScreenHeader</a></li><li><a href="module-SearchBar.html">SearchBar</a></li><li><a href="module-SearchScreen.html">SearchScreen</a></li><li><a href="module-ServiceDetails.html">ServiceDetails</a></li><li><a href="module-SettingsScreen.html">SettingsScreen</a></li><li><a href="module-TagRow.html">TagRow</a></li><li><a href="module-TextField.html">TextField</a></li><li><a href="module-TutorialScreen.html">TutorialScreen</a></li><li><a href="module-UnderlinedLink.html">UnderlinedLink</a></li><li><a href="module-WriteReview.html">WriteReview</a></li></ul><h3>Global</h3><ul><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getTags">getTags</a></li><li><a href="global.html#openPhone">openPhone</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Alerts.html">Alerts</a></li><li><a href="module-App.html">App</a></li><li><a href="module-BackButton.html">BackButton</a></li><li><a href="module-Button.html">Button</a></li><li><a href="module-ChangePassword.html">ChangePassword</a></li><li><a href="module-DisplayNotif.html">DisplayNotif</a></li><li><a href="module-EditProfile.html">EditProfile</a></li><li><a href="module-EmailUsScreen.html">EmailUsScreen</a></li><li><a href="module-Headers.html">Headers</a></li><li><a href="module-LandingScreen.html">LandingScreen</a></li><li><a href="module-ListFromAPI.html">ListFromAPI</a></li><li><a href="module-Login.html">Login</a></li><li><a href="module-MainProfile.html">MainProfile</a></li><li><a href="module-NewsPostScreen.html">NewsPostScreen</a></li><li><a href="module-RecoverAccountScreen.html">RecoverAccountScreen</a></li><li><a href="module-RegisterAccountScreen.html">RegisterAccountScreen</a></li><li><a href="module-ScreenHeader.html">ScreenHeader</a></li><li><a href="module-SearchBar.html">SearchBar</a></li><li><a href="module-SearchScreen.html">SearchScreen</a></li><li><a href="module-ServiceDetails.html">ServiceDetails</a></li><li><a href="module-SettingsScreen.html">SettingsScreen</a></li><li><a href="module-TagRow.html">TagRow</a></li><li><a href="module-TextField.html">TextField</a></li><li><a href="module-TutorialScreen.html">TutorialScreen</a></li><li><a href="module-UnderlinedLink.html">UnderlinedLink</a></li><li><a href="module-WriteReview.html">WriteReview</a></li></ul><h3>Global</h3><ul><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getScreenNameFromQuery">getScreenNameFromQuery</a></li><li><a href="global.html#getTags">getTags</a></li><li><a href="global.html#openPhone">openPhone</a></li><li><a href="global.html#openPhoneNumber">openPhoneNumber</a></li><li><a href="global.html#openWhatsApp">openWhatsApp</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Nov 05 2021 19:46:42 GMT-0400 (Eastern Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Nov 19 2021 19:35:14 GMT-0500 (Eastern Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

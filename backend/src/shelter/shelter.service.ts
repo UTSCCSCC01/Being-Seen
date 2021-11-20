@@ -102,12 +102,14 @@ export class ShelterService {
         (review) => review.reviewer == reviewerId,
       );
       if (index > -1) {
-        if (shelter.reviews[index].content) {
+        if (content) {
           shelter.reviews[index].content = content;
         }
-        if (shelter.reviews[index].rating) {
+        if (rating) {
           shelter.reviews[index].rating = rating;
         }
+      } else {
+        console.log('error has occured');
       }
       shelter.markModified('reviews');
       this.updateShelterScore(shelter);

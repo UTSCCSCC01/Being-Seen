@@ -50,10 +50,10 @@ const styles = StyleSheet.create({
   },
   secondaryHeader: {
     ...tailwind("text-primary font-bold"),
-    fontSize: 23,
+    fontSize: 24,
   },
   tertiaryHeader: {
     ...tailwind("text-primary font-bold"),
-    fontSize: 16,
+    fontSize: 20,
   },
 });
