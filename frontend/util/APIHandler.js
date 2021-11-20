@@ -71,7 +71,6 @@ export default {
    * @param {string} username
    * @param {string} password
    * @param {string} newPassword
-   * @returns
    */
   updatePassword(username, password, newPassword) {
     return fetch(`${apiAddress}auth/update`, {
@@ -89,6 +88,7 @@ export default {
 
   /**
    * Let user log out and get back to Login page.
+   * @param {object} navigation The navigation object.
    */
   async logOut(navigation) {
     // const navigation = UseNavigation();
@@ -205,6 +205,7 @@ export default {
   /**
    * Gets a user's profile information.
    * @param {string} userId The objectId of the user of interest.
+   * @returns {Promise} A Promise of a response from the server.
    */
   async getProfile(profileId) {
     const URI = `${apiAddress}profiles/${profileId}`;
@@ -218,7 +219,7 @@ export default {
    * Updates a user's profile user story.
    * @param {string} story The updated user story.
    * @param {string} profileId The objectId of the user of interest.
-   * @returns 
+   * @returns {Promise} A Promise of a response from the server.
    */
   async updateStoryForProfile(story, profileId) {
     const bodyData = { story };
