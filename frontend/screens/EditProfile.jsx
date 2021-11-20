@@ -21,6 +21,11 @@ import QuotationBlock from "../components/QuotationBlock";
 import ScreenHeader from "../components/ScreenHeader";
 import apiHandler from "../util/APIHandler";
 
+/**
+ * @function EditProfile
+ * @module EditProfile
+ * @description This is the EditProfile screen
+ */
 function EditProfile() {
   const navigation = useNavigation();
   const [story, setStory] = useState("loading");

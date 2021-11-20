@@ -56,6 +56,12 @@ export class AppController {
     return await this.usersService.createUser(user);
   }
 
+  /**
+   * Updates a user's profile
+   * @param user user object
+   * @param newPass new password
+   * @returns null or error
+   */
   @Put('auth/update')
   async updatePassword(@Body() user, @Body('newPassword') newPass: string) {
     return await this.authService.updatePassword(user, newPass);

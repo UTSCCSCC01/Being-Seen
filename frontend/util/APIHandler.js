@@ -202,6 +202,10 @@ export default {
     );
   },
 
+  /**
+   * Gets a user's profile information.
+   * @param {string} userId The objectId of the user of interest.
+   */
   async getProfile(profileId) {
     const URI = `${apiAddress}profiles/${profileId}`;
     const response = await fetch(URI, {
@@ -210,6 +214,12 @@ export default {
     return response;
   },
 
+  /**
+   * Updates a user's profile user story.
+   * @param {string} story The updated user story.
+   * @param {string} profileId The objectId of the user of interest.
+   * @returns 
+   */
   async updateStoryForProfile(story, profileId) {
     const bodyData = { story };
     const bodyDataJSON = JSON.stringify(bodyData);

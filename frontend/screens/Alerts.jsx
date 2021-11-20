@@ -6,6 +6,18 @@ import { tailwind } from "tailwind";
 
 import icons from "../constants/icons";
 
+/**
+ * @function Alerts
+ * @module Alerts
+ * @description A popup alert screen that can be used to display warnings or errors
+ * @prop {boolean} isShown - Whether the alert is shown or not
+ * @prop {string} [title] - The title of the alert
+ * @prop {string} [message] - The message of the alert
+ * @prop {string} [confirmText] - The text of the confirm button
+ * @prop {function} onCancel - The function to be called when the cancel button is pressed
+ * @prop {function} [onConfirm] - The function to be called when the confirm button is pressed
+ * @prop {JSX.Element} [customView] - A custom view to be displayed in the alert
+ */
 function AlertOK({
   isShown,
   title,
